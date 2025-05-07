@@ -76,7 +76,7 @@ type FooterIcon = {
 	alt: string;
 };
 
-const footerIcons: FooterIcon[] = [
+export const footerIcons: FooterIcon[] = [
 	{
 		href: "https://github.com/apollodaniel",
 		svg: "/github.svg",
