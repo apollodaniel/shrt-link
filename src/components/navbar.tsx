@@ -20,13 +20,13 @@ const navigationMenuEntries: MenuEntry[] = [
 	},
 	{
 		label: "Pricing",
-		href: "/",
+		href: "/pricing",
 	},
 	{
 		label: "Contact",
-		href: "/",
+		href: "/contact",
 	},
-	{ label: "FAQ", href: "/" },
+	{ label: "FAQ", href: "/faq" },
 ];
 
 export default function AppNavbar() {
