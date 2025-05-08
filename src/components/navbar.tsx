@@ -7,6 +7,7 @@ import {
 import Link from "next/link";
 import AppLogo from "./logo";
 import { cn } from "@/lib/utils";
+import { Button } from "./ui/button";
 
 type MenuEntry = {
 	label: string;
@@ -48,6 +49,17 @@ export default function AppNavbar() {
 							</Link>
 						</NavigationMenuItem>
 					))}
+					<Link href="/register" passHref className="ms-2">
+						<Button>Register now</Button>
+					</Link>
+					<NavigationMenuItem>
+						<Link
+							href={"/login"}
+							className={cn(navigationMenuTriggerStyle())}
+						>
+							Sign in
+						</Link>
+					</NavigationMenuItem>
 				</NavigationMenuList>
 			</NavigationMenu>
 		</div>
