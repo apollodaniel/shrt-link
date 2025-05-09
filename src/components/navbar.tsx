@@ -6,7 +6,8 @@ import {
 } from "@/components/ui/navigation-menu";
 import Link from "next/link";
 import AppLogo from "./logo";
-import { cn, getUserSessionStatus } from "@/lib/utils";
+import { cn } from "@/lib/utils";
+import { getUserSessionStatus } from "../app/(auth)/actions/auth";
 import { Button } from "./ui/button";
 import { SessionStatus } from "@/lib/types";
 
@@ -33,7 +34,7 @@ const navigationMenuEntries: MenuEntry[] = [
 
 export default async function AppNavbar() {
 	const sessionStatus = await getUserSessionStatus().catch(
-		(_) => SessionStatus.NO_SESSION,
+		() => SessionStatus.NO_SESSION,
 	);
 
 	return (
