@@ -8,6 +8,14 @@ export async function middleware(req: NextRequest) {
 		return NextResponse.redirect(getAppRoute(""));
 	}
 
+	const isOffline = await fetch(`${process.env.API_URL}/api/v1/ping`)
+		.then(() => false)
+		.catch(() => true);
+
+	if (isOffline) {
+		return NextResponse.rewrite(getAppRoute("error"));
+	}
+
 	try {
 		const sessionStatus = await getUserSessionStatus();
 
