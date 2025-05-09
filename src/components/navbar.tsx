@@ -32,7 +32,9 @@ const navigationMenuEntries: MenuEntry[] = [
 ];
 
 export default async function AppNavbar() {
-	const sessionStatus = await getUserSessionStatus();
+	const sessionStatus = await getUserSessionStatus().catch(
+		(_) => SessionStatus.NO_SESSION,
+	);
 
 	return (
 		<div className="fixed top-0 flex w-full flex-row items-center justify-between px-6">
