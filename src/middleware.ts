@@ -1,14 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { SessionStatus } from "./lib/types";
-import { getUserSessionStatus } from "./lib/utils";
-
-const getAppRoute = (route: string): string =>
-	`${process.env.APP_URL}/${route}`;
+import { getAppRoute } from "./lib/utils";
+import { getUserSessionStatus } from "./app/(auth)/actions/auth";
 
 export async function middleware(req: NextRequest) {
 	if (req.url.startsWith(getAppRoute("error"))) {
 		return NextResponse.redirect(getAppRoute(""));
 	}
+
 	try {
 		const sessionStatus = await getUserSessionStatus();
 
