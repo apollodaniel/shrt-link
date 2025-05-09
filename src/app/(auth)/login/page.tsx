@@ -16,6 +16,7 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { onSubmit, parseError } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
@@ -45,21 +46,30 @@ export default function Login() {
 		},
 	});
 
-	const onSubmit = (formFields: z.infer<typeof formSchema>) => {
-		toast(
-			<pre className="text-left whitespace-pre-wrap">
-				{JSON.stringify(formFields, null, 2)}
-			</pre>,
-		);
-	};
-
 	return (
 		<div className="flex min-h-screen w-[100vw] flex-col items-center justify-center gap-16 px-2">
 			<div className="w-full max-w-[400px]">
 				<Form {...form}>
 					<form
-						onSubmit={form.handleSubmit(onSubmit, (e) =>
-							console.log(e),
+						onSubmit={form.handleSubmit(
+							(formFields) =>
+								onSubmit<z.infer<typeof formSchema>>({
+									formFields: formFields,
+									path: "/api/v1/auth/login",
+									redirect_location: "/dashboard",
+									onError: async (response: Response) => {
+										parseError<
+											Parameters<typeof form.setError>[0]
+										>(
+											await response.text(),
+											(field, message) =>
+												form.setError(field, message),
+											(message, opts) =>
+												toast.error(message, opts),
+										);
+									},
+								}),
+							(e) => console.log(e),
 						)}
 						method="POST"
 					>
