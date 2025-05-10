@@ -7,7 +7,7 @@ import {
 import Link from "next/link";
 import AppLogo from "./logo";
 import { cn } from "@/lib/utils";
-import { getUserSessionStatus } from "../app/(auth)/actions/auth";
+import { getUserSessionStatus } from "../app/actions/auth";
 import { Button } from "./ui/button";
 import { SessionStatus } from "@/lib/types";
 

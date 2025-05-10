@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { SessionStatus } from "./lib/types";
 import { getAppRoute } from "./lib/utils";
-import { getUserSessionStatus } from "./app/(auth)/actions/auth";
+import { getUserSessionStatus } from "./app/actions/auth";
 
 export async function middleware(req: NextRequest) {
 	if (req.url.startsWith(getAppRoute("error"))) {
@@ -18,6 +18,7 @@ export async function middleware(req: NextRequest) {
 
 	try {
 		const sessionStatus = await getUserSessionStatus();
+		console.log(sessionStatus);
 
 		if (
 			req.url.startsWith(getAppRoute("dashboard")) &&
