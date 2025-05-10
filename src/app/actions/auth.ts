@@ -15,18 +15,16 @@ export async function getUserSessionStatus(): Promise<
 			},
 		);
 
+		console.log(response.status);
 		if (response.status >= 200 && response.status < 300)
 			return SessionStatus.AUTHENTICATED;
 		else if (response.status == 401) return SessionStatus.NO_SESSION;
 	} catch (err) {
 		if (
-			(err.message as string).includes(
-				"No cookie found for refreshToken or authToken",
-			)
+			(err.message as string).includes("No cookie found for refreshToken")
 		) {
 			return SessionStatus.NO_SESSION;
 		}
-		console.log(err);
 		throw err;
 	}
 }

@@ -14,17 +14,22 @@ export async function fetchServer(
 	let parsedInit: RequestInit = init || {};
 	if (init?.includeTokens) {
 		const _cookies = await cookies();
-		if (!_cookies.has("refreshToken") || !_cookies.has("authToken")) {
-			throw new Error("No cookie found for refreshToken or authToken");
+		if (!_cookies.has("refreshToken")) {
+			throw new Error("No cookie found for refreshToken");
 		}
 
+		const authTokenCookie = _cookies.has("authToken")
+			? `;authToken=${_cookies.get("authToken")!.value}`
+			: "";
 		parsedInit = {
 			...init,
 			headers: {
-				Cookie: `refreshToken=${_cookies.get("refreshToken")!.value};authToken=${_cookies.get("authToken")!.value}`,
+				Cookie: `refreshToken=${_cookies.get("refreshToken")!.value}${authTokenCookie}`,
 			},
 		};
 	}
 
-	return fetch(input, parsedInit);
+	const response = await fetch(input, parsedInit);
+
+	return response;
 }
