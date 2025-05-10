@@ -16,7 +16,7 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { REGISTER_FORM_SCHEMA } from "@/lib/types";
+import { REGISTER_FORM_SCHEMA } from "@/lib/types/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";

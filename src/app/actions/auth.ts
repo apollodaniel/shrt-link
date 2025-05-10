@@ -1,6 +1,6 @@
 "use server";
 
-import { SessionStatus } from "@/lib/types";
+import { SessionStatus } from "@/lib/types/types";
 import { fetchServer } from "./server";
 import { getAppRoute } from "@/lib/utils";
 

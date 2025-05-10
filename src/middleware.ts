@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { SessionStatus } from "./lib/types";
+import { SessionStatus } from "./lib/types/types";
 import { getAppRoute } from "./lib/utils";
 import { getUserSessionStatus } from "./app/actions/auth";
 

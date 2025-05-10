@@ -9,7 +9,7 @@ import AppLogo from "./logo";
 import { cn } from "@/lib/utils";
 import { getUserSessionStatus } from "../app/actions/auth";
 import { Button } from "./ui/button";
-import { SessionStatus } from "@/lib/types";
+import { SessionStatus } from "@/lib/types/types";
 
 type MenuEntry = {
 	label: string;
