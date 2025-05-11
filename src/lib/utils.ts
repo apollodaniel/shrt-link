@@ -12,6 +12,12 @@ export function cn(...inputs: ClassValue[]) {
 export const getAppRoute = (route: string): string =>
 	`${process.env.APP_URL}/${route}`;
 
+export const getFullShortenedUrl = (urlId: string) =>
+	getAppRoute(urlId).replace(/http[s]?\:\/\//, "");
+
+export const getUrlHostname = (url: string) =>
+	url.replace(/^http[s]?\:\/\/([^:\/]+).*$/, "$1");
+
 export const parseError = <T extends string>(
 	responseText: string,
 	formSetErrorCallback?: (field: T, message: ErrorOption) => void,
@@ -93,4 +99,11 @@ export async function onSubmit<T>({
 	} else {
 		onError(response);
 	}
+}
+
+export async function checkFavicon(url: string): Promise<boolean> {
+	return await fetch(`${url}/favicon.ico`).then(
+		(response) => response.status == 200,
+		() => false,
+	);
 }
