@@ -107,3 +107,10 @@ export async function checkFavicon(url: string): Promise<boolean> {
 		() => false,
 	);
 }
+
+export function jsonDateReviver<T>(key: string, value: T): T | Date {
+	if (key.endsWith("Date") && typeof value === "string") {
+		return new Date(value);
+	}
+	return value;
+}
