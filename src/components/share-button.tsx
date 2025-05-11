@@ -49,7 +49,12 @@ export default function ShareDialog({ shareUrl }: Props) {
 			<DialogTrigger asChild>
 				<Button variant="outline">Share Link</Button>
 			</DialogTrigger>
-			<DialogContent className="sm:max-w-md">
+			<DialogContent
+				className="sm:max-w-md"
+				onOpenAutoFocus={(event) => {
+					event.preventDefault();
+				}}
+			>
 				<DialogHeader>
 					<DialogTitle>Share link</DialogTitle>
 					<DialogDescription>
