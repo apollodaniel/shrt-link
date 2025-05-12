@@ -68,7 +68,7 @@ export default async function Dashboard() {
 				Welcome back {dashboardHomeInfo?.user?.firstName}
 			</h1>
 
-			<div className="grid w-full grid-cols-2 gap-5">
+			<div className="grid w-full grid-cols-2 gap-5 max-xl:grid-cols-1">
 				{/* latest urls */}
 				<div className="flex w-full flex-col items-stretch justify-start gap-3">
 					<h3 className="mx-3 mt-5 text-3xl font-semibold">
