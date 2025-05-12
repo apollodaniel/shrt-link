@@ -19,10 +19,15 @@ export default function DashboardLayout({
 			>
 				<DashboardSidebar />
 
-				<main className="max-h-[100vh] w-full p-3">
-					<SidebarTrigger className="scale-130" />
-					{children}
-				</main>
+				<div className="w-full">
+					<div className="bg-background/50 fixed top-0 z-50 -mb-4 w-full p-3 backdrop-blur-lg">
+						<SidebarTrigger className="scale-130" />
+					</div>
+
+					<main className="max-h-[100vh] w-full p-3 pt-20">
+						{children}
+					</main>
+				</div>
 			</SidebarProvider>
 		</div>
 	);

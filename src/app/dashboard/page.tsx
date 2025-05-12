@@ -63,7 +63,7 @@ export default async function Dashboard() {
 		.slice(0, 3)
 		.map((url) => <UrlCard key={url.id} url={url} />);
 	return (
-		<main className="flex w-full flex-col items-start justify-center gap-3 pt-12">
+		<main className="flex w-full flex-col items-start justify-center gap-3">
 			<h1 className="mx-1 text-center text-4xl font-bold">
 				Welcome back {dashboardHomeInfo?.user?.firstName}
 			</h1>
