@@ -109,7 +109,10 @@ export async function checkFavicon(url: string): Promise<boolean> {
 }
 
 export function jsonDateReviver<T>(key: string, value: T): T | Date {
-	if (key.endsWith("Date") && typeof value === "string") {
+	if (
+		(key.endsWith("Date") || key.endsWith("Time") || key == "day") &&
+		typeof value === "string"
+	) {
 		return new Date(value);
 	}
 	return value;
