@@ -49,7 +49,7 @@ function RangeCalendar({
 				<Button
 					variant={"outline"}
 					className={cn(
-						"h-12 w-[240px] pl-3 text-left font-normal",
+						"h-12 w-[240px] pl-3 text-left font-normal max-md:ms-auto",
 						"text-muted-foreground",
 					)}
 				>
@@ -146,7 +146,7 @@ export default function UrlList({ urlList }: Props) {
 
 	return (
 		<div className="w-full space-y-4">
-			<div className="flex h-12 w-full flex-row items-stretch gap-3">
+			<div className="flex min-h-12 w-full flex-row items-center gap-3 max-md:flex-wrap-reverse max-md:justify-end">
 				<div className="relative h-12 w-full">
 					<Input
 						id="search"
