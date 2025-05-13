@@ -19,3 +19,11 @@ export type DateChartData = {
 	date: Date;
 	count: number;
 };
+
+export type SearchSettings = {
+	isActive: boolean;
+	order: {
+		by: string; // "Creation Date" | "ID"
+		order: string; // "ASC" | "DESC"
+	};
+};
