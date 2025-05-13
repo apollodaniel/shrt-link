@@ -10,7 +10,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const getAppRoute = (route: string): string =>
-	`${process.env.APP_URL}/${route}`;
+	`${process.env.NEXT_PUBLIC_APP_URL}/${route}`;
 
 export const getFullShortenedUrl = (urlId: string) =>
 	getAppRoute(urlId).replace(/http[s]?\:\/\//, "");
