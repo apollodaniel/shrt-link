@@ -43,7 +43,6 @@ export default async function DashboardSidebar() {
 
 	return (
 		<Sidebar collapsible="icon">
-			<SidebarHeader />
 			<SidebarContent>
 				{items.map((i) => (
 					<SidebarGroup key={i.label}>
