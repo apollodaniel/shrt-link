@@ -4,7 +4,17 @@ import { ShortenedUrl } from "@/lib/types/api";
 import { Input } from "./ui/input";
 import UrlCard from "./url-card";
 import { useEffect, useState } from "react";
-import { CalendarIcon, Check, RefreshCcw, Search, X } from "lucide-react";
+import {
+	CalendarIcon,
+	Check,
+	RefreshCcw,
+	Search,
+	Trash2,
+	X,
+	SquareCheck,
+	Square,
+	MinusSquare,
+} from "lucide-react";
 import { Button } from "./ui/button";
 import { Calendar } from "./ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
@@ -14,6 +24,7 @@ import { SearchSettings } from "@/lib/types/types";
 import SearchSettingsButton from "./search-settings";
 import UrlCardSkeleton from "./url-card-skeleton";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 type Props = {
 	urlList: ShortenedUrl[];
@@ -50,7 +61,6 @@ function RangeCalendar({
 					variant={"outline"}
 					className={cn(
 						"h-12 w-[240px] pl-3 text-left font-normal max-md:ms-auto",
-						"text-muted-foreground",
 					)}
 				>
 					<span>
@@ -58,7 +68,7 @@ function RangeCalendar({
 							? `${range.from?.toLocaleString("default", { dateStyle: "medium" })}${range.to ? " - " + range.to?.toLocaleString("default", { dateStyle: "medium" }) : ""}${isActive ? " (only active)" : ""}`
 							: "Pick a date range"}
 					</span>
-					<CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+					<CalendarIcon className="text-primary ml-auto h-4 w-4" />
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent className="w-auto p-0" align="start">
@@ -136,6 +146,8 @@ export default function UrlList({ urlList }: Props) {
 	>();
 	const [isRefreshed, setIsRefreshed] = useState(false);
 	const router = useRouter();
+	const [selectedUrls, setSelectedUrls] = useState<Set<string>>(new Set([]));
+	const [filteredUrls, setFilteredUrls] = useState(urlList);
 
 	useEffect(() => {
 		const settingsItem = window.localStorage.getItem("searchSettings");
@@ -144,8 +156,26 @@ export default function UrlList({ urlList }: Props) {
 		}
 	}, []);
 
+	useEffect(() => {
+		setFilteredUrls(
+			filterBySettings(
+				searchSettings,
+				filterByDate(dateRange, urlList),
+			).filter((url) => processSearch(search, url)),
+		);
+	}, [search, dateRange, urlList, searchSettings]);
+
 	return (
 		<div className="w-full space-y-4">
+			<h2
+				className={cn(
+					"text-xl font-medium",
+					selectedUrls.size == 0 ? "opacity-0" : "",
+				)}
+			>
+				{`Selected ${selectedUrls.size} of ${urlList.length}`}
+			</h2>
+
 			<div className="flex min-h-12 w-full flex-row items-center gap-3 max-md:flex-wrap-reverse max-md:justify-end">
 				<div className="relative h-12 w-full">
 					<Input
@@ -172,55 +202,161 @@ export default function UrlList({ urlList }: Props) {
 					)}
 				</div>
 
-				<Button
-					variant={isRefreshed ? "default" : "outline"}
-					className="aspect-square h-full"
-					onClick={() => {
-						if (!isRefreshed) {
-							router.refresh();
-							setIsRefreshed(true);
-							setTimeout(() => setIsRefreshed(false), 2000);
-						}
-					}}
-				>
-					{isRefreshed ? <Check /> : <RefreshCcw />}
-				</Button>
-				{searchSettings && (
+				{selectedUrls.size > 0 ? (
 					<>
-						<SearchSettingsButton
-							searchSettings={searchSettings}
-							setSearchSettings={(settings) => {
-								setSearchSettings(settings);
-								window.localStorage.setItem(
-									"searchSettings",
-									JSON.stringify(settings),
+						<Button
+							className="aspect-square h-full"
+							variant="outline"
+							onClick={() => {
+								toast(
+									<pre>
+										{JSON.stringify(
+											Array.from(selectedUrls),
+											null,
+											2,
+										)}
+									</pre>,
 								);
 							}}
-						/>
-						<RangeCalendar
-							range={
-								searchSettings.isActive
-									? { from: new Date(Date.now()) }
-									: dateRange
-							}
-							setRange={
-								searchSettings.isActive
-									? () => {}
-									: setDateRange
-							}
-							isActive={searchSettings.isActive || false}
-						/>
+						>
+							<Trash2 className="scale-120" />
+						</Button>
+
+						<Button
+							className="aspect-square h-full"
+							variant="outline"
+							onClick={() => {
+								if (selectedUrls.size >= filteredUrls.length) {
+									setSelectedUrls(new Set([]));
+								} else {
+									setSelectedUrls(
+										new Set(
+											filteredUrls.map((url) => url.id),
+										),
+									);
+								}
+							}}
+						>
+							{selectedUrls.size >= filteredUrls.length ? (
+								<SquareCheck className="scale-120" />
+							) : selectedUrls.size > 0 ? (
+								<MinusSquare className="scale-120" />
+							) : (
+								<Square className="scale-120" />
+							)}
+						</Button>
 					</>
+				) : (
+					<div className="flex flex-row items-center justify-end gap-1 max-md:flex-wrap-reverse">
+						{searchSettings && (
+							<RangeCalendar
+								range={
+									searchSettings.isActive
+										? { from: new Date(Date.now()) }
+										: dateRange
+								}
+								setRange={
+									searchSettings.isActive
+										? () => {}
+										: setDateRange
+								}
+								isActive={searchSettings.isActive || false}
+							/>
+						)}
+						<div className="flex flex-row items-center gap-1">
+							<Button
+								variant={isRefreshed ? "default" : "outline"}
+								className="aspect-square h-full"
+								onClick={() => {
+									if (!isRefreshed) {
+										router.refresh();
+										setIsRefreshed(true);
+										setTimeout(
+											() => setIsRefreshed(false),
+											2000,
+										);
+									}
+								}}
+							>
+								{isRefreshed ? <Check /> : <RefreshCcw />}
+							</Button>
+							{searchSettings && (
+								<SearchSettingsButton
+									searchSettings={searchSettings}
+									setSearchSettings={(settings) => {
+										setSearchSettings(settings);
+										window.localStorage.setItem(
+											"searchSettings",
+											JSON.stringify(settings),
+										);
+									}}
+								/>
+							)}
+
+							<Button
+								className="aspect-square h-full"
+								variant="outline"
+								onClick={() => {
+									if (
+										selectedUrls.size >= filteredUrls.length
+									) {
+										setSelectedUrls(new Set([]));
+									} else {
+										setSelectedUrls(
+											new Set(
+												filteredUrls.map(
+													(url) => url.id,
+												),
+											),
+										);
+									}
+								}}
+							>
+								{selectedUrls.size >= filteredUrls.length ? (
+									<SquareCheck className="scale-120" />
+								) : selectedUrls.size > 0 ? (
+									<MinusSquare className="scale-120" />
+								) : (
+									<Square className="scale-120" />
+								)}
+							</Button>
+						</div>
+					</div>
 				)}
 			</div>
+
+			<small
+				className={cn(
+					"text-muted-foreground",
+					search.length == 0 ? "opacity-0" : "",
+				)}
+			>
+				When searching the &quot;select all&quot; button is limited to
+				the search scope.
+			</small>
+
 			<div className="flex flex-col gap-2 font-medium">
 				{searchSettings
-					? filterBySettings(
-							searchSettings,
-							filterByDate(dateRange, urlList),
-						)
-							.filter((url) => processSearch(search, url))
-							.map((url) => <UrlCard key={url.id} url={url} />)
+					? filteredUrls.map((url) => (
+							<UrlCard
+								key={url.id}
+								url={url}
+								isSelected={selectedUrls.has(url.id)}
+								setIsSelected={(id, value) => {
+									if (value) {
+										setSelectedUrls((prev) =>
+											new Set(prev).add(id),
+										);
+									} else {
+										setSelectedUrls((prev) => {
+											const newSet = new Set(prev);
+											newSet.delete(id);
+											return newSet;
+										});
+									}
+								}}
+							/>
+						))
 					: urlList.map((url) => <UrlCardSkeleton key={url.id} />)}
 			</div>
 		</div>
