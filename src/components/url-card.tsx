@@ -14,7 +14,7 @@ type Props = {
 
 export default function UrlCard({ url }: Props) {
 	return (
-		<Card key={url.id} className="gap-2 p-3">
+		<Card className="gap-2 p-3">
 			<CardHeader className="m-0 flex w-full flex-row items-start justify-start gap-2 p-0">
 				<div className="flex flex-col">
 					<div className="flex w-full flex-row items-center justify-start gap-2">

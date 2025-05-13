@@ -25,7 +25,7 @@ const items = [
 				icon: Home,
 			},
 			{
-				title: "Links",
+				title: "URL list",
 				url: "/dashboard/list",
 				icon: Link,
 			},
