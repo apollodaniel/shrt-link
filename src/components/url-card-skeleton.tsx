@@ -6,7 +6,6 @@ export default function UrlCardSkeleton() {
 			<div className="flex h-full flex-col gap-2">
 				<Skeleton className="h-2 w-[150px]" />
 				<Skeleton className="h-2 w-[200px]" />
-
 				<Skeleton className="mt-auto mb-1 h-2 w-[150px]" />
 			</div>
 			<div className="flex flex-row items-start gap-3">
