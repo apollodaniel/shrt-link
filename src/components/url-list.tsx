@@ -14,17 +14,19 @@ import {
 	SquareCheck,
 	Square,
 	MinusSquare,
+	Send,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Calendar } from "./ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { DateRange, SelectRangeEventHandler } from "react-day-picker";
-import { cn } from "@/lib/utils";
+import { cn, getAppRoute, getFullShortenedUrl } from "@/lib/utils";
 import { SearchSettings } from "@/lib/types/types";
 import SearchSettingsButton from "./search-settings";
 import UrlCardSkeleton from "./url-card-skeleton";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import Link from "next/link";
 
 type Props = {
 	urlList: ShortenedUrl[];
@@ -135,6 +137,40 @@ function filterBySettings(
 	);
 }
 
+async function deleteMultipleUrls(
+	urlList: string[],
+): Promise<{ urlId: string; error: string }[]> {
+	const detailedRelatory: { urlId: string; error: string }[] = [];
+	for (const url of urlList) {
+		try {
+			const response = await fetch(getAppRoute(`api/v1/urls/${url}`), {
+				method: "DELETE",
+				credentials: "include",
+			});
+
+			if (response.status != 200)
+				throw new Error(
+					`Unable to delete url: ${JSON.stringify(
+						{
+							status: response.status,
+							body: response.body,
+						},
+						null,
+						2,
+					)}`,
+				);
+		} catch (err) {
+			console.log(err.message);
+			detailedRelatory.push({
+				urlId: url,
+				error: err.message || "Unknown error",
+			});
+		}
+	}
+
+	return detailedRelatory;
+}
+
 export default function UrlList({ urlList }: Props) {
 	const [search, setSearch] = useState("");
 	const [dateRange, setDateRange] = useState<DateRange | undefined>({
@@ -165,6 +201,20 @@ export default function UrlList({ urlList }: Props) {
 		);
 	}, [search, dateRange, urlList, searchSettings]);
 
+	const refreshButtonAction = () => {
+		if (!isRefreshed) {
+			router.refresh();
+			setIsRefreshed(true);
+
+			setFilteredUrls(
+				filterBySettings(
+					searchSettings,
+					filterByDate(dateRange, urlList),
+				).filter((url) => processSearch(search, url)),
+			);
+			setTimeout(() => setIsRefreshed(false), 2000);
+		}
+	};
 	return (
 		<div className="w-full space-y-4">
 			<h2
@@ -207,16 +257,46 @@ export default function UrlList({ urlList }: Props) {
 						<Button
 							className="aspect-square h-full"
 							variant="outline"
-							onClick={() => {
-								toast(
-									<pre>
-										{JSON.stringify(
-											Array.from(selectedUrls),
-											null,
-											2,
-										)}
-									</pre>,
+							onClick={async () => {
+								const result = await deleteMultipleUrls(
+									Array.from(selectedUrls),
 								);
+								if (result.length > 0) {
+									const urlList = result.map((r) => r.urlId);
+									toast.error(
+										<>
+											Unable to delete the following URLs:
+											<br />
+											<ul>
+												{urlList.map((u) => (
+													<li key={u}>
+														-{" "}
+														{getFullShortenedUrl(u)}
+													</li>
+												))}
+											</ul>
+										</>,
+										{
+											richColors: true,
+											position: "bottom-center",
+											classNames: {
+												toast: "justify-between",
+											},
+											action: (
+												<Link
+													href={`mailto:developer.apollo.mail@gmail.com?subject=ShrtLink error&body=Got error while trying to delete URLs: ${JSON.stringify(result, null, 2)}`}
+													passHref
+												>
+													<Button variant={"ghost"}>
+														<Send className="scale-130" />
+													</Button>
+												</Link>
+											),
+										},
+									);
+								}
+								router.refresh();
+								setSelectedUrls(new Set([]));
 							}}
 						>
 							<Trash2 className="scale-120" />
@@ -267,16 +347,7 @@ export default function UrlList({ urlList }: Props) {
 							<Button
 								variant={isRefreshed ? "default" : "outline"}
 								className="aspect-square h-full"
-								onClick={() => {
-									if (!isRefreshed) {
-										router.refresh();
-										setIsRefreshed(true);
-										setTimeout(
-											() => setIsRefreshed(false),
-											2000,
-										);
-									}
-								}}
+								onClick={refreshButtonAction}
 							>
 								{isRefreshed ? <Check /> : <RefreshCcw />}
 							</Button>
