@@ -27,6 +27,7 @@ import UrlCardSkeleton from "./url-card-skeleton";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Link from "next/link";
+import { revalidateSummary } from "@/app/actions/dashboard/dashboard";
 
 type Props = {
 	urlList: ShortenedUrl[];
@@ -168,6 +169,7 @@ async function deleteMultipleUrls(
 		}
 	}
 
+	revalidateSummary();
 	return detailedRelatory;
 }
 

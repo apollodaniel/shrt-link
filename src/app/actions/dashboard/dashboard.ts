@@ -5,6 +5,7 @@ import { checkFavicon, getAppRoute, jsonDateReviver } from "@/lib/utils";
 import { fetchServer } from "../server";
 import { DashboardHomeInfo, ShortenedUrlMetadata } from "@/lib/types/types";
 import jsdom from "jsdom";
+import { revalidateTag } from "next/cache";
 
 export async function getUser(): Promise<User> {
 	const response = await fetchServer(getAppRoute("api/v1/users/current"), {
@@ -25,6 +26,7 @@ export async function getUrlSummary(id?: string): Promise<ShortenedUrlSummary> {
 		includeTokens: true,
 		next: {
 			revalidate: 60 * 5,
+			tags: ["summary"],
 		},
 	});
 	const text = await response.text();
@@ -46,6 +48,10 @@ export async function getDashboardHomeInfo(): Promise<DashboardHomeInfo> {
 	} catch (err) {
 		throw err;
 	}
+}
+
+export async function revalidateSummary(): Promise<void> {
+	revalidateTag("summary");
 }
 
 export async function getUrlMetadata(
