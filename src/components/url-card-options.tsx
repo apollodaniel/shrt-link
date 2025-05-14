@@ -11,7 +11,7 @@ import {
 } from "./ui/dropdown-menu";
 import { ShortenedUrl } from "@/lib/types/api";
 import Link from "next/link";
-import { getAppRoute } from "@/lib/utils";
+import { getAppRoute, getFullShortenedUrl } from "@/lib/utils";
 import { useState } from "react";
 import ShareUrlDialog from "./share-url-dialog";
 
@@ -22,6 +22,10 @@ type Props = {
 
 export default function UrlCardOptions({ url, className }: Props) {
 	const [isShareUrlOpen, setIsShareUrlOpen] = useState(false);
+
+	const copyToClipboard = async () => {
+		await navigator.clipboard.writeText(getAppRoute(url.id));
+	};
 
 	return (
 		<div className={className}>
@@ -36,7 +40,9 @@ export default function UrlCardOptions({ url, className }: Props) {
 					<Link href={getAppRoute(`dashboard/${url.id}`)} passHref>
 						<DropdownMenuItem>Edit</DropdownMenuItem>
 					</Link>
-					<DropdownMenuItem>Copy</DropdownMenuItem>
+					<DropdownMenuItem onClick={copyToClipboard}>
+						Copy
+					</DropdownMenuItem>
 					<DropdownMenuItem onClick={() => setIsShareUrlOpen(true)}>
 						Share url
 					</DropdownMenuItem>
