@@ -29,6 +29,8 @@ import {
 	FormMessage,
 	Form,
 } from "./ui/form";
+import { useState } from "react";
+import { useSidebar } from "./ui/sidebar";
 
 export default function AddUrlDialog({
 	children,
@@ -47,6 +49,9 @@ export default function AddUrlDialog({
 			),
 	});
 
+	const [isOpen, setIsOpen] = useState(false);
+	const sidebar = useSidebar();
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		mode: "onChange",
@@ -56,7 +61,12 @@ export default function AddUrlDialog({
 	});
 
 	return (
-		<Dialog>
+		<Dialog
+			open={isOpen}
+			onOpenChange={(open) => {
+				setIsOpen(open);
+			}}
+		>
 			<DialogTrigger asChild>{children}</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
@@ -79,6 +89,14 @@ export default function AddUrlDialog({
 											jsonDateReviver,
 										);
 										if (json.id) {
+											setIsOpen(false);
+											if (sidebar.isMobile)
+												sidebar.setOpenMobile(false);
+											else sidebar.setOpen(false);
+											form.reset({
+												originalUrl: "",
+											});
+
 											return getAppRoute(
 												`dashboard/${json.id}`,
 											);
