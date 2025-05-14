@@ -14,7 +14,9 @@ export async function getUrlList(): Promise<ShortenedUrl[]> {
 
 		return await Promise.all(
 			rawList.map(async (item) => {
-				const metadata = await getUrlMetadata(item);
+				const metadata = await getUrlMetadata(item).catch(
+					() => undefined,
+				);
 
 				return {
 					...item,

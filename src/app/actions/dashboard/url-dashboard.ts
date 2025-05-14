@@ -23,7 +23,7 @@ export async function getUrlDashboardInfo(
 	try {
 		const url = await getUrl(urlId);
 		const summary = await getUrlSummary(urlId);
-		const metadata = await getUrlMetadata(url);
+		const metadata = await getUrlMetadata(url).catch(() => undefined);
 
 		return {
 			url: {
