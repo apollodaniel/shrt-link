@@ -24,7 +24,7 @@ export async function getUrlSummary(id?: string): Promise<ShortenedUrlSummary> {
 	const response = await fetchServer(route, {
 		includeTokens: true,
 		next: {
-			revalidate: 60 * 10,
+			revalidate: 60 * 5,
 		},
 	});
 	const text = await response.text();
