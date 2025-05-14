@@ -1,4 +1,9 @@
-import { getAppRoute, getFullShortenedUrl, getUrlHostname } from "@/lib/utils";
+import {
+	cn,
+	getAppRoute,
+	getFullShortenedUrl,
+	getUrlHostname,
+} from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import { ShortenedUrl } from "@/lib/types/api";
@@ -11,12 +16,18 @@ import ShareUrlButton from "./share-button";
 import UrlCardOptions from "./url-card-options";
 
 type Props = {
+	isMinimal?: boolean;
 	isSelected?: boolean;
 	setIsSelected?: (id: string, checked: boolean) => void;
 	url: ShortenedUrl;
 };
 
-export default function UrlCard({ url, isSelected, setIsSelected }: Props) {
+export default function UrlCard({
+	url,
+	isMinimal = false,
+	isSelected,
+	setIsSelected,
+}: Props) {
 	return (
 		<Card className="w-full gap-2 p-3">
 			<CardContent className="m-0 flex w-auto max-w-[100%] flex-row gap-3 p-0">
@@ -68,8 +79,16 @@ export default function UrlCard({ url, isSelected, setIsSelected }: Props) {
 						</Link>
 					</div>
 
-					<UrlCardOptions url={url} className="hidden max-sm:block" />
-					<div className="flex flex-row items-center gap-2 max-sm:hidden">
+					<UrlCardOptions
+						url={url}
+						className={cn(!isMinimal ? "hidden max-sm:block" : "")}
+					/>
+					<div
+						className={cn(
+							"flex flex-row items-center gap-2",
+							isMinimal ? "hidden" : "max-sm:hidden",
+						)}
+					>
 						<Link
 							href={getAppRoute(`dashboard/${url.id}`)}
 							passHref

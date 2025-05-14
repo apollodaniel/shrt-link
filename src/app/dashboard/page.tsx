@@ -46,7 +46,7 @@ export default async function Dashboard() {
 	const recentUrls = urls
 		.sort((a, b) => b.creationDate.getTime() - a.creationDate.getTime())
 		.slice(0, 3)
-		.map((url) => <UrlCard key={url.id} url={url} />);
+		.map((url) => <UrlCard key={url.id} isMinimal url={url} />);
 
 	const activeUrls = urls
 		.filter((a) =>
@@ -61,7 +61,7 @@ export default async function Dashboard() {
 				getLatestStatistic(a).accessTime.getTime(),
 		)
 		.slice(0, 3)
-		.map((url) => <UrlCard key={url.id} url={url} />);
+		.map((url) => <UrlCard key={url.id} isMinimal url={url} />);
 	return (
 		<main className="flex w-full flex-col items-start justify-center gap-3">
 			<h1 className="mx-1 text-center text-4xl font-bold">
