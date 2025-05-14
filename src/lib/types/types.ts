@@ -1,4 +1,9 @@
-import { ShortenedUrlSummary, User } from "./api";
+import { ShortenedUrl, ShortenedUrlSummary, User } from "./api";
+
+export type UrlDashboardInfo = {
+	url: ShortenedUrl;
+	summary: ShortenedUrlSummary;
+};
 
 export type DashboardHomeInfo = {
 	user: User;
