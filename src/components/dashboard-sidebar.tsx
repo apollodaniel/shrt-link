@@ -1,4 +1,4 @@
-import { Home, Link } from "lucide-react";
+import { CirclePlus, Home, Link } from "lucide-react";
 import {
 	Sidebar,
 	SidebarContent,
@@ -13,6 +13,7 @@ import {
 import UserDropdownMenu from "./user-dropdown-menu";
 import { getUser } from "@/app/actions/dashboard/dashboard";
 import { User } from "@/lib/types/api";
+import AddUrlDialog from "./add-url-dialog";
 
 const items = [
 	{
@@ -58,6 +59,14 @@ export default async function DashboardSidebar() {
 										</SidebarMenuButton>
 									</SidebarMenuItem>
 								))}
+								<SidebarMenuItem>
+									<AddUrlDialog>
+										<SidebarMenuButton>
+											<CirclePlus />
+											<span>Add url </span>
+										</SidebarMenuButton>
+									</AddUrlDialog>
+								</SidebarMenuItem>
 							</SidebarMenu>
 						</SidebarGroupContent>
 					</SidebarGroup>

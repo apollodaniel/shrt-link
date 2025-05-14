@@ -11,7 +11,7 @@ import {
 } from "./ui/dropdown-menu";
 import { ShortenedUrl } from "@/lib/types/api";
 import Link from "next/link";
-import { getAppRoute, getFullShortenedUrl } from "@/lib/utils";
+import { getAppRoute } from "@/lib/utils";
 import { useState } from "react";
 import ShareUrlDialog from "./share-url-dialog";
 

@@ -73,6 +73,8 @@ export function formatFieldErrors(
 	}));
 }
 
+type RedirectLocationFunction = (body: string) => string | undefined;
+
 export async function onSubmit<T>({
 	path,
 	formFields,
@@ -82,7 +84,7 @@ export async function onSubmit<T>({
 	path: string;
 	formFields: T;
 	onError?: (response: Response) => void;
-	redirect_location?: string;
+	redirect_location: string | undefined | RedirectLocationFunction;
 }) {
 	const data = formFields;
 	const response = await fetch(path, {
@@ -95,7 +97,12 @@ export async function onSubmit<T>({
 	});
 
 	if (response.status == 200) {
-		redirect(redirect_location || "/dashboard");
+		if (typeof redirect_location == "string") {
+			redirect(redirect_location || "/dashboard");
+		} else if (redirect_location) {
+			const url = redirect_location(await response.text());
+			if (url) redirect(url);
+		}
 	} else {
 		onError(response);
 	}
