@@ -93,13 +93,17 @@ function filterByDate(
 	rangeDate?: DateRange,
 	urlList: ShortenedUrl[],
 ): ShortenedUrl[] {
+	const getDays = (date: Date) =>
+		Math.round(date.getTime() / 1000 / 60 / 60 / 24);
 	if (!rangeDate) return urlList;
 	return urlList.filter((url) => {
-		const isBefore =
-			url.creationDate.getTime() <
-			(rangeDate.to?.getTime() || Date.now());
-		const isAfter =
-			url.creationDate.getTime() > (rangeDate.from?.getTime() || 0);
+		const creationDays = getDays(url.creationDate);
+		const fromDays = rangeDate.from ? getDays(rangeDate.from) : 0;
+		const toDays = rangeDate.to
+			? getDays(rangeDate.to)
+			: getDays(new Date(Date.now()));
+		const isBefore = creationDays <= toDays;
+		const isAfter = creationDays >= fromDays;
 		return isBefore && isAfter;
 	});
 }
