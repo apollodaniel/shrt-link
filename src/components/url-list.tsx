@@ -88,8 +88,8 @@ function RangeCalendar({
 }
 
 function filterByDate(
-	rangeDate?: DateRange,
 	urlList: ShortenedUrl[],
+	rangeDate?: DateRange,
 ): ShortenedUrl[] {
 	const getDays = (date: Date) =>
 		Math.round(date.getTime() / 1000 / 60 / 60 / 24);
@@ -107,8 +107,8 @@ function filterByDate(
 }
 
 function filterBySettings(
-	settings?: SearchSettings,
 	urlList: ShortenedUrl[],
+	settings?: SearchSettings,
 ): ShortenedUrl[] {
 	if (!settings) return urlList;
 
@@ -166,10 +166,10 @@ async function deleteMultipleUrls(
 					)}`,
 				);
 		} catch (err) {
-			console.log(err.message);
+			console.log(err);
 			detailedRelatory.push({
 				urlId: url,
-				error: err.message || "Unknown error",
+				error: err instanceof Error ? err.message : "Unknown error",
 			});
 		}
 	}
@@ -202,8 +202,8 @@ export default function UrlList({ urlList }: Props) {
 	useEffect(() => {
 		setFilteredUrls(
 			filterBySettings(
+				filterByDate(urlList, dateRange),
 				searchSettings,
-				filterByDate(dateRange, urlList),
 			).filter((url) => processSearch(search, url)),
 		);
 	}, [search, dateRange, urlList, searchSettings]);
@@ -215,8 +215,8 @@ export default function UrlList({ urlList }: Props) {
 
 			setFilteredUrls(
 				filterBySettings(
+					filterByDate(urlList, dateRange),
 					searchSettings,
-					filterByDate(dateRange, urlList),
 				).filter((url) => processSearch(search, url)),
 			);
 			setTimeout(() => setIsRefreshed(false), 2000);

@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { ErrorOption } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
-import { FormattedFieldError, FieldError, ErrorEntry } from "./types";
+import { FormattedFieldError, FieldError, ErrorEntry } from "./types/error";
 import { ExternalToast } from "sonner";
 import { redirect } from "next/navigation";
 import { ShortenedUrl, ShortenedUrlStatistic } from "./types/api";
@@ -105,7 +105,7 @@ export async function onSubmit<T>({
 			if (url) redirect(url);
 		}
 	} else {
-		onError(response);
+		if (onError) onError(response);
 	}
 }
 

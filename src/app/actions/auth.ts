@@ -21,7 +21,8 @@ export async function getUserSessionStatus(): Promise<
 		else if (response.status == 401) return SessionStatus.NO_SESSION;
 	} catch (err) {
 		if (
-			(err.message as string).includes("No cookie found for refreshToken")
+			err instanceof Error &&
+			err.message.includes("No cookie found for refreshToken")
 		) {
 			return SessionStatus.NO_SESSION;
 		}

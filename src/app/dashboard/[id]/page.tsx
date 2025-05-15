@@ -16,7 +16,11 @@ import Link from "next/link";
 import Image from "next/image";
 import DeleteUrlButton from "@/components/delete-url-button";
 
-export default async function UrlDashboard({ params }) {
+export default async function UrlDashboard({
+	params,
+}: {
+	params: Promise<{ id: string }>;
+}) {
 	const _params: { id: string } = await params;
 	let urlDashboardInfo: UrlDashboardInfo | undefined;
 	try {

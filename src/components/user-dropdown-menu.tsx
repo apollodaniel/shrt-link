@@ -41,7 +41,7 @@ export default function UserDropdownMenu({ user }: { user: User }) {
 				throw new Error(await response.text());
 			}
 		} catch (err) {
-			console.log(err.message);
+			console.log(err);
 		}
 
 		setIsDialogOpen(false);
