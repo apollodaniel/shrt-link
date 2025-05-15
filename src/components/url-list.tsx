@@ -51,11 +51,9 @@ function processSearch(search: string, url: ShortenedUrl) {
 function RangeCalendar({
 	range,
 	setRange,
-	isActive,
 }: {
 	range?: DateRange;
 	setRange: SelectRangeEventHandler;
-	isActive: boolean;
 }) {
 	return (
 		<Popover>
@@ -68,7 +66,7 @@ function RangeCalendar({
 				>
 					<span>
 						{range
-							? `${range.from?.toLocaleString("default", { dateStyle: "medium" })}${range.to ? " - " + range.to?.toLocaleString("default", { dateStyle: "medium" }) : ""}${isActive ? " (only active)" : ""}`
+							? `${range.from?.toLocaleString("default", { dateStyle: "medium" })}${range.to ? " - " + range.to?.toLocaleString("default", { dateStyle: "medium" }) : ""}`
 							: "Pick a date range"}
 					</span>
 					<CalendarIcon className="text-primary ml-auto h-4 w-4" />
@@ -119,8 +117,11 @@ function filterBySettings(
 			// filter if is active
 			.filter((url) =>
 				settings.isActive
-					? Date.now() - url.creationDate.getTime() <
-						24 * 60 * 60 * 1000
+					? url.statistics.find(
+							(s) =>
+								Date.now() - s.accessTime.getTime() <
+								24 * 60 * 60 * 1000,
+						)
 					: true,
 			)
 			// short by order settings
@@ -336,17 +337,8 @@ export default function UrlList({ urlList }: Props) {
 					<div className="flex flex-row items-center justify-end gap-1 max-md:flex-wrap-reverse">
 						{searchSettings && (
 							<RangeCalendar
-								range={
-									searchSettings.isActive
-										? { from: new Date(Date.now()) }
-										: dateRange
-								}
-								setRange={
-									searchSettings.isActive
-										? () => {}
-										: setDateRange
-								}
-								isActive={searchSettings.isActive || false}
+								range={dateRange}
+								setRange={setDateRange}
 							/>
 						)}
 						<div className="flex flex-row items-center gap-1">
@@ -401,16 +393,26 @@ export default function UrlList({ urlList }: Props) {
 					</div>
 				)}
 			</div>
+			<div className="flex w-full flex-row items-center justify-between max-md:flex-col">
+				<small
+					className={cn(
+						"text-muted-foreground",
+						search.length == 0 ? "hidden" : "",
+					)}
+				>
+					When searching the &quot;select all&quot; button is limited
+					to the search scope.
+				</small>
 
-			<small
-				className={cn(
-					"text-muted-foreground",
-					search.length == 0 ? "opacity-0" : "",
-				)}
-			>
-				When searching the &quot;select all&quot; button is limited to
-				the search scope.
-			</small>
+				<small
+					className={cn(
+						"text-muted-foreground ms-auto max-md:ms-0",
+						!searchSettings?.isActive ? "hidden" : "",
+					)}
+				>
+					Displaying only active
+				</small>
+			</div>
 
 			<div className="flex flex-col gap-2 font-medium">
 				{searchSettings
