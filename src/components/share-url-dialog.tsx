@@ -94,6 +94,7 @@ export default function ShareUrlDialog({ shareUrl, isOpen, setIsOpen }: Props) {
 									alt="x icon"
 									height={20}
 									width={20}
+									className="dark:invert"
 									src="/x.svg"
 								/>
 								<span className="sr-only">Share on X</span>
@@ -109,6 +110,7 @@ export default function ShareUrlDialog({ shareUrl, isOpen, setIsOpen }: Props) {
 								<Image
 									alt="facebook icon"
 									height={20}
+									className="dark:invert"
 									width={20}
 									src="/facebook.svg"
 								/>
@@ -140,6 +142,7 @@ export default function ShareUrlDialog({ shareUrl, isOpen, setIsOpen }: Props) {
 									height={20}
 									width={20}
 									src="/instagram.svg"
+									className="dark:invert"
 								/>
 								<span className="sr-only">
 									Share via instagram
