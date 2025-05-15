@@ -13,7 +13,7 @@ import {
 } from "@/lib/utils/string";
 import { getUrlList } from "../actions/dashboard/list";
 import UrlCard from "@/components/url-card";
-import { ShortenedUrl } from "@/lib/types/api";
+import { getLatestStatistic } from "@/lib/utils";
 
 export default async function Dashboard() {
 	let dashboardHomeInfo: DashboardHomeInfo | undefined;
@@ -36,12 +36,6 @@ export default async function Dashboard() {
 	const filteredSixMonths = filterDateListRange(dateVisitorCount, 6);
 	const lastSixMonthVisitors = dateListToMonthList(filteredSixMonths);
 	const yearVisitors = dateListToYearList(dateVisitorCount);
-
-	const getLatestStatistic = (url: ShortenedUrl) => {
-		return url.statistics.sort(
-			(a, b) => b.accessTime.getTime() - a.accessTime.getTime(),
-		)[0];
-	};
 
 	const recentUrls = urls
 		.sort((a, b) => b.creationDate.getTime() - a.creationDate.getTime())

@@ -4,6 +4,7 @@ import { twMerge } from "tailwind-merge";
 import { FormattedFieldError, FieldError, ErrorEntry } from "./types";
 import { ExternalToast } from "sonner";
 import { redirect } from "next/navigation";
+import { ShortenedUrl, ShortenedUrlStatistic } from "./types/api";
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -123,4 +124,10 @@ export function jsonDateReviver<T>(key: string, value: T): T | Date {
 		return new Date(value);
 	}
 	return value;
+}
+
+export function getLatestStatistic(url: ShortenedUrl): ShortenedUrlStatistic {
+	return url.statistics.sort(
+		(a, b) => b.accessTime.getTime() - a.accessTime.getTime(),
+	)[0];
 }
