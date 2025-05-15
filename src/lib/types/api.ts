@@ -49,7 +49,7 @@ export type CountByDay = {
 };
 export type CountByTimeOfDay = {
 	count: number;
-	day: Date;
+	hour: string;
 };
 export type CountByUrlId = {
 	count: number;
