@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { getUserSessionStatus } from "../app/actions/auth";
 import { Button } from "./ui/button";
 import { SessionStatus } from "@/lib/types/types";
+import { ModeToggle } from "./mode-toggle";
 
 type MenuEntry = {
 	label: string;
@@ -55,6 +56,7 @@ export default async function AppNavbar() {
 							</Link>
 						</NavigationMenuItem>
 					))}
+
 					{sessionStatus == SessionStatus.AUTHENTICATED ? (
 						<>
 							<Link href="/dashboard" passHref className="ms-2">
@@ -76,6 +78,7 @@ export default async function AppNavbar() {
 							</NavigationMenuItem>
 						</>
 					)}
+					<ModeToggle />
 				</NavigationMenuList>
 			</NavigationMenu>
 		</div>

@@ -1,4 +1,4 @@
-import { CirclePlus, Home, Link } from "lucide-react";
+import { CirclePlus, Home, Link, Moon, Sun } from "lucide-react";
 import {
 	Sidebar,
 	SidebarContent,
@@ -14,6 +14,7 @@ import UserDropdownMenu from "./user-dropdown-menu";
 import { getUser } from "@/app/actions/dashboard/dashboard";
 import { User } from "@/lib/types/api";
 import AddUrlDialog from "./add-url-dialog";
+import { ModeToggle } from "./mode-toggle";
 
 const items = [
 	{
@@ -75,6 +76,20 @@ export default async function DashboardSidebar() {
 			{user && (
 				<SidebarFooter>
 					<SidebarMenu>
+						<SidebarMenuItem>
+							<ModeToggle className="mx-auto w-[var(--global-sidebar-width)] max-w-[90%]">
+								<SidebarMenuButton>
+									<Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+									<Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+									<span className="dark:hidden">
+										Light mode
+									</span>
+									<span className="not-dark:hidden">
+										Dark mode
+									</span>
+								</SidebarMenuButton>
+							</ModeToggle>
+						</SidebarMenuItem>
 						<SidebarMenuItem>
 							<UserDropdownMenu user={user} />
 						</SidebarMenuItem>
