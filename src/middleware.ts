@@ -47,19 +47,23 @@ export async function middleware(req: NextRequest) {
 		const _cookies = await cookies();
 
 		let cookieHeader = req.headers.get("Cookie");
-		if (
-			!_cookies.has("refreshToken") &&
-			req.url.startsWith(getAppRoute("dashboard"))
-		) {
+
+		const hasRefresh =
+			_cookies.has("refreshToken") ||
+			_cookies.get("refreshToken")?.value != "";
+		const hasAuth =
+			_cookies.has("authToken") || _cookies.get("authToken")?.value != "";
+
+		if (!hasRefresh && req.url.startsWith(getAppRoute("dashboard"))) {
 			_cookies.delete("refreshToken");
 			_cookies.delete("authToken");
 			return NextResponse.redirect(getAppRoute("login"));
 		}
 
 		if (
-			!_cookies.has("authToken") &&
+			!hasAuth &&
 			!req.url.endsWith("api/v1/auth/refresh") &&
-			_cookies.has("refreshToken")
+			hasRefresh
 		) {
 			const _cookieHeader = await refreshAuthToken();
 			cookieHeader = _cookieHeader ? _cookieHeader : null;
