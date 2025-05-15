@@ -4,13 +4,20 @@ import { twMerge } from "tailwind-merge";
 import { FormattedFieldError, FieldError, ErrorEntry } from "./types";
 import { ExternalToast } from "sonner";
 import { redirect } from "next/navigation";
+import { ShortenedUrl, ShortenedUrlStatistic } from "./types/api";
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
 
 export const getAppRoute = (route: string): string =>
-	`${process.env.APP_URL}/${route}`;
+	`${process.env.NEXT_PUBLIC_APP_URL}/${route}`;
+
+export const getFullShortenedUrl = (urlId: string) =>
+	getAppRoute(urlId).replace(/http[s]?\:\/\//, "");
+
+export const getUrlHostname = (url: string) =>
+	url.replace(/^http[s]?\:\/\/([^:\/]+).*$/, "$1");
 
 export const parseError = <T extends string>(
 	responseText: string,
@@ -67,6 +74,8 @@ export function formatFieldErrors(
 	}));
 }
 
+type RedirectLocationFunction = (body: string) => string | undefined;
+
 export async function onSubmit<T>({
 	path,
 	formFields,
@@ -76,7 +85,7 @@ export async function onSubmit<T>({
 	path: string;
 	formFields: T;
 	onError?: (response: Response) => void;
-	redirect_location?: string;
+	redirect_location: string | undefined | RedirectLocationFunction;
 }) {
 	const data = formFields;
 	const response = await fetch(path, {
@@ -89,8 +98,36 @@ export async function onSubmit<T>({
 	});
 
 	if (response.status == 200) {
-		redirect(redirect_location || "/dashboard");
+		if (typeof redirect_location == "string") {
+			redirect(redirect_location || "/dashboard");
+		} else if (redirect_location) {
+			const url = redirect_location(await response.text());
+			if (url) redirect(url);
+		}
 	} else {
 		onError(response);
 	}
+}
+
+export async function checkFavicon(url: string): Promise<boolean> {
+	return await fetch(`${url}/favicon.ico`).then(
+		(response) => response.status == 200,
+		() => false,
+	);
+}
+
+export function jsonDateReviver<T>(key: string, value: T): T | Date {
+	if (
+		(key.endsWith("Date") || key.endsWith("Time") || key == "day") &&
+		typeof value === "string"
+	) {
+		return new Date(value);
+	}
+	return value;
+}
+
+export function getLatestStatistic(url: ShortenedUrl): ShortenedUrlStatistic {
+	return url.statistics.sort(
+		(a, b) => b.accessTime.getTime() - a.accessTime.getTime(),
+	)[0];
 }

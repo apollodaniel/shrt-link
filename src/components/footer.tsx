@@ -97,7 +97,7 @@ export const footerIcons: FooterIcon[] = [
 export default function AppFooter() {
 	return (
 		<footer className="mx-8 mb-8 flex flex-col items-center justify-start gap-[24px]">
-			<div className="flex w-full flex-wrap items-start justify-between">
+			<div className="flex w-full flex-wrap items-start justify-between gap-5">
 				{/* description */}
 				<div className="flex min-w-[50vw] flex-col justify-start">
 					<Link
