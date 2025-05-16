@@ -9,6 +9,7 @@ import { DashboardHomeInfo } from "@/lib/types/internal-api";
 import UrlCard from "@/components/url-card";
 import { redirect, RedirectType } from "next/navigation";
 import { fetchServer } from "../actions/server";
+import { Info } from "lucide-react";
 
 export default async function Dashboard() {
 	const response = await fetchServer(getAppRoute("api/internal/dashboard"), {
@@ -38,10 +39,17 @@ export default async function Dashboard() {
 	);
 
 	return (
-		<main className="flex w-full flex-col items-start justify-center gap-3">
-			<h1 className="mx-1 text-center text-4xl font-bold">
+		<main className="flex w-full flex-col items-start justify-center space-y-4">
+			<h1 className="mx-1 my-0 text-center text-4xl font-bold">
 				Welcome back {dashboardSummary?.user?.firstName}
 			</h1>
+			<div className="text-muted-foreground mx-2 mt-0 flex flex-row items-center justify-start gap-2 max-md:text-sm">
+				<Info size={18} className="min-w-[18px] max-sm:hidden" />
+				<span>
+					This summary updates every 10 minutes. Changes made during
+					this time will be visible after the next refresh.
+				</span>
+			</div>
 
 			<div className="grid w-full grid-cols-2 gap-5 max-xl:grid-cols-1">
 				{/* latest urls */}

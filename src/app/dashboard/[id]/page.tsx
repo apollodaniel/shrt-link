@@ -16,6 +16,7 @@ import DeleteUrlButton from "@/components/delete-url-button";
 import { fetchServer } from "@/app/actions/server";
 import { redirect, RedirectType } from "next/navigation";
 import { DashboardUrlInfo } from "@/lib/types/internal-api";
+import { Info } from "lucide-react";
 
 export default async function UrlDashboard({
 	params,
@@ -91,12 +92,21 @@ export default async function UrlDashboard({
 				</Link>
 			)}
 
+			<div className="text-muted-foreground mx-2 mt-0 flex flex-row items-center justify-start gap-2 max-md:text-sm">
+				<Info size={18} className="min-w-[18px] max-sm:hidden" />
+				<span>
+					This summary updates every 10 minutes. Changes made during
+					this time will be visible after the next refresh.
+				</span>
+			</div>
+
 			{dashboardSummary?.url && (
 				<div className="mx-3 mt-4 flex w-full flex-row items-center justify-between">
 					<h3 className="text-3xl font-semibold">Analytics</h3>
 					<DeleteUrlButton id={dashboardSummary!.url.id} />
 				</div>
 			)}
+
 			{/*summary*/}
 			<div className="mb-20 grid w-full grid-cols-4 gap-3 max-xl:grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1">
 				<BrowserPieChart
