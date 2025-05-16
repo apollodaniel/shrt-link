@@ -195,7 +195,15 @@ export default function UrlList({ urlList }: Props) {
 	useEffect(() => {
 		const settingsItem = window.localStorage.getItem("searchSettings");
 		if (settingsItem) {
-			setSearchSettings(JSON.parse(settingsItem) || defaultSettings);
+			try {
+				const settings = JSON.parse(settingsItem);
+				setSearchSettings(settings);
+			} catch (err) {
+				console.log(err);
+				setSearchSettings(defaultSettings);
+			}
+		} else {
+			setSearchSettings(defaultSettings);
 		}
 	}, []);
 
