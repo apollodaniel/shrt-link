@@ -29,7 +29,7 @@ export default async function UrlDashboard({
 		{
 			next: {
 				revalidate: 600,
-				tags: ["dashboard"],
+				tags: ["summary"],
 			},
 			cache: "force-cache",
 			includeTokens: true,

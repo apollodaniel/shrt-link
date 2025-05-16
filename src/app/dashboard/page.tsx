@@ -15,7 +15,7 @@ export default async function Dashboard() {
 	const response = await fetchServer(getAppRoute("api/internal/dashboard"), {
 		next: {
 			revalidate: 600,
-			tags: ["dashboard"],
+			tags: ["summary"],
 		},
 		cache: "force-cache",
 		includeTokens: true,
