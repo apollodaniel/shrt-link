@@ -25,32 +25,40 @@ export const parseError = <T extends string>(
 	formSetErrorCallback?: (field: T, message: ErrorOption) => void,
 	toastCallback?: (message: string, opts: ExternalToast) => void,
 ) => {
-	const json = JSON.parse(responseText);
+	try {
+		const json = JSON.parse(responseText);
 
-	if (Object.hasOwn(json, "fieldErrors")) {
-		const errors: FieldError[] = json.fieldErrors;
+		if (Object.hasOwn(json, "fieldErrors")) {
+			const errors: FieldError[] = json.fieldErrors;
 
-		const formattedErrors = formatFieldErrors(errors);
+			const formattedErrors = formatFieldErrors(errors);
 
-		for (const formError of formattedErrors) {
-			if (formSetErrorCallback)
-				formSetErrorCallback(formError.path as T, {
-					message: formError.messages.join(", "),
-				});
-		}
-	} else {
-		const errorEntry: ErrorEntry = json;
-		if (errorEntry.field) {
-			if (formSetErrorCallback)
-				formSetErrorCallback(errorEntry.field as T, {
-					message: errorEntry.message,
-				});
+			for (const formError of formattedErrors) {
+				if (formSetErrorCallback)
+					formSetErrorCallback(formError.path as T, {
+						message: formError.messages.join(", "),
+					});
+			}
 		} else {
-			if (toastCallback)
-				toastCallback(errorEntry.message, {
-					richColors: true,
-				});
+			const errorEntry: ErrorEntry = json;
+			if (errorEntry.field) {
+				if (formSetErrorCallback)
+					formSetErrorCallback(errorEntry.field as T, {
+						message: errorEntry.message,
+					});
+			} else {
+				if (toastCallback)
+					toastCallback(errorEntry.message, {
+						richColors: true,
+					});
+			}
 		}
+	} catch (err) {
+		console.log("Error while parsing error: ", err);
+		if (toastCallback)
+			toastCallback("Cannot process your request, try again later", {
+				richColors: true,
+			});
 	}
 };
 
