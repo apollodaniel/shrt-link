@@ -38,8 +38,7 @@ export async function getUrlSummary(id?: string): Promise<ShortenedUrlSummary> {
 
 export async function getDashboardHomeInfo(): Promise<DashboardHomeInfo> {
 	try {
-		const user = await getUser();
-		const summary = await getUrlSummary();
+		const [user, summary] = await Promise.all([getUser(), getUrlSummary()]);
 
 		return {
 			user,
