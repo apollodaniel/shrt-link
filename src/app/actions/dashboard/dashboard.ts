@@ -3,9 +3,10 @@
 import { ShortenedUrl, ShortenedUrlSummary, User } from "@/lib/types/api";
 import { checkFavicon, getAppRoute, jsonDateReviver } from "@/lib/utils";
 import { fetchServer } from "../server";
-import { DashboardHomeInfo, ShortenedUrlMetadata } from "@/lib/types/types";
+import { ShortenedUrlMetadata } from "@/lib/types/types";
 import jsdom from "jsdom";
 import { revalidateTag } from "next/cache";
+import { DashboardSummary } from "@/lib/types/internal-api";
 
 export async function getUser(): Promise<User> {
 	const response = await fetchServer(getAppRoute("api/v1/users/current"), {
@@ -36,7 +37,7 @@ export async function getUrlSummary(id?: string): Promise<ShortenedUrlSummary> {
 	throw new Error(`${response.status} - ${text}`);
 }
 
-export async function getDashboardHomeInfo(): Promise<DashboardHomeInfo> {
+export async function getDashboardSummary(): Promise<DashboardSummary> {
 	try {
 		const [user, summary] = await Promise.all([getUser(), getUrlSummary()]);
 

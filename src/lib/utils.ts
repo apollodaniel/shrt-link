@@ -5,6 +5,7 @@ import { FormattedFieldError, FieldError, ErrorEntry } from "./types/error";
 import { ExternalToast } from "sonner";
 import { redirect } from "next/navigation";
 import { ShortenedUrl, ShortenedUrlStatistic } from "./types/api";
+import { DateChartData, DateStringChartData } from "./types/types";
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -122,6 +123,23 @@ export function jsonDateReviver<T>(key: string, value: T): T | Date {
 		typeof value === "string"
 	) {
 		return new Date(value);
+	}
+	return value;
+}
+export function dashboardJsonDateReviver(key: string, value: unknown): unknown {
+	if (
+		!(key == "yearVisitors" || key == "lastSixMonthVisitor") &&
+		Array.isArray(value) &&
+		value.every(
+			(v) => typeof v.date == "string" && typeof v.count == "number",
+		)
+	) {
+		return value.map((v: DateStringChartData): DateChartData => {
+			return {
+				...v,
+				date: new Date(v.date),
+			};
+		});
 	}
 	return value;
 }
