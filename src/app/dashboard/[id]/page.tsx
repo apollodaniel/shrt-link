@@ -1,5 +1,3 @@
-import { UrlDashboardInfo } from "@/lib/types/types";
-import { getUrlDashboardInfo } from "../../actions/dashboard/url-dashboard";
 import { BrowserPieChart } from "@/components/charts/browser-pie-chart";
 import { CountryPieChart } from "@/components/charts/country-pie-chart";
 import { DevicePieChart } from "@/components/charts/device-pie-chart";
@@ -7,101 +5,111 @@ import { HourRadarChart } from "@/components/charts/hour-radar-chart";
 import { DateInteractiveLineChart } from "@/components/charts/date-interactive-line-chart";
 import { DateBarChart } from "@/components/charts/date-bar-chart";
 import {
-	dateListToMonthList,
-	dateListToYearList,
-	filterDateListRange,
-} from "@/lib/utils/string";
-import { getAppRoute, getFullShortenedUrl, getUrlHostname } from "@/lib/utils";
+	dashboardJsonDateReviver,
+	getAppRoute,
+	getFullShortenedUrl,
+	getUrlHostname,
+} from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
 import DeleteUrlButton from "@/components/delete-url-button";
+import { fetchServer } from "@/app/actions/server";
+import { redirect, RedirectType } from "next/navigation";
+import { DashboardUrlInfo } from "@/lib/types/internal-api";
 
 export default async function UrlDashboard({
 	params,
 }: {
 	params: Promise<{ id: string }>;
 }) {
-	const _params: { id: string } = await params;
-	let urlDashboardInfo: UrlDashboardInfo | undefined;
-	try {
-		urlDashboardInfo = await getUrlDashboardInfo(_params.id);
-	} catch (err) {
-		console.log(err);
-	}
-
-	const dateVisitorCount = (urlDashboardInfo?.summary.countByDay || []).map(
-		(e) => {
-			return {
-				...e,
-				date: new Date(e.day),
-			};
+	const { id } = await params;
+	const response = await fetchServer(
+		getAppRoute(`api/internal/dashboard/url?id=${id}`),
+		{
+			next: {
+				revalidate: 600,
+				tags: ["dashboard"],
+			},
+			cache: "force-cache",
+			includeTokens: true,
 		},
 	);
-	const lastMonthVisitors = filterDateListRange(dateVisitorCount, 1);
-	const filteredSixMonths = filterDateListRange(dateVisitorCount, 6);
-	const lastSixMonthVisitors = dateListToMonthList(filteredSixMonths);
-	const yearVisitors = dateListToYearList(dateVisitorCount);
+
+	if (response.status != 200) {
+		redirect(getAppRoute("error"), RedirectType.replace);
+	}
+
+	const {
+		dashboardSummary,
+		lastMonthVisitors,
+		lastSixMonthVisitors,
+		yearVisitors,
+		dateVisitorCount,
+	}: DashboardUrlInfo = JSON.parse(
+		await response.text(),
+		dashboardJsonDateReviver,
+	);
 
 	return (
 		<main className="flex w-full max-w-[100vw] flex-col items-start justify-center space-y-3 max-sm:pb-12">
-			{urlDashboardInfo?.url.originalUrl && (
+			{dashboardSummary?.url.originalUrl && (
 				<Link
-					href={getAppRoute(urlDashboardInfo!.url.id)!}
+					href={getAppRoute(dashboardSummary!.url.id)!}
 					className="mx-1 my-0 max-w-full text-start text-4xl font-bold break-words hover:underline max-md:text-3xl max-sm:text-xl"
 				>
-					{getFullShortenedUrl(urlDashboardInfo!.url.id)}
+					{getFullShortenedUrl(dashboardSummary!.url.id)}
 				</Link>
 			)}
 
-			{urlDashboardInfo?.url.metadata && (
+			{dashboardSummary?.url.metadata && (
 				<div className="text-muted-foreground max-lg:text-md mx-1 my-0 flex w-full max-w-full flex-row items-center gap-2 text-start text-lg font-medium max-sm:text-sm">
-					{urlDashboardInfo?.url.metadata?.image && (
+					{dashboardSummary?.url.metadata?.image && (
 						<Image
 							alt={
-								urlDashboardInfo?.url.metadata?.title ||
+								dashboardSummary?.url.metadata?.title ||
 								getUrlHostname(
-									urlDashboardInfo?.url.originalUrl,
+									dashboardSummary?.url.originalUrl,
 								)
 							}
-							src={urlDashboardInfo?.url.metadata!.image}
+							src={dashboardSummary?.url.metadata!.image}
 							height={24}
 							width={24}
 							className="aspect-square h-[24px] w-[24px] object-cover"
 						/>
 					)}
-					{urlDashboardInfo?.url.metadata?.title && (
-						<span>{urlDashboardInfo?.url.metadata?.title}</span>
+					{dashboardSummary?.url.metadata?.title && (
+						<span>{dashboardSummary?.url.metadata?.title}</span>
 					)}
 				</div>
 			)}
-			{urlDashboardInfo?.url.originalUrl && (
+			{dashboardSummary?.url.originalUrl && (
 				<Link
-					href={urlDashboardInfo!.url.originalUrl}
+					href={dashboardSummary!.url.originalUrl}
 					className="text-muted-foreground hover:text-primary/80 max-lg:text-md mx-1 mt-0 max-w-full text-start text-lg font-medium hover:underline max-sm:text-sm"
 				>
-					{urlDashboardInfo!.url.originalUrl}
+					{dashboardSummary!.url.originalUrl}
 				</Link>
 			)}
 
-			{urlDashboardInfo?.url && (
+			{dashboardSummary?.url && (
 				<div className="mx-3 mt-4 flex w-full flex-row items-center justify-between">
 					<h3 className="text-3xl font-semibold">Analytics</h3>
-					<DeleteUrlButton id={urlDashboardInfo!.url.id} />
+					<DeleteUrlButton id={dashboardSummary!.url.id} />
 				</div>
 			)}
 			{/*summary*/}
 			<div className="mb-20 grid w-full grid-cols-4 gap-3 max-xl:grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1">
 				<BrowserPieChart
-					rawChartData={urlDashboardInfo?.summary.countByBrowser}
+					rawChartData={dashboardSummary?.summary.countByBrowser}
 				/>
 				<CountryPieChart
-					rawChartData={urlDashboardInfo?.summary.countByCountry}
+					rawChartData={dashboardSummary?.summary.countByCountry}
 				/>
 				<DevicePieChart
-					rawChartData={urlDashboardInfo?.summary.countByDevice}
+					rawChartData={dashboardSummary?.summary.countByDevice}
 				/>
 				<HourRadarChart
-					rawChartData={urlDashboardInfo?.summary.countByTimeOfDay}
+					rawChartData={dashboardSummary?.summary.countByTimeOfDay}
 					description="See the most accessed hours of the day"
 				/>
 

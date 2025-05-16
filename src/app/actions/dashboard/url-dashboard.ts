@@ -1,10 +1,10 @@
 "use server";
 
-import { UrlDashboardInfo } from "@/lib/types/types";
 import { fetchServer } from "../server";
 import { getAppRoute, jsonDateReviver } from "@/lib/utils";
 import { ShortenedUrl } from "@/lib/types/api";
 import { getUrlMetadata, getUrlSummary } from "./dashboard";
+import { UrlDashboardSummary } from "@/lib/types/internal-api";
 
 export async function getUrl(id: string): Promise<ShortenedUrl> {
 	const response = await fetchServer(getAppRoute(`api/v1/urls/${id}`), {
@@ -25,9 +25,9 @@ export async function getUrl(id: string): Promise<ShortenedUrl> {
 	throw new Error(`${response.status} - ${text}`);
 }
 
-export async function getUrlDashboardInfo(
+export async function getUrlDashboardSummary(
 	urlId: string,
-): Promise<UrlDashboardInfo> {
+): Promise<UrlDashboardSummary> {
 	try {
 		const [url, summary] = await Promise.all([
 			getUrl(urlId),

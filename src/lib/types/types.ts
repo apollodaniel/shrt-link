@@ -1,10 +1,3 @@
-import { ShortenedUrl, ShortenedUrlSummary, User } from "./api";
-
-export type UrlDashboardInfo = {
-	url: ShortenedUrl;
-	summary: ShortenedUrlSummary;
-};
-
 export enum SessionStatus {
 	AUTHENTICATED = "authenticated",
 	NO_SESSION = "no_session",
