@@ -29,10 +29,6 @@ async function refreshAuthToken(): Promise<string | undefined> {
 }
 
 export async function middleware(req: NextRequest) {
-	if (req.url.startsWith(getAppRoute("error"))) {
-		return NextResponse.redirect(getAppRoute(""));
-	}
-
 	console.log(req.url);
 
 	const isOffline = await fetch(`${process.env.API_URL}/api/v1/ping`)
@@ -40,7 +36,11 @@ export async function middleware(req: NextRequest) {
 		.catch(() => true);
 
 	if (isOffline) {
-		return NextResponse.rewrite(getAppRoute("error"));
+		if (req.url.startsWith(getAppRoute("api/v1"))) {
+			return new NextResponse("Not found", { status: 404 });
+		} else {
+			return NextResponse.rewrite(getAppRoute("error"));
+		}
 	}
 
 	try {
@@ -91,16 +91,6 @@ export async function middleware(req: NextRequest) {
 					getAppRoute("register"),
 					responseOpt,
 				);
-			} else if (
-				[getAppRoute("login"), getAppRoute("register")].includes(
-					req.url,
-				) &&
-				sessionStatus == SessionStatus.AUTHENTICATED
-			) {
-				return NextResponse.redirect(
-					getAppRoute("dashboard"),
-					responseOpt,
-				);
 			}
 
 			return NextResponse.next(responseOpt);
@@ -114,8 +104,9 @@ export async function middleware(req: NextRequest) {
 export const config = {
 	// "/login",
 	// "/register",
-	// "/dashboard/:path*",
 	// "/error",
+	// "/dashboard/:path*",
 	// "/api/:path*",
-	matcher: ["/((?!.*\\.).*)"],
+	// matcher: ["/((?!.*\\.).*)"],
+	matcher: ["/dashboard/:path*", "/api/v1/:path*"],
 };

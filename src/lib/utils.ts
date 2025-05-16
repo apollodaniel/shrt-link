@@ -5,6 +5,7 @@ import { FormattedFieldError, FieldError, ErrorEntry } from "./types/error";
 import { ExternalToast } from "sonner";
 import { redirect } from "next/navigation";
 import { ShortenedUrl, ShortenedUrlStatistic } from "./types/api";
+import { DateChartData, DateStringChartData } from "./types/types";
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -24,32 +25,40 @@ export const parseError = <T extends string>(
 	formSetErrorCallback?: (field: T, message: ErrorOption) => void,
 	toastCallback?: (message: string, opts: ExternalToast) => void,
 ) => {
-	const json = JSON.parse(responseText);
+	try {
+		const json = JSON.parse(responseText);
 
-	if (Object.hasOwn(json, "fieldErrors")) {
-		const errors: FieldError[] = json.fieldErrors;
+		if (Object.hasOwn(json, "fieldErrors")) {
+			const errors: FieldError[] = json.fieldErrors;
 
-		const formattedErrors = formatFieldErrors(errors);
+			const formattedErrors = formatFieldErrors(errors);
 
-		for (const formError of formattedErrors) {
-			if (formSetErrorCallback)
-				formSetErrorCallback(formError.path as T, {
-					message: formError.messages.join(", "),
-				});
-		}
-	} else {
-		const errorEntry: ErrorEntry = json;
-		if (errorEntry.field) {
-			if (formSetErrorCallback)
-				formSetErrorCallback(errorEntry.field as T, {
-					message: errorEntry.message,
-				});
+			for (const formError of formattedErrors) {
+				if (formSetErrorCallback)
+					formSetErrorCallback(formError.path as T, {
+						message: formError.messages.join(", "),
+					});
+			}
 		} else {
-			if (toastCallback)
-				toastCallback(errorEntry.message, {
-					richColors: true,
-				});
+			const errorEntry: ErrorEntry = json;
+			if (errorEntry.field) {
+				if (formSetErrorCallback)
+					formSetErrorCallback(errorEntry.field as T, {
+						message: errorEntry.message,
+					});
+			} else {
+				if (toastCallback)
+					toastCallback(errorEntry.message, {
+						richColors: true,
+					});
+			}
 		}
+	} catch (err) {
+		console.log("Error while parsing error: ", err);
+		if (toastCallback)
+			toastCallback("Cannot process your request, try again later", {
+				richColors: true,
+			});
 	}
 };
 
@@ -122,6 +131,23 @@ export function jsonDateReviver<T>(key: string, value: T): T | Date {
 		typeof value === "string"
 	) {
 		return new Date(value);
+	}
+	return value;
+}
+export function dashboardJsonDateReviver(key: string, value: unknown): unknown {
+	if (
+		!(key == "yearVisitors" || key == "lastSixMonthVisitor") &&
+		Array.isArray(value) &&
+		value.every(
+			(v) => typeof v.date == "string" && typeof v.count == "number",
+		)
+	) {
+		return value.map((v: DateStringChartData): DateChartData => {
+			return {
+				...v,
+				date: new Date(v.date),
+			};
+		});
 	}
 	return value;
 }

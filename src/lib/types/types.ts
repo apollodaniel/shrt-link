@@ -1,15 +1,3 @@
-import { ShortenedUrl, ShortenedUrlSummary, User } from "./api";
-
-export type UrlDashboardInfo = {
-	url: ShortenedUrl;
-	summary: ShortenedUrlSummary;
-};
-
-export type DashboardHomeInfo = {
-	user: User;
-	summary: ShortenedUrlSummary;
-};
-
 export enum SessionStatus {
 	AUTHENTICATED = "authenticated",
 	NO_SESSION = "no_session",
@@ -22,6 +10,10 @@ export type ShortenedUrlMetadata = {
 
 export type DateChartData = {
 	date: Date;
+	count: number;
+};
+export type DateStringChartData = {
+	date: string;
 	count: number;
 };
 

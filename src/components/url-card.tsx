@@ -58,7 +58,7 @@ export default function UrlCard({
 									src={url.metadata!.image}
 									height={24}
 									width={24}
-									className="aspect-square h-[24px] w-[24px] object-cover"
+									className="aspect-square h-[24px] w-[24px] overflow-hidden object-cover"
 								/>
 							)}
 

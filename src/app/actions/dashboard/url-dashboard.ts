@@ -1,10 +1,10 @@
 "use server";
 
-import { UrlDashboardInfo } from "@/lib/types/types";
 import { fetchServer } from "../server";
 import { getAppRoute, jsonDateReviver } from "@/lib/utils";
 import { ShortenedUrl } from "@/lib/types/api";
 import { getUrlMetadata, getUrlSummary } from "./dashboard";
+import { UrlDashboardSummary } from "@/lib/types/internal-api";
 
 export async function getUrl(id: string): Promise<ShortenedUrl> {
 	const response = await fetchServer(getAppRoute(`api/v1/urls/${id}`), {
@@ -12,24 +12,30 @@ export async function getUrl(id: string): Promise<ShortenedUrl> {
 	});
 	const text = await response.text();
 
-	if (response.status == 200) return JSON.parse(text, jsonDateReviver);
+	if (response.status == 200) {
+		const urlBase = JSON.parse(text, jsonDateReviver);
+		const metadata = await getUrlMetadata(urlBase);
+
+		return {
+			...urlBase,
+			metadata,
+		};
+	}
 
 	throw new Error(`${response.status} - ${text}`);
 }
 
-export async function getUrlDashboardInfo(
+export async function getUrlDashboardSummary(
 	urlId: string,
-): Promise<UrlDashboardInfo> {
+): Promise<UrlDashboardSummary> {
 	try {
-		const url = await getUrl(urlId);
-		const summary = await getUrlSummary(urlId);
-		const metadata = await getUrlMetadata(url).catch(() => undefined);
+		const [url, summary] = await Promise.all([
+			getUrl(urlId),
+			getUrlSummary(urlId),
+		]);
 
 		return {
-			url: {
-				...url,
-				metadata,
-			},
+			url,
 			summary,
 		};
 	} catch (err) {

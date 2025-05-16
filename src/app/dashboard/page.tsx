@@ -1,66 +1,55 @@
-import { DashboardHomeInfo } from "@/lib/types/types";
-import { getDashboardHomeInfo } from "../actions/dashboard/dashboard";
 import { BrowserPieChart } from "@/components/charts/browser-pie-chart";
 import { CountryPieChart } from "@/components/charts/country-pie-chart";
 import { DevicePieChart } from "@/components/charts/device-pie-chart";
 import { HourRadarChart } from "@/components/charts/hour-radar-chart";
 import { DateInteractiveLineChart } from "@/components/charts/date-interactive-line-chart";
 import { DateBarChart } from "@/components/charts/date-bar-chart";
-import {
-	dateListToMonthList,
-	dateListToYearList,
-	filterDateListRange,
-} from "@/lib/utils/string";
-import { getUrlList } from "../actions/dashboard/list";
+import { dashboardJsonDateReviver, getAppRoute } from "@/lib/utils";
+import { DashboardHomeInfo } from "@/lib/types/internal-api";
 import UrlCard from "@/components/url-card";
-import { getLatestStatistic } from "@/lib/utils";
+import { redirect, RedirectType } from "next/navigation";
+import { fetchServer } from "../actions/server";
+import { Info } from "lucide-react";
 
 export default async function Dashboard() {
-	let dashboardHomeInfo: DashboardHomeInfo | undefined;
-	const urls = await getUrlList();
-	try {
-		dashboardHomeInfo = await getDashboardHomeInfo();
-	} catch (err) {
-		console.log(err);
+	const response = await fetchServer(getAppRoute("api/internal/dashboard"), {
+		next: {
+			revalidate: 600,
+			tags: ["summary"],
+		},
+		cache: "force-cache",
+		includeTokens: true,
+	});
+
+	if (response.status != 200) {
+		redirect(getAppRoute("error"), RedirectType.replace);
 	}
 
-	const dateVisitorCount = (dashboardHomeInfo?.summary.countByDay || []).map(
-		(e) => {
-			return {
-				...e,
-				date: new Date(e.day),
-			};
-		},
+	const {
+		recentUrls,
+		activeUrls,
+		dashboardSummary,
+		lastMonthVisitors,
+		lastSixMonthVisitors,
+		yearVisitors,
+		dateVisitorCount,
+	}: DashboardHomeInfo = JSON.parse(
+		await response.text(),
+		dashboardJsonDateReviver,
 	);
-	const lastMonthVisitors = filterDateListRange(dateVisitorCount, 1);
-	const filteredSixMonths = filterDateListRange(dateVisitorCount, 6);
-	const lastSixMonthVisitors = dateListToMonthList(filteredSixMonths);
-	const yearVisitors = dateListToYearList(dateVisitorCount);
 
-	const recentUrls = urls
-		.sort((a, b) => b.creationDate.getTime() - a.creationDate.getTime())
-		.slice(0, 3)
-		.map((url) => <UrlCard key={url.id} isMinimal url={url} />);
-
-	const activeUrls = urls
-		.filter((a) =>
-			a.statistics.find(
-				(s) =>
-					Date.now() - s.accessTime.getTime() < 24 * 60 * 60 * 1000,
-			),
-		)
-		.sort(
-			(a, b) =>
-				getLatestStatistic(b).accessTime.getTime() -
-				getLatestStatistic(a).accessTime.getTime(),
-		)
-		.slice(0, 3)
-		.map((url) => <UrlCard key={url.id} isMinimal url={url} />);
 	return (
-		<main className="flex w-full flex-col items-start justify-center gap-3">
-			<h1 className="mx-1 text-center text-4xl font-bold">
-				Welcome back {dashboardHomeInfo?.user?.firstName}
+		<main className="flex w-full flex-col items-start justify-center space-y-4">
+			<h1 className="mx-1 my-0 text-center text-4xl font-bold">
+				Welcome back {dashboardSummary?.user?.firstName}
 			</h1>
+			<div className="text-muted-foreground mx-2 mt-0 flex flex-row items-center justify-start gap-2 max-md:text-sm">
+				<Info size={18} className="min-w-[18px] max-sm:hidden" />
+				<span>
+					This summary updates every 10 minutes. Changes made during
+					this time will be visible after the next refresh.
+				</span>
+			</div>
 
 			<div className="grid w-full grid-cols-2 gap-5 max-xl:grid-cols-1">
 				{/* latest urls */}
@@ -69,7 +58,9 @@ export default async function Dashboard() {
 						Recent URLs
 					</h3>
 					{recentUrls.length > 0 ? (
-						recentUrls
+						recentUrls.map((url) => (
+							<UrlCard isMinimal url={url} key={url.id} />
+						))
 					) : (
 						<span className="text-muted-foreground mx-3 mb-12">
 							There&apos;s recent created URL.
@@ -82,7 +73,9 @@ export default async function Dashboard() {
 						Active URLs
 					</h3>
 					{activeUrls.length > 0 ? (
-						activeUrls
+						activeUrls.map((url) => (
+							<UrlCard isMinimal url={url} key={url.id} />
+						))
 					) : (
 						<span className="text-muted-foreground mx-3 mb-12">
 							There&apos;s no URL acessed within 24 hours.
@@ -94,16 +87,16 @@ export default async function Dashboard() {
 			{/*summary*/}
 			<div className="mb-20 grid w-full grid-cols-4 gap-3 max-xl:grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1">
 				<BrowserPieChart
-					rawChartData={dashboardHomeInfo?.summary.countByBrowser}
+					rawChartData={dashboardSummary?.summary.countByBrowser}
 				/>
 				<CountryPieChart
-					rawChartData={dashboardHomeInfo?.summary.countByCountry}
+					rawChartData={dashboardSummary?.summary.countByCountry}
 				/>
 				<DevicePieChart
-					rawChartData={dashboardHomeInfo?.summary.countByDevice}
+					rawChartData={dashboardSummary?.summary.countByDevice}
 				/>
 				<HourRadarChart
-					rawChartData={dashboardHomeInfo?.summary.countByTimeOfDay}
+					rawChartData={dashboardSummary?.summary.countByTimeOfDay}
 					description="See the most accessed hours of the day"
 				/>
 
