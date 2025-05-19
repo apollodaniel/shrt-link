@@ -1,47 +1,57 @@
+"use client";
+
 import { BrowserPieChart } from "@/components/charts/browser-pie-chart";
 import { CountryPieChart } from "@/components/charts/country-pie-chart";
 import { DevicePieChart } from "@/components/charts/device-pie-chart";
-import { HourRadarChart } from "@/components/charts/hour-radar-chart";
 import { DateInteractiveLineChart } from "@/components/charts/date-interactive-line-chart";
 import { DateBarChart } from "@/components/charts/date-bar-chart";
-import { dashboardJsonDateReviver, getAppRoute } from "@/lib/utils";
 import { DashboardHomeInfo } from "@/lib/types/internal-api";
 import UrlCard from "@/components/url-card";
-import { redirect, RedirectType } from "next/navigation";
-import { fetchServer } from "../actions/server";
 import { Info } from "lucide-react";
+import { HourRadarChart } from "@/components/charts/hour-radar-chart";
+import { PieChartSkeleton } from "@/components/charts/pie-chart-skeleton";
+import { RadarChartSkeleton } from "@/components/charts/radar-chart-skeleton";
+import { BarChartSkeleton } from "@/components/charts/bar-chart-skeleton";
+import { InteractiveLineChartSkeleton } from "@/components/charts/interactive-line-chart-skeleton";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { dashboardJsonDateReviver, getAppRoute } from "@/lib/utils";
+import UrlCardSkeleton from "@/components/url-card-skeleton";
 
-export default async function Dashboard() {
-	const response = await fetchServer(getAppRoute("api/internal/dashboard"), {
-		next: {
-			revalidate: 600,
-			tags: ["summary"],
-		},
-		cache: "force-cache",
-		includeTokens: true,
-	});
+export default function Dashboard() {
+	const [dashboardHomeInfo, setDashboardHomeInfo] = useState<
+		DashboardHomeInfo | undefined
+	>(undefined);
 
-	if (response.status != 200) {
-		redirect(getAppRoute("error"), RedirectType.replace);
-	}
+	const getDashboardHomeInfo = async () => {
+		const response = await fetch(getAppRoute("api/internal/dashboard"), {
+			next: {
+				revalidate: 600,
+				tags: ["summary"],
+			},
+			cache: "force-cache",
+			credentials: "include",
+		});
+		const body = await response.text();
 
-	const {
-		recentUrls,
-		activeUrls,
-		dashboardSummary,
-		lastMonthVisitors,
-		lastSixMonthVisitors,
-		yearVisitors,
-		dateVisitorCount,
-	}: DashboardHomeInfo = JSON.parse(
-		await response.text(),
-		dashboardJsonDateReviver,
-	);
+		if (response.status == 200) {
+			setDashboardHomeInfo(JSON.parse(body, dashboardJsonDateReviver));
+			console.log(JSON.parse(body, dashboardJsonDateReviver));
+		} else {
+			toast("Unable to get dashboard analytics, try again later.");
+			console.log(body);
+		}
+	};
+
+	useEffect(() => {
+		getDashboardHomeInfo();
+	}, []);
 
 	return (
 		<main className="flex w-full flex-col items-start justify-center space-y-4">
 			<h1 className="mx-1 my-0 text-center text-4xl font-bold">
-				Welcome back {dashboardSummary?.user?.firstName}
+				Welcome back{" "}
+				{dashboardHomeInfo?.dashboardSummary.user?.firstName}
 			</h1>
 			<div className="text-muted-foreground mx-2 mt-0 flex flex-row items-center justify-start gap-2 max-md:text-sm">
 				<Info size={18} className="min-w-[18px] max-sm:hidden" />
@@ -57,14 +67,18 @@ export default async function Dashboard() {
 					<h3 className="mx-3 mt-5 text-3xl font-semibold">
 						Recent URLs
 					</h3>
-					{recentUrls.length > 0 ? (
-						recentUrls.map((url) => (
-							<UrlCard isMinimal url={url} key={url.id} />
-						))
+					{dashboardHomeInfo ? (
+						dashboardHomeInfo.recentUrls.length > 0 ? (
+							dashboardHomeInfo?.recentUrls.map((url) => (
+								<UrlCard isMinimal url={url} key={url.id} />
+							))
+						) : (
+							<span className="text-muted-foreground mx-3 mb-12">
+								There&apos;s recent created URL.
+							</span>
+						)
 					) : (
-						<span className="text-muted-foreground mx-3 mb-12">
-							There&apos;s recent created URL.
-						</span>
+						<UrlCardSkeleton isMinimal />
 					)}
 				</div>
 				{/* active urls */}
@@ -72,64 +86,95 @@ export default async function Dashboard() {
 					<h3 className="mx-3 mt-5 text-3xl font-semibold">
 						Active URLs
 					</h3>
-					{activeUrls.length > 0 ? (
-						activeUrls.map((url) => (
-							<UrlCard isMinimal url={url} key={url.id} />
-						))
+					{dashboardHomeInfo ? (
+						dashboardHomeInfo.activeUrls.length > 0 ? (
+							dashboardHomeInfo?.activeUrls.map((url) => (
+								<UrlCard isMinimal url={url} key={url.id} />
+							))
+						) : (
+							<span className="text-muted-foreground mx-3 mb-12">
+								There&apos;s no URL acessed within 24 hours.
+							</span>
+						)
 					) : (
-						<span className="text-muted-foreground mx-3 mb-12">
-							There&apos;s no URL acessed within 24 hours.
-						</span>
+						<UrlCardSkeleton isMinimal />
 					)}
 				</div>
 			</div>
 			<h3 className="mx-3 mt-4 text-3xl font-semibold">Analytics</h3>
 			{/*summary*/}
-			<div className="mb-20 grid w-full grid-cols-4 gap-3 max-xl:grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1">
-				<BrowserPieChart
-					rawChartData={dashboardSummary?.summary.countByBrowser}
-				/>
-				<CountryPieChart
-					rawChartData={dashboardSummary?.summary.countByCountry}
-				/>
-				<DevicePieChart
-					rawChartData={dashboardSummary?.summary.countByDevice}
-				/>
-				<HourRadarChart
-					rawChartData={dashboardSummary?.summary.countByTimeOfDay}
-					description="See the most accessed hours of the day"
-				/>
 
-				<DateBarChart
-					chartData={yearVisitors}
-					title="Yearly Visitor Distribution"
-					description="Visual representation of visitor distribution throughout the year."
-					footerDescription="Displays total visitors for the entire year."
-					className="col-span-2 max-xl:col-span-2 max-sm:col-span-1"
-				/>
+			{dashboardHomeInfo ? (
+				<div className="mb-20 grid w-full grid-cols-4 gap-3 max-xl:grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1">
+					<BrowserPieChart
+						rawChartData={
+							dashboardHomeInfo?.dashboardSummary?.summary
+								.countByBrowser
+						}
+					/>
+					<CountryPieChart
+						rawChartData={
+							dashboardHomeInfo?.dashboardSummary?.summary
+								.countByCountry
+						}
+					/>
+					<DevicePieChart
+						rawChartData={
+							dashboardHomeInfo?.dashboardSummary?.summary
+								.countByDevice
+						}
+					/>
+					<HourRadarChart
+						rawChartData={
+							dashboardHomeInfo?.dashboardSummary?.summary
+								.countByTimeOfDay
+						}
+						description="See the most accessed hours of the day"
+					/>
+					<DateBarChart
+						chartData={dashboardHomeInfo?.yearVisitors}
+						title="Yearly Visitor Distribution"
+						description="Visual representation of visitor distribution throughout the year."
+						footerDescription="Displays total visitors for the entire year."
+						className="col-span-2 max-xl:col-span-2 max-sm:col-span-1"
+					/>
 
-				<DateBarChart
-					chartData={lastSixMonthVisitors}
-					title="Visitor Distribution (Last 6 Months)"
-					description="Shows the distribution of visitors over the past six months."
-					footerDescription="Displays visitor data for the last 6 months."
-					className="col-span-2 max-xl:col-span-3 max-md:col-span-2 max-sm:col-span-1"
-				/>
+					<DateBarChart
+						chartData={dashboardHomeInfo?.lastSixMonthVisitors}
+						title="Visitor Distribution (Last 6 Months)"
+						description="Shows the distribution of visitors over the past six months."
+						footerDescription="Displays visitor data for the last 6 months."
+						className="col-span-2 max-xl:col-span-3 max-md:col-span-2 max-sm:col-span-1"
+					/>
 
-				<DateInteractiveLineChart
-					className="col-span-2 max-xl:col-span-3 max-md:col-span-2 max-sm:col-span-1"
-					rawChartData={lastMonthVisitors}
-					title="Visitor Count (Last 30 Days)"
-					description="Displays total visitors for the past 30 days."
-				/>
+					<DateInteractiveLineChart
+						className="col-span-2 max-xl:col-span-3 max-md:col-span-2 max-sm:col-span-1"
+						rawChartData={dashboardHomeInfo?.lastMonthVisitors}
+						title="Visitor Count (Last 30 Days)"
+						description="Displays total visitors for the past 30 days."
+					/>
 
-				<DateInteractiveLineChart
-					className="col-span-2 max-xl:col-span-3 max-md:col-span-2 max-sm:col-span-1"
-					rawChartData={dateVisitorCount}
-					title="Total Visitors (All Time)"
-					description="Displays total visitor count by date over the entire period."
-				/>
-			</div>
+					<DateInteractiveLineChart
+						className="col-span-2 max-xl:col-span-3 max-md:col-span-2 max-sm:col-span-1"
+						rawChartData={dashboardHomeInfo?.dateVisitorCount}
+						title="Total Visitors (All Time)"
+						description="Displays total visitor count by date over the entire period."
+					/>
+				</div>
+			) : (
+				<div className="mb-20 grid w-full grid-cols-4 gap-3 max-xl:grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1">
+					<PieChartSkeleton />
+					<PieChartSkeleton />
+					<PieChartSkeleton />
+					<RadarChartSkeleton />
+
+					<BarChartSkeleton className="col-span-2 max-xl:col-span-2 max-sm:col-span-1" />
+					<BarChartSkeleton className="col-span-2 max-xl:col-span-2 max-sm:col-span-1" />
+
+					<InteractiveLineChartSkeleton className="col-span-2 max-xl:col-span-3 max-md:col-span-2 max-sm:col-span-1" />
+					<InteractiveLineChartSkeleton className="col-span-2 max-xl:col-span-3 max-md:col-span-2 max-sm:col-span-1" />
+				</div>
+			)}
 		</main>
 	);
 }

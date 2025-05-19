@@ -65,8 +65,8 @@ export function dateListToMonthList(
 		else sum.set(date, count);
 	}
 
-	return Array.from(sum.entries()).map(([year, count]) => ({
-		date: year.toString(),
+	return Array.from(sum.entries()).map(([month, count]) => ({
+		date: month.toString(),
 		count,
 	}));
 }
