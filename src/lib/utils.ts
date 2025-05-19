@@ -136,7 +136,8 @@ export function jsonDateReviver<T>(key: string, value: T): T | Date {
 }
 export function dashboardJsonDateReviver(key: string, value: unknown): unknown {
 	if (
-		!(key == "yearVisitors" || key == "lastSixMonthVisitor") &&
+		key != "yearVisitors" &&
+		key != "lastSixMonthVisitors" &&
 		Array.isArray(value) &&
 		value.every(
 			(v) => typeof v.date == "string" && typeof v.count == "number",
