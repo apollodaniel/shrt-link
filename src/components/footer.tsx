@@ -64,7 +64,7 @@ const footerColumns: FooterColumn[] = [
 			},
 			{
 				label: "Privacy",
-				href: "/privacy",
+				href: "#",
 			},
 		],
 	},
