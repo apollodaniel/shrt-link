@@ -1,16 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { SessionStatus } from "./lib/types/types";
 import { getAppRoute } from "./lib/utils";
-import { getUserSessionStatus } from "./app/actions/auth";
-import { cookies } from "next/headers";
-import { parseSetCookie } from "next/dist/compiled/@edge-runtime/cookies";
+import {
+	parseSetCookie,
+	RequestCookies,
+} from "next/dist/compiled/@edge-runtime/cookies";
 
-async function refreshAuthToken(): Promise<string | undefined> {
-	const _cookies = await cookies();
-
+async function refreshAuthToken(
+	_cookies: RequestCookies,
+): Promise<string | undefined> {
 	const response = await fetch(getAppRoute("api/v1/auth/refresh"), {
 		headers: {
-			Cookie: `refreshToken=${_cookies.get("refreshToken")!.value}`,
+			Cookie: `refreshToken=${_cookies.get("refreshToken")?.value}`,
 		},
 	});
 
@@ -21,8 +22,8 @@ async function refreshAuthToken(): Promise<string | undefined> {
 		if (typeof responseCookie == "undefined")
 			throw new Error("Unable to refresh authToken");
 
-		_cookies.set(responseCookie.name, responseCookie.value, responseCookie);
-		return `refreshToken=${_cookies.get("refreshToken")!.value};authToken=${responseCookie.value}`;
+		_cookies.set(responseCookie);
+		return `refreshToken=${_cookies.get("refreshToken")?.value};authToken=${responseCookie.value}`;
 	} else {
 		throw new Error("Unable to refresh authToken");
 	}
@@ -30,8 +31,12 @@ async function refreshAuthToken(): Promise<string | undefined> {
 
 export async function middleware(req: NextRequest) {
 	console.log(req.url);
+	console.log(`APP_URL: ${process.env.NEXT_PUBLIC_APP_URL}`);
+	console.log(`API_URL: ${process.env.API_URL}`);
 
-	const isOffline = await fetch(`${process.env.API_URL}/api/v1/ping`)
+	const isOffline = await fetch(
+		`${process.env.NEXT_PUBLIC_APP_URL}/api/v1/ping`,
+	)
 		.then(() => false)
 		.catch(() => true);
 
@@ -44,8 +49,9 @@ export async function middleware(req: NextRequest) {
 	}
 
 	try {
-		const _cookies = await cookies();
+		const _cookies = req.cookies;
 
+		console.log(_cookies.getAll());
 		let cookieHeader = req.headers.get("Cookie");
 
 		const hasRefresh =
@@ -65,7 +71,7 @@ export async function middleware(req: NextRequest) {
 			!req.url.endsWith("api/v1/auth/refresh") &&
 			hasRefresh
 		) {
-			const _cookieHeader = await refreshAuthToken();
+			const _cookieHeader = await refreshAuthToken(_cookies);
 			cookieHeader = _cookieHeader ? _cookieHeader : null;
 		}
 
@@ -81,7 +87,10 @@ export async function middleware(req: NextRequest) {
 		if (req.url.startsWith(getAppRoute("api/v1"))) {
 			return NextResponse.next(responseOpt);
 		} else {
-			const sessionStatus = await getUserSessionStatus();
+			let sessionStatus = SessionStatus.AUTHENTICATED;
+			if (!hasRefresh) {
+				sessionStatus = SessionStatus.NO_SESSION;
+			}
 
 			if (
 				req.url.startsWith(getAppRoute("dashboard")) &&
