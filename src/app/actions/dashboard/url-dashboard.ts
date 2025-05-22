@@ -65,14 +65,13 @@ export async function getDashboardUrlInfo(
 	id: string,
 ): Promise<DashboardUrlInfo> {
 	const _cookies = await cookies();
-	const headers: HeadersInit = Object.fromEntries([
-		[
+	const headers: HeadersInit = [];
+	if (_cookies.has("refreshToken")) {
+		headers.push([
 			"Cookie",
-			_cookies.has("refreshToken")
-				? `refreshToken=${_cookies.get("refreshToken")?.value}${_cookies.has("authToken") ? ";authToken=" + _cookies.get("authToken")?.value : ""}`
-				: undefined,
-		],
-	]);
+			`refreshToken=${_cookies.get("refreshToken")?.value}${_cookies.has("authToken") ? ";authToken=" + _cookies.get("authToken")?.value : ""}`,
+		]);
+	}
 	return buildDashboardUrlInfo(id, headers);
 }
 
