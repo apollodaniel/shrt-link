@@ -115,8 +115,8 @@ export default function UrlDashboard({
 			<div className="text-muted-foreground mx-2 mt-0 flex flex-row items-center justify-start gap-2 max-md:text-sm">
 				<Info size={18} className="min-w-[18px] max-sm:hidden" />
 				<span>
-					This summary updates every 10 minutes. Changes made during
-					this time will be visible after the next refresh.
+					This summary is periodically updated. Recent changes may
+					take some time to appear.
 				</span>
 			</div>
 
