@@ -8,9 +8,10 @@ import jsdom from "jsdom";
 import { revalidateTag } from "next/cache";
 import { DashboardSummary } from "@/lib/types/internal-api";
 
-export async function getUser(): Promise<User> {
+export async function getUser(cache?: RequestCache): Promise<User> {
 	const response = await fetchServer(getAppRoute("api/v1/users/current"), {
 		includeTokens: true,
+		cache,
 	});
 	const text = await response.text();
 
@@ -19,7 +20,10 @@ export async function getUser(): Promise<User> {
 	throw new Error(`${response.status} - ${text}`);
 }
 
-export async function getUrlSummary(id?: string): Promise<ShortenedUrlSummary> {
+export async function getUrlSummary(
+	id?: string,
+	cache?: RequestCache,
+): Promise<ShortenedUrlSummary> {
 	const route = id
 		? getAppRoute(`api/v1/urls/${id}/summary`)
 		: getAppRoute("api/v1/url/summary");
@@ -27,8 +31,8 @@ export async function getUrlSummary(id?: string): Promise<ShortenedUrlSummary> {
 		includeTokens: true,
 		next: {
 			revalidate: 60 * 5,
-			tags: ["summary"],
 		},
+		cache,
 	});
 	const text = await response.text();
 
@@ -37,9 +41,14 @@ export async function getUrlSummary(id?: string): Promise<ShortenedUrlSummary> {
 	throw new Error(`${response.status} - ${text}`);
 }
 
-export async function getDashboardSummary(): Promise<DashboardSummary> {
+export async function getDashboardSummary(
+	cache?: RequestCache,
+): Promise<DashboardSummary> {
 	try {
-		const [user, summary] = await Promise.all([getUser(), getUrlSummary()]);
+		const [user, summary] = await Promise.all([
+			getUser(cache),
+			getUrlSummary(undefined, cache),
+		]);
 
 		return {
 			user,

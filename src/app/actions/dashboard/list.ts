@@ -3,9 +3,12 @@ import { fetchServer } from "../server";
 import { getUrlMetadata } from "./dashboard";
 import { ShortenedUrl } from "@/lib/types/api";
 
-export async function getUrlList(): Promise<ShortenedUrl[]> {
+export async function getUrlList(
+	cache?: RequestCache,
+): Promise<ShortenedUrl[]> {
 	const response = await fetchServer(getAppRoute("api/v1/urls/"), {
 		includeTokens: true,
+		cache,
 	});
 	const text = await response.text();
 

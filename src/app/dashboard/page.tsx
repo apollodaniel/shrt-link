@@ -29,7 +29,6 @@ export default function Dashboard() {
 				revalidate: 600,
 				tags: ["summary"],
 			},
-			cache: "force-cache",
 			credentials: "include",
 		});
 		const body = await response.text();

@@ -6,9 +6,13 @@ import { ShortenedUrl } from "@/lib/types/api";
 import { getUrlMetadata, getUrlSummary } from "./dashboard";
 import { UrlDashboardSummary } from "@/lib/types/internal-api";
 
-export async function getUrl(id: string): Promise<ShortenedUrl> {
+export async function getUrl(
+	id: string,
+	cache?: RequestCache,
+): Promise<ShortenedUrl> {
 	const response = await fetchServer(getAppRoute(`api/v1/urls/${id}`), {
 		includeTokens: true,
+		cache,
 	});
 	const text = await response.text();
 
@@ -27,11 +31,12 @@ export async function getUrl(id: string): Promise<ShortenedUrl> {
 
 export async function getUrlDashboardSummary(
 	urlId: string,
+	cache?: RequestCache,
 ): Promise<UrlDashboardSummary> {
 	try {
 		const [url, summary] = await Promise.all([
-			getUrl(urlId),
-			getUrlSummary(urlId),
+			getUrl(urlId, cache),
+			getUrlSummary(urlId, cache),
 		]);
 
 		return {

@@ -13,8 +13,8 @@ export const revalidate = 300;
 export async function GET() {
 	try {
 		const [urls, dashboardSummary] = await Promise.all([
-			getUrlList(),
-			getDashboardSummary(),
+			getUrlList("no-cache"),
+			getDashboardSummary("no-cache"),
 		]);
 
 		const dateVisitorCount = (

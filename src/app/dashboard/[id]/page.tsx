@@ -43,7 +43,6 @@ export default function UrlDashboard({
 					revalidate: 600,
 					tags: ["summary"],
 				},
-				cache: "force-cache",
 				credentials: "include",
 			},
 		);

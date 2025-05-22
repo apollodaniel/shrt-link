@@ -12,7 +12,10 @@ export async function GET(request: NextRequest) {
 	try {
 		const id = request.nextUrl.searchParams.get("id");
 		console.log(id);
-		const urlDashboardSummary = await getUrlDashboardSummary(id!);
+		const urlDashboardSummary = await getUrlDashboardSummary(
+			id!,
+			"no-cache",
+		);
 
 		const dateVisitorCount = (
 			urlDashboardSummary?.summary.countByDay || []
