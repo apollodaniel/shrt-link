@@ -3,16 +3,16 @@
 import { cookies } from "next/headers";
 
 type ServerFetchInput = Parameters<typeof fetch>[0];
-type ServerRequestInit = {
+export type ServerRequestInit = {
 	includeTokens?: boolean;
-} & Omit<Omit<RequestInit, "credentials">, "headers">;
+} & RequestInit;
 
 export async function fetchServer(
 	input: ServerFetchInput,
 	init?: ServerRequestInit,
 ) {
-	let parsedInit: RequestInit = init || {};
-	if (init?.includeTokens) {
+	let parsedInit: RequestInit = { ...init };
+	if (init?.includeTokens && !init?.headers) {
 		const _cookies = await cookies();
 		if (!_cookies.has("refreshToken")) {
 			throw new Error("No cookie found for refreshToken");

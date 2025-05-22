@@ -15,35 +15,27 @@ import { BarChartSkeleton } from "@/components/charts/bar-chart-skeleton";
 import { InteractiveLineChartSkeleton } from "@/components/charts/interactive-line-chart-skeleton";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { dashboardJsonDateReviver, getAppRoute } from "@/lib/utils";
 import UrlCardSkeleton from "@/components/url-card-skeleton";
+import { getDashboardHomeInfo } from "../actions/dashboard/dashboard";
 
 export default function Dashboard() {
 	const [dashboardHomeInfo, setDashboardHomeInfo] = useState<
 		DashboardHomeInfo | undefined
 	>(undefined);
 
-	const getDashboardHomeInfo = async () => {
-		const response = await fetch(getAppRoute("api/internal/dashboard"), {
-			next: {
-				revalidate: 600,
-				tags: ["summary"],
-			},
-			credentials: "include",
-		});
-		const body = await response.text();
-
-		if (response.status == 200) {
-			setDashboardHomeInfo(JSON.parse(body, dashboardJsonDateReviver));
-			console.log(JSON.parse(body, dashboardJsonDateReviver));
-		} else {
+	const _getDashboardHomeInfo = async () => {
+		try {
+			const result = await getDashboardHomeInfo();
+			setDashboardHomeInfo(result);
+		} catch (err) {
 			toast("Unable to get dashboard analytics, try again later.");
-			console.log(body);
+			if (err instanceof Error) console.log(err.message);
+			else console.log(err);
 		}
 	};
 
 	useEffect(() => {
-		getDashboardHomeInfo();
+		_getDashboardHomeInfo();
 	}, []);
 
 	return (

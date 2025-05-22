@@ -10,12 +10,7 @@ import { PieChartSkeleton } from "@/components/charts/pie-chart-skeleton";
 import { RadarChartSkeleton } from "@/components/charts/radar-chart-skeleton";
 import { BarChartSkeleton } from "@/components/charts/bar-chart-skeleton";
 import { InteractiveLineChartSkeleton } from "@/components/charts/interactive-line-chart-skeleton";
-import {
-	dashboardJsonDateReviver,
-	getAppRoute,
-	getFullShortenedUrl,
-	getUrlHostname,
-} from "@/lib/utils";
+import { getAppRoute, getFullShortenedUrl, getUrlHostname } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
 import DeleteUrlButton from "@/components/delete-url-button";
@@ -24,6 +19,7 @@ import { Info } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getDashboardUrlInfo } from "@/app/actions/dashboard/url-dashboard";
 
 export default function UrlDashboard({
 	params,
@@ -34,31 +30,20 @@ export default function UrlDashboard({
 		DashboardUrlInfo | undefined
 	>(undefined);
 
-	const getDashboardUrlInfo = async () => {
-		const { id } = await params;
-		const response = await fetch(
-			getAppRoute(`api/internal/dashboard/url?id=${id}`),
-			{
-				next: {
-					revalidate: 600,
-					tags: ["summary"],
-				},
-				credentials: "include",
-			},
-		);
-		const body = await response.text();
-
-		if (response.status == 200) {
-			setDashboardUrlInfo(JSON.parse(body, dashboardJsonDateReviver));
-			console.log(JSON.parse(body, dashboardJsonDateReviver));
-		} else {
+	const _getDashboardUrlInfo = async () => {
+		try {
+			const { id } = await params;
+			const result = await getDashboardUrlInfo(id);
+			setDashboardUrlInfo(result);
+		} catch (err) {
 			toast("Unable to get dashboard analytics, try again later.");
-			console.log(body);
+			if (err instanceof Error) console.log(err.message);
+			else console.log(err);
 		}
 	};
 
 	useEffect(() => {
-		getDashboardUrlInfo();
+		_getDashboardUrlInfo();
 	}, []);
 
 	return (
