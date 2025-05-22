@@ -19,7 +19,9 @@ async function refreshAuthToken(
 			response.headers.get("Set-Cookie")!,
 		);
 		if (typeof responseCookie == "undefined")
-			throw new Error("Unable to refresh authToken");
+			throw new Error(
+				"Unable to refresh authToken: responseCookie is undefined",
+			);
 
 		_cookies.set(responseCookie);
 
@@ -31,7 +33,9 @@ async function refreshAuthToken(
 			["Set-Cookie", response.headers.get("Set-Cookie")!],
 		];
 	} else {
-		throw new Error("Unable to refresh authToken");
+		throw new Error(
+			"Unable to refresh authToken: response has no set-cookie",
+		);
 	}
 }
 
@@ -68,6 +72,7 @@ export async function middleware(req: NextRequest) {
 		.catch(() => true);
 
 	if (isOffline) {
+		console.log("API is offline, exiting");
 		if (/^\/api\/v1(.*)/.test(req.nextUrl.pathname)) {
 			return new NextResponse("Not found", { status: 404 });
 		} else {
@@ -118,5 +123,6 @@ export const config = {
 	// "/dashboard/:path*",
 	// "/api/:path*",
 	// matcher: ["/((?!.*\\.).*)"],
-	matcher: ["/dashboard/:path*", "/api/v1/:path*"],
+	// /api/v1/:path*
+	matcher: ["/dashboard/:path*", "/api/v1/((?!ping$|auth/refresh$).*)"],
 };
