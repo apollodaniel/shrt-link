@@ -123,12 +123,24 @@ export default function UrlDashboard({
 			{dashboardUrlInfo?.dashboardSummary?.url && (
 				<div className="mx-3 mt-4 flex w-full flex-row items-center justify-between">
 					<h3 className="text-3xl font-semibold">Analytics</h3>
+
 					<DeleteUrlButton
 						id={dashboardUrlInfo?.dashboardSummary!.url.id}
 					/>
 				</div>
 			)}
 
+			<div className="mx-3 my-2">
+				{dashboardUrlInfo ? (
+					<p className="text-2xl font-semibold">
+						Total clicks:{" "}
+						{dashboardUrlInfo?.dashboardSummary.summary
+							.totalClicks || 0}
+					</p>
+				) : (
+					<Skeleton className="h-4 w-[56px]" />
+				)}
+			</div>
 			{/*summary*/}
 			{dashboardUrlInfo ? (
 				<div className="mb-20 grid w-full grid-cols-4 gap-3 max-xl:grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1">
