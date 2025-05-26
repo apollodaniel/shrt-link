@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import UrlCardSkeleton from "@/components/url-card-skeleton";
 import { getDashboardHomeInfo } from "../actions/dashboard/dashboard";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Dashboard() {
 	const [dashboardHomeInfo, setDashboardHomeInfo] = useState<
@@ -95,6 +96,17 @@ export default function Dashboard() {
 			<h3 className="mx-3 mt-4 text-3xl font-semibold">Analytics</h3>
 			{/*summary*/}
 
+			<div className="mx-3 my-2">
+				{dashboardHomeInfo ? (
+					<p className="text-2xl font-semibold">
+						Total clicks:{" "}
+						{dashboardHomeInfo?.dashboardSummary.summary
+							.totalClicks || 0}
+					</p>
+				) : (
+					<Skeleton className="h-4 w-[56px]" />
+				)}
+			</div>
 			{dashboardHomeInfo ? (
 				<div className="mb-20 grid w-full grid-cols-4 gap-3 max-xl:grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1">
 					<BrowserPieChart
