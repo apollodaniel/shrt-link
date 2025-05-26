@@ -65,12 +65,17 @@ function RangeCalendar({
 				<Button
 					variant={"outline"}
 					className={cn(
-						"h-12 w-[240px] pl-3 text-left font-normal max-md:ms-auto",
+						"h-12 pl-3 text-left font-normal max-md:ms-auto",
 					)}
 				>
-					<span>
+					<span className="max-[400px]:hidden">
 						{range
-							? `${range.from?.toLocaleString("default", { dateStyle: "medium" })}${range.to ? " - " + range.to?.toLocaleString("default", { dateStyle: "medium" }) : ""}`
+							? `${range.from?.toLocaleString("pt-BR", { dateStyle: "medium" })}${range.to ? " - " + range.to?.toLocaleString("pt-BR", { dateStyle: "medium" }) : ""}`
+							: "Pick a date range"}
+					</span>
+					<span className="hidden max-[400px]:inline">
+						{range
+							? `${range.from?.toLocaleString("pt-BR", { dateStyle: "short" })}${range.to ? " - " + range.to?.toLocaleString("pt-BR", { dateStyle: "short" }) : ""}`
 							: "Pick a date range"}
 					</span>
 					<CalendarIcon className="text-primary ml-auto h-4 w-4" />
@@ -186,10 +191,9 @@ export default function DashboardList() {
 	const [urlList, setUrlList] = useState<ShortenedUrl[] | undefined>();
 
 	const [search, setSearch] = useState("");
-	const [dateRange, setDateRange] = useState<DateRange | undefined>({
-		from: new Date("2020-05-05"),
-		to: new Date(Date.now()),
-	});
+	const [dateRange, setDateRange] = useState<DateRange | undefined>(
+		undefined,
+	);
 	const [searchSettings, setSearchSettings] = useState<
 		SearchSettings | undefined
 	>();
