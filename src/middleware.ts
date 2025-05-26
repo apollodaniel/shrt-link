@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { SessionStatus } from "./lib/types/types";
 import { getAppRoute } from "./lib/utils";
 import {
 	parseSetCookie,
@@ -8,7 +7,7 @@ import {
 
 async function refreshAuthToken(
 	_cookies: RequestCookies,
-): Promise<string | undefined> {
+): Promise<[string, string][] | undefined> {
 	const response = await fetch(getAppRoute("api/v1/auth/refresh"), {
 		headers: {
 			Cookie: `refreshToken=${_cookies.get("refreshToken")?.value}`,
@@ -20,28 +19,61 @@ async function refreshAuthToken(
 			response.headers.get("Set-Cookie")!,
 		);
 		if (typeof responseCookie == "undefined")
-			throw new Error("Unable to refresh authToken");
+			throw new Error(
+				"Unable to refresh authToken: responseCookie is undefined",
+			);
 
 		_cookies.set(responseCookie);
-		return `refreshToken=${_cookies.get("refreshToken")?.value};authToken=${responseCookie.value}`;
+
+		return [
+			[
+				"Cookie",
+				`refreshToken=${_cookies.get("refreshToken")?.value};authToken=${responseCookie.value}`,
+			],
+			["Set-Cookie", response.headers.get("Set-Cookie")!],
+		];
 	} else {
-		throw new Error("Unable to refresh authToken");
+		throw new Error(
+			"Unable to refresh authToken: response has no set-cookie",
+		);
 	}
 }
 
-export async function middleware(req: NextRequest) {
-	console.log(req.url);
-	console.log(`APP_URL: ${process.env.NEXT_PUBLIC_APP_URL}`);
-	console.log(`API_URL: ${process.env.API_URL}`);
+function getResponseWithHeader(
+	response: NextResponse,
+	headers: [string, string][],
+): NextResponse {
+	for (const [key, value] of headers) {
+		response.headers.append(key, value);
+	}
+	return response;
+}
 
-	const isOffline = await fetch(
-		`${process.env.NEXT_PUBLIC_APP_URL}/api/v1/ping`,
-	)
+function getResponseWithDeletedTokens(response: NextResponse): NextResponse {
+	response.headers.append(
+		"Set-Cookie",
+		`refreshToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Strict`,
+	);
+	response.headers.append(
+		"Set-Cookie",
+		`authToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Strict`,
+	);
+
+	return response;
+}
+
+export async function middleware(req: NextRequest) {
+	console.log(
+		`${req.nextUrl.pathname} - ${Intl.DateTimeFormat("default", { dateStyle: "long", timeStyle: "long" }).format(Date.now())}`,
+	);
+
+	const isOffline = await fetch(getAppRoute("api/v1/ping"))
 		.then(() => false)
 		.catch(() => true);
 
 	if (isOffline) {
-		if (req.url.startsWith(getAppRoute("api/v1"))) {
+		console.log("API is offline, exiting");
+		if (/^\/api\/v1(.*)/.test(req.nextUrl.pathname)) {
 			return new NextResponse("Not found", { status: 404 });
 		} else {
 			return NextResponse.rewrite(getAppRoute("error"));
@@ -51,59 +83,33 @@ export async function middleware(req: NextRequest) {
 	try {
 		const _cookies = req.cookies;
 
-		console.log(_cookies.getAll());
-		let cookieHeader = req.headers.get("Cookie");
-
 		const hasRefresh =
-			_cookies.has("refreshToken") ||
-			_cookies.get("refreshToken")?.value != "";
+			_cookies.has("refreshToken") &&
+			_cookies.get("refreshToken")!.value.length > 0;
 		const hasAuth =
-			_cookies.has("authToken") || _cookies.get("authToken")?.value != "";
+			_cookies.has("authToken") &&
+			_cookies.get("authToken")!.value.length > 0;
 
-		if (!hasRefresh && req.url.startsWith(getAppRoute("dashboard"))) {
-			_cookies.delete("refreshToken");
-			_cookies.delete("authToken");
-			return NextResponse.redirect(getAppRoute("login"));
+		if (!hasRefresh && /^\/dashboard(.*)/.test(req.nextUrl.pathname)) {
+			console.log(
+				"No refreshToken found, resetting cookies and redirecting to login.",
+			);
+			return getResponseWithDeletedTokens(
+				NextResponse.redirect(getAppRoute("login")),
+			);
 		}
 
+		const refreshHeaders: [string, string][] = [];
 		if (
 			!hasAuth &&
-			!req.url.endsWith("api/v1/auth/refresh") &&
+			!/^\/api\/v1\/auth\/refresh[/]?$/.test(req.nextUrl.pathname) &&
 			hasRefresh
 		) {
-			const _cookieHeader = await refreshAuthToken(_cookies);
-			cookieHeader = _cookieHeader ? _cookieHeader : null;
+			const _cookieHeaders = await refreshAuthToken(_cookies);
+			if (_cookieHeaders) refreshHeaders.push(..._cookieHeaders);
 		}
 
-		const responseOpt: ResponseInit = {
-			...req,
-			headers: cookieHeader
-				? {
-						Cookie: cookieHeader,
-					}
-				: undefined,
-		};
-
-		if (req.url.startsWith(getAppRoute("api/v1"))) {
-			return NextResponse.next(responseOpt);
-		} else {
-			let sessionStatus = SessionStatus.AUTHENTICATED;
-			if (!hasRefresh) {
-				sessionStatus = SessionStatus.NO_SESSION;
-			}
-
-			if (
-				req.url.startsWith(getAppRoute("dashboard")) &&
-				sessionStatus == SessionStatus.NO_SESSION
-			) {
-				return NextResponse.redirect(
-					getAppRoute("register"),
-					responseOpt,
-				);
-			}
-
-			return NextResponse.next(responseOpt);
-		}
+		return getResponseWithHeader(NextResponse.next(), refreshHeaders);
 	} catch (err) {
 		console.log(err);
 		return NextResponse.redirect(getAppRoute(""));
@@ -117,5 +123,6 @@ export const config = {
 	// "/dashboard/:path*",
 	// "/api/:path*",
 	// matcher: ["/((?!.*\\.).*)"],
-	matcher: ["/dashboard/:path*", "/api/v1/:path*"],
+	// /api/v1/:path*
+	matcher: ["/dashboard/:path*", "/api/v1/((?!ping$|auth/refresh$).*)"],
 };

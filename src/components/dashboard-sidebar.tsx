@@ -37,7 +37,12 @@ const items = [
 export default async function DashboardSidebar() {
 	let user: User | undefined;
 	try {
-		user = await getUser();
+		user = await getUser({
+			cache: "force-cache",
+			next: {
+				tags: ["user"],
+			},
+		});
 	} catch (err) {
 		console.log(err);
 	}
