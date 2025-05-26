@@ -191,10 +191,9 @@ export default function DashboardList() {
 	const [urlList, setUrlList] = useState<ShortenedUrl[] | undefined>();
 
 	const [search, setSearch] = useState("");
-	const [dateRange, setDateRange] = useState<DateRange | undefined>({
-		from: new Date("2020-05-05"),
-		to: new Date(Date.now()),
-	});
+	const [dateRange, setDateRange] = useState<DateRange | undefined>(
+		undefined,
+	);
 	const [searchSettings, setSearchSettings] = useState<
 		SearchSettings | undefined
 	>();
