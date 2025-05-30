@@ -26,7 +26,7 @@ const nextConfig: NextConfig = {
 			},
 
 			{
-				source: "/:id",
+				source: "/:id([a-zA-Z0-9]{7})",
 
 				destination: `${process.env.API_URL}/:id`,
 			},
