@@ -4,6 +4,9 @@ import {
 	parseSetCookie,
 	RequestCookies,
 } from "next/dist/compiled/@edge-runtime/cookies";
+import { routing } from "./i18n/routing";
+
+import createMiddleware from "next-intl/middleware";
 
 async function refreshAuthToken(
 	_cookies: RequestCookies,
@@ -61,6 +64,7 @@ function getResponseWithDeletedTokens(response: NextResponse): NextResponse {
 
 	return response;
 }
+const handleI18nRouting = createMiddleware(routing);
 
 export async function middleware(req: NextRequest) {
 	console.log(
@@ -71,12 +75,17 @@ export async function middleware(req: NextRequest) {
 		.then(() => false)
 		.catch(() => true);
 
+	const response = handleI18nRouting(req);
+	if (/^\/(?!api.*$|en.*$|pt.*$)$/.test(req.nextUrl.pathname)) {
+		return response;
+	}
+
 	if (isOffline) {
 		console.log("API is offline, exiting");
-		if (/^\/api\/v1(.*)/.test(req.nextUrl.pathname)) {
-			return new NextResponse("Not found", { status: 404 });
-		} else {
+		if (/^\/(?!error[\/]?$|api.*$)$/.test(req.nextUrl.pathname)) {
 			return NextResponse.rewrite(getAppRoute("error"));
+		} else {
+			return new NextResponse("Not found", { status: 404 });
 		}
 	}
 
@@ -90,7 +99,10 @@ export async function middleware(req: NextRequest) {
 			_cookies.has("authToken") &&
 			_cookies.get("authToken")!.value.length > 0;
 
-		if (!hasRefresh && /^\/dashboard(.*)/.test(req.nextUrl.pathname)) {
+		if (
+			!hasRefresh &&
+			/^\/(en|pt)\/dashboard(.*)/.test(req.nextUrl.pathname)
+		) {
 			console.log(
 				"No refreshToken found, resetting cookies and redirecting to login.",
 			);
@@ -109,7 +121,8 @@ export async function middleware(req: NextRequest) {
 			if (_cookieHeaders) refreshHeaders.push(..._cookieHeaders);
 		}
 
-		return getResponseWithHeader(NextResponse.next(), refreshHeaders);
+		return getResponseWithHeader(response, refreshHeaders);
+		// return getResponseWithHeader(NextResponse.next(), refreshHeaders);
 	} catch (err) {
 		console.log(err);
 		return NextResponse.redirect(getAppRoute(""));
@@ -124,5 +137,11 @@ export const config = {
 	// "/api/:path*",
 	// matcher: ["/((?!.*\\.).*)"],
 	// /api/v1/:path*
-	matcher: ["/dashboard/:path*", "/api/v1/((?!ping$|auth/refresh$).*)"],
+	// "/dashboard/:path*"
+	matcher: [
+		// "/(.*)",
+		"/(pricing$|contact$|faq$|dashboard.*$)?",
+		"/((?!api.*$|.*\\.|[a-zA-Z0-9]{7}$).*)",
+		"/(.*)/api/v1/((?!ping$|auth/refresh$).*)",
+	],
 };
