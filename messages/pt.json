@@ -1,0 +1,118 @@
+{
+	"misc": {
+		"light_mode": "Modo claro",
+		"dark_mode": "Modo escuro"
+	},
+	"landing_home": {
+		"slogan": "Encurte, Compartilhe, Simplifique",
+		"description": "Transforme URLs longas e complicadas em <b>links compactos</b> e <b>compartilháveis em segundos</b>",
+		"tagline": "Gratuito, Rápido e Confiável",
+		"cta": "Comece Grátis"
+	},
+	"navbar": {
+		"links": {
+			"home": "Início",
+			"pricing": "Preços",
+			"contact": "Contato",
+			"faq": "Perguntas Frequentes"
+		},
+		"buttons": {
+			"register": "Registrar agora",
+			"login": "Entrar",
+			"dashboard": "Painel"
+		}
+	},
+	"footer": {
+		"resources": {
+			"label": "Recursos",
+			"items": {
+				"help": "Ajuda",
+				"sales": "Vendas",
+				"advertise": "Anunciar",
+				"privacy": "Privacidade"
+			}
+		},
+		"product": {
+			"label": "Produto",
+			"items": {
+				"overview": "Visão Geral",
+				"pricing": "Preços",
+				"features": "Funcionalidades"
+			}
+		},
+		"company": {
+			"label": "Empresa",
+			"items": {
+				"about": "Sobre",
+				"team": "Equipe",
+				"blog": "Blog"
+			}
+		},
+		"github_icon_alt": "Ícone clicável do GitHub",
+		"linkedin_icon_alt": "Ícone clicável do LinkedIn",
+		"gmail_icon_alt": "Ícone clicável do Gmail",
+		"slogan": "Criando sites full-stack de alto desempenho que geram resultados reais para os negócios.",
+		"copyright": "©2025 Apollo Daniel. Todos os direitos reservados.",
+		"terms": "Termos e Condições",
+		"privacy": "Política de Privacidade"
+	},
+	"landing_pricing": {
+		"main_card": {
+			"badge": "Mais popular",
+			"title": "Grátis",
+			"subtitle": "Grátis para sempre",
+			"price": "Grátis",
+			"features": [
+				"Encurtamento de URL ilimitado",
+				"Análise de desempenho de URL"
+			],
+			"cta": "Registre-se"
+		}
+	},
+	"landing_contact": {
+		"title": "Contato",
+		"field": {
+			"label": "Mensagem",
+			"error_message": "Escreva algo antes de enviar",
+
+			"submit_button": "Enviar"
+		}
+	},
+	"landing_faq": {
+		"title": "Perguntas frequentes",
+		"description": "Compilamos as informações mais importantes para ajudá-lo a aproveitar ao máximo sua experiência. Não encontrou o que procurava? Entre em contato conosco.",
+		"questions": {
+			"item_1": {
+				"question": "O serviço é seguro?",
+				"answer": "Embora não façamos varredura por malware, todos os links são gerados sem armazenar dados sensíveis do usuário. Por favor, use o serviço de forma responsável."
+			},
+			"item_2": {
+				"question": "Com que rapidez os links são criados?",
+				"answer": "Os links são gerados instantaneamente. Note que você precisará de uma conta para usar o serviço."
+			},
+			"item_3": {
+				"question": "Os links expiram?",
+				"answer": "Sim. Nesta implantação de teste, os links expiram após 5 minutos para evitar o armazenamento de dados sensíveis e manter um ambiente de teste limpo e otimizado para todos os usuários."
+			},
+			"item_4": {
+				"question": "Quais dados são coletados quando um link é acessado?",
+				"answer": "Para cada visita, coletamos o endereço IP e o agente do usuário. A partir dessas informações, determinamos o navegador, o tipo de dispositivo e a localização aproximada (incluindo país, região, cidade e coordenadas). Durante os testes, por razões legais e de segurança, todas as requisições são registradas com o endereço IP do servidor em vez do IP real do usuário. Esses dados são associados à URL encurtada específica e incluem o carimbo de data/hora do acesso."
+			},
+			"item_5": {
+				"question": "O serviço é realmente gratuito?",
+				"answer": "Sim. O serviço é completamente gratuito — não há assinaturas ou custos ocultos."
+			},
+			"item_6": {
+				"question": "Quanto tempo dura uma conta?",
+				"answer": {
+					"description": "Essas regras se aplicam apenas ao modo de teste deste site. As contas expiram sob estas condições:",
+					"conditions": [
+						"Contas inativas (sem URLs ou cliques) expiram após 10 minutos",
+						"Contas ativas sem cliques expiram após 15 minutos",
+						"Contas com cliques ativos permanecem ativas até que passem 5 minutos sem novos cliques (mas nunca excedem o máximo de 15 minutos para contas ativas)"
+					]
+				}
+			}
+		}
+	}
+}

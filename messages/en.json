@@ -1,0 +1,117 @@
+{
+	"misc": {
+		"light_mode": "Light mode",
+		"dark_mode": "Dark mode"
+	},
+	"landing_home": {
+		"slogan": "Shorten, Share, Simplify",
+		"description": "Transform long, clunky URLs into <b>compact</b>, <b>shareable links in seconds</b>",
+		"tagline": "Free, Fast, and Reliable",
+		"cta": "Get started Free"
+	},
+	"navbar": {
+		"links": {
+			"home": "Home",
+			"pricing": "Pricing",
+			"contact": "Contact",
+			"faq": "FAQ"
+		},
+		"buttons": {
+			"register": "Register now",
+			"login": "Sign in",
+			"dashboard": "Dashboard"
+		}
+	},
+	"footer": {
+		"resources": {
+			"label": "Resources",
+			"items": {
+				"help": "Help",
+				"sales": "Sales",
+				"advertise": "Advertise",
+				"privacy": "Privacy"
+			}
+		},
+		"product": {
+			"label": "Product",
+			"items": {
+				"overview": "Overview",
+				"pricing": "Pricing",
+				"features": "Features"
+			}
+		},
+		"company": {
+			"label": "Company",
+			"items": {
+				"about": "About",
+				"team": "Team",
+				"blog": "Blog"
+			}
+		},
+		"github_icon_alt": "clickable github icon",
+		"linkedin_icon_alt": "clickable linkedin icon",
+		"gmail_icon_alt": "clickable gmail icon",
+		"slogan": "Crafting high-performance full-stack websites that drive real business results.",
+		"copyright": "©2025 Apollo Daniel. All rights reserved.",
+		"terms": "Terms and Conditions",
+		"privacy": "Privacy Policy"
+	},
+	"landing_pricing": {
+		"main_card": {
+			"badge": "Most popular",
+			"title": "Free",
+			"subtitle": "Forever Free",
+			"price": "Free",
+			"features": [
+				"Unlimited URL shortening",
+				"URL Performance Analytics"
+			],
+			"cta": "Sign up"
+		}
+	},
+	"landing_contact": {
+		"title": "Contact",
+		"field": {
+			"label": "Message",
+			"error_message": "Write something before sending",
+			"submit_button": "Send"
+		}
+	},
+	"landing_faq": {
+		"title": "Frequently asked questions",
+		"description": "We've compiled the most important information to help you get the most out of your experience. Can't find what you're looking for? Contact us.",
+		"questions": {
+			"item_1": {
+				"question": "Is the service secure?",
+				"answer": "While we don't scan for malware, all links are generated without storing sensitive user data. Please use the service responsibly."
+			},
+			"item_2": {
+				"question": "How fast are links created?",
+				"answer": "Links are generated instantly. Note that you'll need an account to use the service."
+			},
+			"item_3": {
+				"question": "Do links expire?",
+				"answer": "Yes. In this test deployment, links expire after 5 minutes to prevent storing sensitive data and maintain a clean, optimized testing environment for all users."
+			},
+			"item_4": {
+				"question": "What data is collected when a link is accessed?",
+				"answer": "For each visit, we collect the IP address and user agent. From this information, we determine the browser, device type, and approximate location (including country, region, city, and coordinates). During testing, for legal and security reasons, all requests are recorded with the server's IP address instead of the user&apos;s actual IP. This data is associated with the specific shortened URL and includes the access timestamp."
+			},
+			"item_5": {
+				"question": "Is the service really free?",
+				"answer": "Yes. The service is completely free—there are no subscriptions or hidden charges."
+			},
+			"item_6": {
+				"question": "How long does an account last?",
+				"answer": {
+					"description": "These rules apply only to this test website's trial mode. Accounts expire under these conditions:",
+					"conditions": [
+						"Inactive accounts (with no URLs or clicks) expire after 10 minutes",
+						"Active accounts without clicks expire after 15 minutes",
+						"Accounts with active clicks remain active until 5 minutes pass without new clicks (but never exceed the 15-minute maximum for active accounts)"
+					]
+				}
+			}
+		}
+	}
+}

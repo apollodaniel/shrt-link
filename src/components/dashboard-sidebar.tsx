@@ -11,7 +11,7 @@ import {
 	SidebarMenuItem,
 } from "./ui/sidebar";
 import UserDropdownMenu from "./user-dropdown-menu";
-import { getUser } from "@/app/actions/dashboard/dashboard";
+import { getUser } from "@/app/[locale]/actions/dashboard/dashboard";
 import { User } from "@/lib/types/api";
 import AddUrlDialog from "./add-url-dialog";
 import { ModeToggle } from "./mode-toggle";

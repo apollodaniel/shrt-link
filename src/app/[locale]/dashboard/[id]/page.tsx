@@ -19,7 +19,7 @@ import { Info } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getDashboardUrlInfo } from "@/app/actions/dashboard/url-dashboard";
+import { getDashboardUrlInfo } from "@/app/[locale]/actions/dashboard/url-dashboard";
 
 export default function UrlDashboard({
 	params,

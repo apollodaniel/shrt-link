@@ -7,7 +7,7 @@ import {
 import Link from "next/link";
 import AppLogo from "./logo";
 import { cn } from "@/lib/utils";
-import { getUserSessionStatus } from "../app/actions/auth";
+import { getUserSessionStatus } from "../app/[locale]/actions/auth";
 import { Button } from "./ui/button";
 import { SessionStatus } from "@/lib/types/types";
 import { ModeToggle } from "./mode-toggle";
@@ -21,48 +21,51 @@ import {
 	SheetTitle,
 } from "./ui/sheet";
 import { Menu, Moon, Sun } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 
 type MenuEntry = {
 	label: string;
 	href: string;
 };
 
-const navigationMenuEntries: MenuEntry[] = [
-	{
-		label: "Home",
-		href: "/",
-	},
-	{
-		label: "Pricing",
-		href: "/pricing",
-	},
-	{
-		label: "Contact",
-		href: "/contact",
-	},
-	{ label: "FAQ", href: "/faq" },
-];
-
 export default async function AppNavbar() {
 	const sessionStatus = await getUserSessionStatus().catch(
 		() => SessionStatus.NO_SESSION,
 	);
+	const t = await getTranslations("navbar");
+	const miscMsg = await getTranslations("misc");
+
+	const navigationMenuEntries: MenuEntry[] = [
+		{
+			label: t("links.home"),
+			href: "/",
+		},
+		{
+			label: t("links.pricing"),
+			href: "/pricing",
+		},
+		{
+			label: t("links.contact"),
+			href: "/contact",
+		},
+		{ label: t("links.faq"), href: "/faq" },
+	];
 
 	const registerButtons =
 		sessionStatus == SessionStatus.AUTHENTICATED ? (
 			<>
 				<Link href="/dashboard" passHref>
-					<Button className="w-full">Dashboard</Button>
+					<Button className="w-full">{t("buttons.dashboard")}</Button>
 				</Link>
 			</>
 		) : (
 			<>
 				<Link href="/register" passHref>
-					<Button className="w-full">Register now</Button>
+					<Button className="w-full">{t("buttons.register")}</Button>
 				</Link>
 				<Link href="/login" passHref>
 					<Button variant="ghost" className="w-full">
-						Sign in
+						{t("buttons.login")}
 					</Button>
 				</Link>
 			</>
@@ -137,10 +140,10 @@ export default async function AppNavbar() {
 										<Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
 										<Moon className="h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
 										<span className="dark:hidden">
-											Light mode
+											{miscMsg("light_mode")}
 										</span>
 										<span className="not-dark:hidden">
-											Dark mode
+											{miscMsg("dark_mode")}
 										</span>
 									</Button>
 								</ModeToggle>

@@ -1,4 +1,5 @@
 import { ExternalLink } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -12,89 +13,101 @@ type FooterColumn = {
 	items: FooterColumnItem[];
 };
 
-const footerColumns: FooterColumn[] = [
-	{
-		label: "Product",
-		items: [
-			{
-				label: "Overview",
-				href: "#",
-			},
-			{
-				label: "Pricing",
-				href: "#",
-			},
-			{
-				label: "Features",
-				href: "#",
-			},
-		],
-	},
-	{
-		label: "Company",
-		items: [
-			{
-				label: "About",
-				href: "https://github.com/apollodaniel",
-			},
-			{
-				label: "Team",
-				href: "#",
-			},
-			{
-				label: "Blog",
-				href: "#",
-			},
-		],
-	},
-	{
-		label: "Resources",
-		items: [
-			{
-				label: "Help",
-				href: "/faq",
-			},
-			{
-				label: "Sales",
-				href: "#",
-			},
-			{
-				label: "Advertise",
-				href: "#",
-			},
-			{
-				label: "Privacy",
-				href: "#",
-			},
-		],
-	},
-];
-
 type FooterIcon = {
 	svg: string;
 	href: string;
 	alt: string;
 };
 
-export const footerIcons: FooterIcon[] = [
-	{
-		href: "https://github.com/apollodaniel",
-		svg: "/github.svg",
-		alt: "github icon with link",
-	},
-	{
-		href: "https://www.linkedin.com/in/apollo-daniel-620570233/",
-		svg: "/linkedin.svg",
-		alt: "linkedin icon with link",
-	},
-	{
-		href: "mailto:developer.apollo.mail@gmail.com?subject=Vim pelo shrtlink",
-		svg: "/gmail.svg",
-		alt: "gmail icon with link",
-	},
-];
+export function getFooterIcons(
+	t: Awaited<ReturnType<typeof getTranslations>>,
+): FooterIcon[] {
+	return [
+		{
+			href: "https://github.com/apollodaniel",
+			svg: "/github.svg",
+			alt: t("github_icon_alt"),
+		},
+		{
+			href: "https://www.linkedin.com/in/apollo-daniel-620570233/",
+			svg: "/linkedin.svg",
+			alt: t("linkedin_icon_alt"),
+		},
+		{
+			href: "mailto:developer.apollo.mail@gmail.com?subject=Vim pelo shrtlink",
+			svg: "/gmail.svg",
+			alt: t("gmail_icon_alt"),
+		},
+	];
+}
+function getFooterColumns(
+	t: Awaited<ReturnType<typeof getTranslations>>,
+): FooterColumn[] {
+	return [
+		{
+			label: t("product.label"),
+			items: [
+				{
+					label: t("product.items.overview"),
+					href: "#",
+				},
+				{
+					label: t("product.items.pricing"),
+					href: "#",
+				},
+				{
+					label: t("product.items.features"),
+					href: "#",
+				},
+			],
+		},
+		{
+			label: t("company.label"),
+			items: [
+				{
+					label: t("company.items.about"),
+					href: "https://github.com/apollodaniel",
+				},
+				{
+					label: t("company.items.team"),
+					href: "#",
+				},
+				{
+					label: t("company.items.blog"),
+					href: "#",
+				},
+			],
+		},
+		{
+			label: t("resources.label"),
+			items: [
+				{
+					label: t("resources.items.help"),
+					href: "/faq",
+				},
+				{
+					label: t("resources.items.sales"),
+					href: "#",
+				},
+				{
+					label: t("resources.items.advertise"),
+					href: "#",
+				},
+				{
+					label: t("resources.items.privacy"),
+					href: "#",
+				},
+			],
+		},
+	];
+}
 
-export default function AppFooter() {
+export default async function AppFooter() {
+	const t = await getTranslations("footer");
+
+	const footerColumns: FooterColumn[] = getFooterColumns(t);
+	const footerIcons: FooterIcon[] = getFooterIcons(t);
+
 	return (
 		<footer className="mx-8 mb-8 flex flex-col items-center justify-start gap-[24px]">
 			<div className="flex w-full flex-wrap items-start justify-between gap-5">
@@ -107,10 +120,7 @@ export default function AppFooter() {
 						apollodaniel.stream
 						<ExternalLink />
 					</Link>
-					<p className="text-primary/60 text-sm">
-						Crafting high-performance full-stack websites that drive
-						real business results.
-					</p>
+					<p className="text-primary/60 text-sm">{t("slogan")}</p>
 					<div className="mt-4 flex flex-wrap items-center gap-6">
 						{footerIcons.map((icon) => (
 							<Link key={icon.svg} href={icon.href}>
@@ -145,14 +155,12 @@ export default function AppFooter() {
 			</div>
 			<div className="bg-primary/10 mx-4 h-[1px] w-full"></div>
 			<div className="text-primary/60 flex w-full flex-wrap gap-5 text-sm font-medium">
-				<p className="me-auto">
-					©2025 Apollo Daniel. All rights reserved.
-				</p>
+				<p className="me-auto">{t("copyright")}</p>
 				<Link href="#" passHref>
-					<p className="hover:text-primary">Terms and Conditions</p>
+					<p className="hover:text-primary">{t("terms")}</p>
 				</Link>
 				<Link href="#" passHref>
-					<p className="hover:text-primary">Privacy Policy</p>
+					<p className="hover:text-primary">{t("privacy")}</p>
 				</Link>
 			</div>
 		</footer>

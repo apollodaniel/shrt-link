@@ -35,7 +35,7 @@ import SearchSettingsButton from "@/components/search-settings";
 import UrlCardSkeleton from "@/components/url-card-skeleton";
 import { toast } from "sonner";
 import Link from "next/link";
-import { revalidateSummary } from "@/app/actions/dashboard/dashboard";
+import { revalidateSummary } from "@/app/[locale]/actions/dashboard/dashboard";
 
 const defaultSettings: SearchSettings = {
 	isActive: false,

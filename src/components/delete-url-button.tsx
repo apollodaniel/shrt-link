@@ -4,7 +4,7 @@ import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
-import { revalidateSummary } from "@/app/actions/dashboard/dashboard";
+import { revalidateSummary } from "@/app/[locale]/actions/dashboard/dashboard";
 
 type Props = {
 	id: string;
