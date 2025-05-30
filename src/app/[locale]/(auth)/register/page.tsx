@@ -16,22 +16,25 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { REGISTER_FORM_SCHEMA } from "@/lib/types/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import z from "zod";
 import { onSubmit, parseError } from "@/lib/utils";
+import { useTranslations } from "next-intl";
+import { getRegisterFormSchema, RegisterFormType } from "@/lib/types/schemas";
 
 export default function Register() {
 	const [obscurePass, setObscurePass] = useState(true);
 
-	const form = useForm<z.infer<typeof REGISTER_FORM_SCHEMA>>({
+	const t = useTranslations("auth_register");
+	const formSchema = getRegisterFormSchema(useTranslations());
+
+	const form = useForm<RegisterFormType>({
 		mode: "onChange",
-		resolver: zodResolver(REGISTER_FORM_SCHEMA),
+		resolver: zodResolver(formSchema),
 		defaultValues: {
 			email: "",
 			firstName: "",
@@ -54,7 +57,7 @@ export default function Register() {
 					<form
 						onSubmit={form.handleSubmit(
 							(formField) =>
-								onSubmit<z.infer<typeof REGISTER_FORM_SCHEMA>>({
+								onSubmit<RegisterFormType>({
 									formFields: formField,
 									path: "/api/v1/auth/register",
 									redirect_location: "dashboard",
@@ -77,7 +80,7 @@ export default function Register() {
 						<Card className="text-start">
 							<CardHeader>
 								<CardTitle className="text-2xl">
-									Register
+									{t("title")}
 								</CardTitle>
 							</CardHeader>
 							<CardContent className="space-y-2">
@@ -86,10 +89,14 @@ export default function Register() {
 									control={form.control}
 									render={({ field }) => (
 										<FormItem className="gap-1">
-											<FormLabel>First name</FormLabel>
+											<FormLabel>
+												{t("fields.first_name.label")}
+											</FormLabel>
 											<FormControl>
 												<Input
-													placeholder="First name"
+													placeholder={t(
+														"fields.first_name.label",
+													)}
 													{...field}
 												/>
 											</FormControl>
@@ -102,10 +109,14 @@ export default function Register() {
 									control={form.control}
 									render={({ field }) => (
 										<FormItem className="gap-1">
-											<FormLabel>Last name</FormLabel>
+											<FormLabel>
+												{t("fields.last_name.label")}
+											</FormLabel>
 											<FormControl>
 												<Input
-													placeholder="Last name"
+													placeholder={t(
+														"fields.last_name.label",
+													)}
 													{...field}
 												/>
 											</FormControl>
@@ -118,10 +129,14 @@ export default function Register() {
 									control={form.control}
 									render={({ field }) => (
 										<FormItem className="gap-1">
-											<FormLabel>Email</FormLabel>
+											<FormLabel>
+												{t("fields.email.label")}
+											</FormLabel>
 											<FormControl>
 												<Input
-													placeholder="Email"
+													placeholder={t(
+														"fields.email.label",
+													)}
 													{...field}
 												/>
 											</FormControl>
@@ -134,11 +149,15 @@ export default function Register() {
 									control={form.control}
 									render={({ field }) => (
 										<FormItem className="gap-1">
-											<FormLabel>Password</FormLabel>
+											<FormLabel>
+												{t("fields.password.label")}
+											</FormLabel>
 											<FormControl>
 												<div className="relative h-auto">
 													<Input
-														placeholder="Password"
+														placeholder={t(
+															"fields.password.label",
+														)}
 														className="relative"
 														type={
 															obscurePass
@@ -181,12 +200,16 @@ export default function Register() {
 									render={({ field }) => (
 										<FormItem className="gap-1">
 											<FormLabel>
-												Confirm password
+												{t(
+													"fields.confirm_password.label",
+												)}
 											</FormLabel>
 											<FormControl>
 												<div className="relative h-auto">
 													<Input
-														placeholder="Confirm password"
+														placeholder={t(
+															"fields.confirm_password.label",
+														)}
 														className="relative"
 														type={
 															obscurePass
@@ -226,13 +249,13 @@ export default function Register() {
 							</CardContent>
 							<CardFooter className="flex flex-col gap-2">
 								<Button type="submit" className="w-full">
-									Register
+									{t("submit_button")}
 								</Button>
 								<Link
 									href="/login"
 									className="text-sm hover:underline"
 								>
-									Or sign in to an existing account
+									{t("alternative_button")}
 								</Link>
 							</CardFooter>
 						</Card>

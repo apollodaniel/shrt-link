@@ -114,5 +114,63 @@
 				}
 			}
 		}
+	},
+	"auth": {
+		"required_message": "O campo é obrigatório",
+		"invalid_string": "A entrada deve ser um texto"
+	},
+	"auth_login": {
+		"title": "Entrar",
+		"fields": {
+			"email": {
+				"label": "E-mail",
+				"error_message": "Formato de e-mail inválido"
+			},
+			"password": {
+				"label": "Senha",
+				"error_message": "A senha é obrigatória"
+			}
+		},
+		"submit_button": "Entrar",
+		"alternative_button": "Ou registre uma nova conta"
+	},
+	"auth_register": {
+		"title": "Registrar",
+		"fields": {
+			"first_name": {
+				"label": "Nome",
+				"error_messages": {
+					"regex": "O nome deve começar com letra maiúscula e não conter espaços",
+					"min": "O nome deve ter pelo menos duas letras"
+				}
+			},
+			"last_name": {
+				"label": "Sobrenome",
+				"error_messages": {
+					"regex": "O sobrenome deve começar com letra maiúscula e não conter espaços",
+					"min": "O sobrenome deve ter pelo menos duas letras"
+				}
+			},
+			"email": {
+				"label": "E-mail",
+				"error_message": "E-mail inválido"
+			},
+			"password": {
+				"label": "Senha",
+				"error_messages": {
+					"min": "A senha deve ter pelo menos 8 caracteres",
+					"digits": "A senha deve conter dígitos",
+					"lowercase_char": "A senha deve conter letras minúsculas",
+					"uppercase_char": "A senha deve conter letras maiúsculas",
+					"symbols": "A senha deve conter pelo menos um dos seguintes símbolos: !@#$%^&*()"
+				}
+			},
+			"confirm_password": {
+				"label": "Confirmar senha",
+				"error_message": "A confirmação de senha deve corresponder à senha"
+			}
+		},
+		"submit_button": "Registrar",
+		"alternative_button": "Ou usar uma conta existente"
 	}
 }

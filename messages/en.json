@@ -113,5 +113,63 @@
 				}
 			}
 		}
+	},
+	"auth": {
+		"required_message": "Field is required",
+		"invalid_string": "Input must be a text"
+	},
+	"auth_login": {
+		"title": "Login",
+		"fields": {
+			"email": {
+				"label": "Email",
+				"error_message": "Invalid email format"
+			},
+			"password": {
+				"label": "Password",
+				"error_message": "Password is required"
+			}
+		},
+		"submit_button": "Login",
+		"alternative_button": "Or register a new account"
+	},
+	"auth_register": {
+		"title": "Register",
+		"fields": {
+			"first_name": {
+				"label": "First name",
+				"error_messages": {
+					"regex": "First name must be capitalized and contain no space",
+					"min": "First name must have at least two letters"
+				}
+			},
+			"last_name": {
+				"label": "Last name",
+				"error_messages": {
+					"regex": "Last name must be capitalized and contain no space",
+					"min": "Last name must have at least two letters"
+				}
+			},
+			"email": {
+				"label": "Email",
+				"error_message": "Invalid email"
+			},
+			"password": {
+				"label": "Password",
+				"error_messages": {
+					"min": "Password must be at least 8 char long",
+					"digits": "Password must have digits",
+					"lowercase_char": "Password must have lowercase letters",
+					"uppercase_char": "Password must have uppercase letters",
+					"symbols": "Password must contain at least one of the following symbols: !@#$%^&*()"
+				}
+			},
+			"confirm_password": {
+				"label": "Confirm password",
+				"error_message": "Confirm password must match password"
+			}
+		},
+		"submit_button": "Register",
+		"alternative_button": "Or use a existing account"
 	}
 }
