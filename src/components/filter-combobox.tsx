@@ -56,7 +56,7 @@ export default function FilterCombobox({
 						className="h-9"
 					/>
 					<CommandList>
-						<CommandEmpty>No {label} found.</CommandEmpty>
+						<CommandEmpty>{t("combobox_not_found")}</CommandEmpty>
 						<CommandGroup>
 							{valueList.map((value) => (
 								<CommandItem

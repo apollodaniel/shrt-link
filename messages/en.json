@@ -4,7 +4,8 @@
 		"dark_mode": "Dark mode",
 		"system_mode": "System",
 		"combobox_search_label": "Search",
-		"combobox_select_label": "Select"
+		"combobox_select_label": "Select",
+		"combobox_not_found": "No results found"
 	},
 	"landing_home": {
 		"slogan": "Shorten, Share, Simplify",

@@ -4,7 +4,8 @@
 		"dark_mode": "Modo escuro",
 		"system_mode": "Sistema",
 		"combobox_search_label": "Pesquisar",
-		"combobox_select_label": "Selecionar"
+		"combobox_select_label": "Selecionar",
+		"combobox_not_found": "Nenhum resultado encontrado"
 	},
 	"landing_home": {
 		"slogan": "Encurte, Compartilhe, Simplifique",
