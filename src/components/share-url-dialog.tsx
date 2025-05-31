@@ -12,6 +12,7 @@ import { Label } from "./ui/label";
 import Image from "next/image";
 import { Check, Copy, Mail } from "lucide-react";
 import { Input } from "./ui/input";
+import { useTranslations } from "next-intl";
 
 type Props = {
 	shareUrl: string;
@@ -21,6 +22,7 @@ type Props = {
 
 export default function ShareUrlDialog({ shareUrl, isOpen, setIsOpen }: Props) {
 	const [copied, setCopied] = useState(false);
+	const t = useTranslations("misc.url_card.share_url_dialog");
 
 	const copyToClipboard = async () => {
 		try {
@@ -53,16 +55,14 @@ export default function ShareUrlDialog({ shareUrl, isOpen, setIsOpen }: Props) {
 				}}
 			>
 				<DialogHeader>
-					<DialogTitle>Share link</DialogTitle>
-					<DialogDescription>
-						Share this link with others via copy or social media.
-					</DialogDescription>
+					<DialogTitle>{t("title")}</DialogTitle>
+					<DialogDescription>{t("description")}</DialogDescription>
 				</DialogHeader>
 
 				<div className="space-y-4 py-4">
 					<div className="flex items-center space-x-2">
 						<div className="grid flex-1 gap-2">
-							<Label htmlFor="link">Link</Label>
+							<Label htmlFor="link">{t("input_label")}</Label>
 							<Input id="link" value={shareUrl} readOnly />
 						</div>
 						<Button
@@ -70,7 +70,7 @@ export default function ShareUrlDialog({ shareUrl, isOpen, setIsOpen }: Props) {
 							className="self-end px-3"
 							onClick={copyToClipboard}
 						>
-							<span className="sr-only">Copy</span>
+							<span className="sr-only">{t("copy_label")}</span>
 							{copied ? (
 								<Check className="h-4 w-4" />
 							) : (
@@ -80,7 +80,7 @@ export default function ShareUrlDialog({ shareUrl, isOpen, setIsOpen }: Props) {
 					</div>
 
 					<div className="space-y-2">
-						<Label>Share via</Label>
+						<Label>{t("share_label")}</Label>
 						<div className="flex justify-center space-x-4 pt-2">
 							<Button
 								variant="outline"
@@ -97,7 +97,7 @@ export default function ShareUrlDialog({ shareUrl, isOpen, setIsOpen }: Props) {
 									className="dark:invert"
 									src="/x.svg"
 								/>
-								<span className="sr-only">Share on X</span>
+								<span className="sr-only">{t("x_label")}</span>
 							</Button>
 							<Button
 								variant="outline"
@@ -115,7 +115,7 @@ export default function ShareUrlDialog({ shareUrl, isOpen, setIsOpen }: Props) {
 									src="/facebook.svg"
 								/>
 								<span className="sr-only">
-									Share on Facebook
+									{t("facebook_label")}
 								</span>
 							</Button>
 							<Button
@@ -125,7 +125,9 @@ export default function ShareUrlDialog({ shareUrl, isOpen, setIsOpen }: Props) {
 								className="h-10 w-10"
 							>
 								<Mail className="scale-130" />
-								<span className="sr-only">Share via Email</span>
+								<span className="sr-only">
+									{t("mail_label")}
+								</span>
 							</Button>
 							<Button
 								variant="outline"
@@ -145,7 +147,7 @@ export default function ShareUrlDialog({ shareUrl, isOpen, setIsOpen }: Props) {
 									className="dark:invert"
 								/>
 								<span className="sr-only">
-									Share via instagram
+									{t("instagram_label")}
 								</span>
 							</Button>
 						</div>

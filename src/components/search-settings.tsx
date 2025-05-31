@@ -57,7 +57,6 @@ export default function SearchSettingsButton({
 				<Label>{t("order_by_label")}</Label>
 				<FilterCombobox
 					currentValue={currentOrderBy}
-					label="order by"
 					valueList={orderByList}
 					setCurrentValue={(value) => setCurrentOrderBy(value)}
 					parseValue={(key) => t(`order_by.${key}`)}
@@ -65,7 +64,6 @@ export default function SearchSettingsButton({
 				<Label className="mt-2">{t("order_direction_label")}</Label>
 				<FilterCombobox
 					currentValue={currentOrder}
-					label="order"
 					valueList={orderList}
 					setCurrentValue={(value) => setCurrentOrder(value)}
 					parseValue={(key) => t(`order_direction.${key}`)}

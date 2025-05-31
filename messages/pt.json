@@ -3,9 +3,31 @@
 		"light_mode": "Modo claro",
 		"dark_mode": "Modo escuro",
 		"system_mode": "Sistema",
-		"combobox_search_label": "Pesquisar",
-		"combobox_select_label": "Selecionar",
-		"combobox_not_found": "Nenhum resultado encontrado"
+		"combobox": {
+			"search_label": "Pesquisar",
+			"select_label": "Selecionar",
+			"not_found": "Nenhum resultado encontrado"
+		},
+		"url_card": {
+			"share_button_label": "Compartilhar URL",
+			"card_options": {
+				"title": "Mais opções",
+				"edit": "Editar",
+				"copy": "Copiar",
+				"share_url": "Compartilhar URL"
+			},
+			"share_url_dialog": {
+				"title": "Compartilhar URL",
+				"description": "Compartilhe essa URL copiando ou via rede social.",
+				"input_label": "URL",
+				"share_label": "Compartilhar via",
+				"copy_label": "Copiar",
+				"instagram_label": "Compartilhar no instagram",
+				"facebook_label": "Compartilhar no facebook",
+				"x_label": "Compartilhar no X",
+				"mail_label": "Compartilhar via Email"
+			}
+		}
 	},
 	"landing_home": {
 		"slogan": "Encurte, Compartilhe, Simplifique",

@@ -3,9 +3,31 @@
 		"light_mode": "Light mode",
 		"dark_mode": "Dark mode",
 		"system_mode": "System",
-		"combobox_search_label": "Search",
-		"combobox_select_label": "Select",
-		"combobox_not_found": "No results found"
+		"combobox": {
+			"search_label": "Search",
+			"select_label": "Select",
+			"not_found": "No results found"
+		},
+		"url_card": {
+			"share_button_label": "Share URL",
+			"card_options": {
+				"title": "Options",
+				"edit": "Edit",
+				"copy": "Copy",
+				"share_url": "Share URL"
+			},
+			"share_url_dialog": {
+				"title": "Share URL",
+				"description": "Share this URL with others via copy or social media",
+				"input_label": "URL",
+				"share_label": "Share via",
+				"copy_label": "Copy",
+				"instagram_label": "Share on instagram",
+				"facebook_label": "Share on facebook",
+				"x_label": "Share on X",
+				"mail_label": "Share via Email"
+			}
+		}
 	},
 	"landing_home": {
 		"slogan": "Shorten, Share, Simplify",
