@@ -31,6 +31,7 @@ import {
 } from "./ui/form";
 import { useState } from "react";
 import { useSidebar } from "./ui/sidebar";
+import { useTranslations } from "next-intl";
 
 export default function AddUrlDialog({
 	children,
@@ -51,6 +52,7 @@ export default function AddUrlDialog({
 
 	const [isOpen, setIsOpen] = useState(false);
 	const sidebar = useSidebar();
+	const t = useTranslations("dashboard_sidebar.add_url.popup");
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -70,10 +72,8 @@ export default function AddUrlDialog({
 			<DialogTrigger asChild>{children}</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Add new URL</DialogTitle>
-					<DialogDescription>
-						Paste a valid link below to generate a shortened URL.
-					</DialogDescription>
+					<DialogTitle>{t("title")}</DialogTitle>
+					<DialogDescription>{t("description")}</DialogDescription>
 				</DialogHeader>
 
 				<Form {...form}>
@@ -123,7 +123,7 @@ export default function AddUrlDialog({
 							name="originalUrl"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Original url</FormLabel>
+									<FormLabel>{t("input_label")}</FormLabel>
 									<FormControl>
 										<Input
 											placeholder="https://example.etc"
@@ -136,7 +136,7 @@ export default function AddUrlDialog({
 							)}
 						/>
 						<DialogFooter className="mt-4">
-							<Button type="submit">Create</Button>
+							<Button type="submit">{t("submit")}</Button>
 							<DialogTrigger asChild>
 								<Button
 									onClick={() => {
@@ -144,7 +144,7 @@ export default function AddUrlDialog({
 										form.clearErrors();
 									}}
 								>
-									Cancel
+									{t("cancel")}
 								</Button>
 							</DialogTrigger>
 						</DialogFooter>

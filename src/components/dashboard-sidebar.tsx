@@ -15,24 +15,7 @@ import { getUser } from "@/app/[locale]/actions/dashboard/dashboard";
 import { User } from "@/lib/types/api";
 import AddUrlDialog from "./add-url-dialog";
 import { ModeToggle } from "./mode-toggle";
-
-const items = [
-	{
-		label: "Application",
-		items: [
-			{
-				title: "Home",
-				url: "/dashboard",
-				icon: Home,
-			},
-			{
-				title: "URL list",
-				url: "/dashboard/list",
-				icon: Link,
-			},
-		],
-	},
-];
+import { getTranslations } from "next-intl/server";
 
 export default async function DashboardSidebar() {
 	let user: User | undefined;
@@ -46,6 +29,26 @@ export default async function DashboardSidebar() {
 	} catch (err) {
 		console.log(err);
 	}
+	const miscT = await getTranslations("misc");
+	const t = await getTranslations("dashboard_sidebar");
+
+	const items = [
+		{
+			label: t("title"),
+			items: [
+				{
+					title: t("home"),
+					url: "/dashboard",
+					icon: Home,
+				},
+				{
+					title: t("url_list"),
+					url: "/dashboard/list",
+					icon: Link,
+				},
+			],
+		},
+	];
 
 	return (
 		<Sidebar collapsible="icon">
@@ -69,7 +72,7 @@ export default async function DashboardSidebar() {
 									<AddUrlDialog>
 										<SidebarMenuButton>
 											<CirclePlus />
-											<span>Add url </span>
+											<span>{t("add_url.label")}</span>
 										</SidebarMenuButton>
 									</AddUrlDialog>
 								</SidebarMenuItem>
@@ -87,10 +90,10 @@ export default async function DashboardSidebar() {
 									<Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
 									<Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
 									<span className="dark:hidden">
-										Light mode
+										{miscT("light_mode")}
 									</span>
 									<span className="not-dark:hidden">
-										Dark mode
+										{miscT("dark_mode")}
 									</span>
 								</SidebarMenuButton>
 							</ModeToggle>

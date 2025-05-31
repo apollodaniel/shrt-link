@@ -238,5 +238,30 @@
 		"welcome_message": "Bem-vindo de volta",
 		"delete_url_button": "Excluir esta URL",
 		"fetch_analytics_error": "Não foi possível obter as estatísticas do painel, tente novamente mais tarde."
+	},
+	"dashboard_sidebar": {
+		"title": "Painel",
+		"home": "Início",
+		"url_list": "Lista de URLs",
+		"add_url": {
+			"label": "Adicionar URL",
+			"popup": {
+				"title": "Adicionar nova URL",
+				"description": "Cole um link válido abaixo para gerar uma URL encurtada.",
+				"input_label": "URL original",
+				"submit": "Criar",
+				"cancel": "Cancelar"
+			}
+		},
+		"account_dropdown_menu": {
+			"account": "Conta",
+			"logout": "Sair",
+			"popup": {
+				"title": "Sair",
+				"description": "Tem certeza de que deseja sair?",
+				"submit": "Sair",
+				"cancel": "Cancelar"
+			}
+		}
 	}
 }

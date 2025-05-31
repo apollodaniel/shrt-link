@@ -237,5 +237,30 @@
 		"welcome_message": "Welcome back",
 		"delete_url_button": "Delete this url",
 		"fetch_analytics_error": "Unable to get dashboard analytics, try again later."
+	},
+	"dashboard_sidebar": {
+		"title": "Application",
+		"home": "Home",
+		"url_list": "URL list",
+		"add_url": {
+			"label": "Add URL",
+			"popup": {
+				"title": "Add new URL",
+				"description": "Paste a valid link below to generate a shortened URL.",
+				"input_label": "Original URL",
+				"submit": "Create",
+				"cancel": "Cancel"
+			}
+		},
+		"account_dropdown_menu": {
+			"account": "Account",
+			"logout": "Logout",
+			"popup": {
+				"title": "Logout",
+				"description": "Are you sure you want to logout?",
+				"submit": "Logout",
+				"cancel": "Cancel"
+			}
+		}
 	}
 }
