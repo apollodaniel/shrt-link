@@ -38,21 +38,22 @@ export default function AddUrlDialog({
 }: {
 	children: React.ReactNode;
 }) {
+	const t = useTranslations("dashboard_sidebar.add_url.popup");
+	const authT = useTranslations("auth");
 	const formSchema = z.object({
 		originalUrl: z
-			.string()
-			.nonempty({ message: "URL cannot be empty" })
+			.string({ message: authT("required_message") })
+			.nonempty({ message: authT("required_message") })
 			.regex(
 				/^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/,
 				{
-					message: "Invalid URL format",
+					message: t("invalid_url_message"),
 				},
 			),
 	});
 
 	const [isOpen, setIsOpen] = useState(false);
 	const sidebar = useSidebar();
-	const t = useTranslations("dashboard_sidebar.add_url.popup");
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),

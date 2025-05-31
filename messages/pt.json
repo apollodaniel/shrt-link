@@ -253,7 +253,8 @@
 				"description": "Cole um link válido abaixo para gerar uma URL encurtada.",
 				"input_label": "URL original",
 				"submit": "Criar",
-				"cancel": "Cancelar"
+				"cancel": "Cancelar",
+				"invalid_url_message": "Formato de URL inválido"
 			}
 		},
 		"account_dropdown_menu": {
