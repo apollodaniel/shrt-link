@@ -5,19 +5,21 @@ import { SidebarMenuButton, useSidebar } from "./ui/sidebar";
 import Image from "next/image";
 
 export default function SidebarLanguageChanger({ locale }: { locale: string }) {
-	const { state } = useSidebar();
+	const { state, isMobile } = useSidebar();
 	return (
 		<LanguageChanger className="mx-auto w-[var(--global-sidebar-width)] max-w-[90%]">
 			<SidebarMenuButton
 				className={cn(
 					"flex flex-row items-center",
-					state == "collapsed" ? "justify-center" : "justify-start",
+					state == "collapsed" && !isMobile
+						? "justify-center"
+						: "justify-start",
 				)}
 			>
 				<div
 					className={cn(
 						"h-5 max-w-8 min-w-5 overflow-hidden rounded-[4px]",
-						state == "collapsed" ? "me-auto" : "",
+						state == "collapsed" && !isMobile ? "me-auto" : "",
 					)}
 				>
 					{locale === "pt" ? (
@@ -39,7 +41,7 @@ export default function SidebarLanguageChanger({ locale }: { locale: string }) {
 					)}
 				</div>
 
-				{state != "collapsed" &&
+				{(state != "collapsed" || isMobile) &&
 					(locale == "pt" ? (
 						<span className="truncate">Português</span>
 					) : (
