@@ -16,8 +16,9 @@ import { User } from "@/lib/types/api";
 import AddUrlDialog from "./add-url-dialog";
 import { ModeToggle } from "./mode-toggle";
 import { getTranslations } from "next-intl/server";
+import SidebarLanguageChanger from "./sidebar-language-changer";
 
-export default async function DashboardSidebar() {
+export default async function DashboardSidebar({ locale }: { locale: string }) {
 	let user: User | undefined;
 	try {
 		user = await getUser({
@@ -85,6 +86,8 @@ export default async function DashboardSidebar() {
 				<SidebarFooter>
 					<SidebarMenu>
 						<SidebarMenuItem>
+							<SidebarLanguageChanger locale={locale} />
+
 							<ModeToggle className="mx-auto w-[var(--global-sidebar-width)] max-w-[90%]">
 								<SidebarMenuButton>
 									<Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />

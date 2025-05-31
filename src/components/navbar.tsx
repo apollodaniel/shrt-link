@@ -22,13 +22,15 @@ import {
 } from "./ui/sheet";
 import { Menu, Moon, Sun } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+import { LanguageChanger } from "./language-changer";
+import Image from "next/image";
 
 type MenuEntry = {
 	label: string;
 	href: string;
 };
 
-export default async function AppNavbar() {
+export default async function AppNavbar({ locale }: { locale: string }) {
 	const sessionStatus = await getUserSessionStatus().catch(
 		() => SessionStatus.NO_SESSION,
 	);
@@ -74,6 +76,7 @@ export default async function AppNavbar() {
 	return (
 		<div className="fixed top-0 flex w-full flex-row items-center justify-between px-6 backdrop-blur-xl">
 			<AppLogo />
+
 			<NavigationMenu className="h-16">
 				<NavigationMenuList>
 					<div className="flex flex-row max-md:hidden">
@@ -94,9 +97,32 @@ export default async function AppNavbar() {
 					<div className="ms-2 flex list-none flex-row gap-2 max-sm:hidden">
 						{registerButtons}
 					</div>
-
-					<div className="max-md:hidden">
+					<div className="flex-column ms-3 me-auto flex items-center space-x-1 max-md:hidden">
 						<ModeToggle />
+						<LanguageChanger className="mx-auto w-[var(--global-sidebar-width)] max-w-[90%]">
+							<Button
+								variant="ghost"
+								className="aspect-square h-10 overflow-hidden p-0"
+							>
+								{locale == "pt" ? (
+									<Image
+										width={32}
+										height={32}
+										className="aspect-square h-full overflow-hidden object-contain"
+										alt="Português"
+										src="/brazil.svg"
+									/>
+								) : (
+									<Image
+										width={32}
+										height={32}
+										className="aspect-square h-full overflow-hidden object-contain"
+										alt="English"
+										src="/usa.svg"
+									/>
+								)}
+							</Button>
+						</LanguageChanger>
 					</div>
 
 					<Sheet>
@@ -130,11 +156,37 @@ export default async function AppNavbar() {
 									),
 								)}
 							</div>
-							<SheetFooter className="gap-4">
+							<SheetFooter>
 								<div className="m-0 hidden w-full list-none flex-col gap-2 p-0 max-sm:flex">
 									{registerButtons}
 								</div>
-								<hr />
+								<hr className="my-2" />
+								<LanguageChanger className="mx-auto w-[var(--global-sidebar-width)] max-w-[90%]">
+									<Button variant="outline">
+										{locale == "pt" ? (
+											<Image
+												width={32}
+												height={32}
+												className="aspect-square h-full overflow-hidden object-contain"
+												alt="Português"
+												src="/brazil.svg"
+											/>
+										) : (
+											<Image
+												width={32}
+												height={32}
+												className="aspect-square h-full overflow-hidden object-contain"
+												alt="English"
+												src="/usa.svg"
+											/>
+										)}
+										{locale == "pt" ? (
+											<span>Português</span>
+										) : (
+											<span>English</span>
+										)}
+									</Button>
+								</LanguageChanger>
 								<ModeToggle className="mx-auto w-[var(--global-sidebar-width)] max-w-[90%]">
 									<Button variant="outline">
 										<Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />

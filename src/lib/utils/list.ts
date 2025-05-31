@@ -1,11 +1,7 @@
 import { revalidateSummary } from "@/app/[locale]/actions/dashboard/dashboard";
 import { getAppRoute } from "../utils";
 import { ShortenedUrl } from "../types/api";
-import {
-	SearchOrderBy,
-	SearchOrderDirection,
-	SearchSettings,
-} from "../types/types";
+import { SearchSettings } from "../types/types";
 import { DateRange } from "react-day-picker";
 
 export function processSearch(search: string, url: ShortenedUrl) {
