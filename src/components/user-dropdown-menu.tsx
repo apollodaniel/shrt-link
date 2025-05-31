@@ -84,14 +84,15 @@ export default function UserDropdownMenu({ user }: { user: User }) {
 						</DialogDescription>
 					</DialogHeader>
 					<DialogFooter>
-						<Button variant="destructive" onClick={() => logout()}>
-							{t("popup.submit")}
-						</Button>
 						<Button
 							variant="outline"
 							onClick={() => setIsDialogOpen(false)}
 						>
 							{t("popup.cancel")}
+						</Button>
+
+						<Button variant="destructive" onClick={() => logout()}>
+							{t("popup.submit")}
 						</Button>
 					</DialogFooter>
 				</DialogContent>

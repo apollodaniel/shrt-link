@@ -137,7 +137,6 @@ export default function AddUrlDialog({
 							)}
 						/>
 						<DialogFooter className="mt-4">
-							<Button type="submit">{t("submit")}</Button>
 							<DialogTrigger asChild>
 								<Button
 									onClick={() => {
@@ -148,6 +147,7 @@ export default function AddUrlDialog({
 									{t("cancel")}
 								</Button>
 							</DialogTrigger>
+							<Button type="submit">{t("submit")}</Button>
 						</DialogFooter>
 					</form>
 				</Form>
