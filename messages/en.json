@@ -2,7 +2,9 @@
 	"misc": {
 		"light_mode": "Light mode",
 		"dark_mode": "Dark mode",
-		"system_mode": "System"
+		"system_mode": "System",
+		"combobox_search_label": "Search",
+		"combobox_select_label": "Select"
 	},
 	"landing_home": {
 		"slogan": "Shorten, Share, Simplify",
@@ -263,5 +265,30 @@
 				"cancel": "Cancel"
 			}
 		}
+	},
+	"dashboard_list": {
+		"fetch_list_error": "Unable to load list, try again later",
+		"delete_url_error": "Unable to delete the following URLs",
+		"search_selected_message": "When searching the \"select all\" button is limited to the search scope.",
+		"only_active_message": "Displaying only active",
+		"selected_title": "Selected {size} of {length}",
+		"range_calendar": {
+			"pick_date_range": "Pick a date range"
+		},
+		"settings": {
+			"order_by": {
+				"creation_date": "Creation Date",
+				"id": "ID"
+			},
+			"order_direction": {
+				"asc": "Ascending",
+				"desc": "Descending"
+			},
+			"active_url_label": "Show only active URLs",
+			"order_by_label": "Order by",
+			"order_direction_label": "Order",
+			"submit": "Save changes"
+		},
+		"search_input_label": "Search"
 	}
 }

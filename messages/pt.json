@@ -2,7 +2,9 @@
 	"misc": {
 		"light_mode": "Modo claro",
 		"dark_mode": "Modo escuro",
-		"system_mode": "Sistema"
+		"system_mode": "Sistema",
+		"combobox_search_label": "Pesquisar",
+		"combobox_select_label": "Selecionar"
 	},
 	"landing_home": {
 		"slogan": "Encurte, Compartilhe, Simplifique",
@@ -264,5 +266,30 @@
 				"cancel": "Cancelar"
 			}
 		}
+	},
+	"dashboard_list": {
+		"fetch_list_error": "Erro ao carregar lista, tente novamente",
+		"delete_url_error": "Não foi possível excluir as seguintes URLs",
+		"search_selected_message": "Ao pesquisar, o botão \"selecionar tudo\" é limitado ao escopo da pesquisa.",
+		"only_active_message": "Exibindo apenas ativas",
+		"selected_title": "Selecionado {size} de {length}",
+		"range_calendar": {
+			"pick_date_range": "Selecione intervalo de datas"
+		},
+		"settings": {
+			"order_by": {
+				"creation_date": "Data de criação",
+				"id": "ID"
+			},
+			"order_direction": {
+				"asc": "Crescente",
+				"desc": "Decrescente"
+			},
+			"active_url_label": "Mostrar apenas URLs ativas",
+			"order_by_label": "Ordenar por",
+			"order_direction_label": "Ordem",
+			"submit": "Salvar alterações"
+		},
+		"search_input_label": "Pesquisar"
 	}
 }
