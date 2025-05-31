@@ -11,6 +11,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useTranslations } from "next-intl";
 
 type Props = {
 	children?: React.ReactNode;
@@ -19,6 +20,7 @@ type Props = {
 
 export function ModeToggle({ children, className }: Props) {
 	const { setTheme } = useTheme();
+	const t = useTranslations("misc");
 
 	return (
 		<DropdownMenu>
@@ -35,13 +37,13 @@ export function ModeToggle({ children, className }: Props) {
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="center" className={className}>
 				<DropdownMenuItem onClick={() => setTheme("light")}>
-					Light
+					{t("light_mode")}
 				</DropdownMenuItem>
 				<DropdownMenuItem onClick={() => setTheme("dark")}>
-					Dark
+					{t("dark_mode")}
 				</DropdownMenuItem>
 				<DropdownMenuItem onClick={() => setTheme("system")}>
-					System
+					{t("system_mode")}
 				</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>

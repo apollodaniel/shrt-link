@@ -1,7 +1,8 @@
 {
 	"misc": {
 		"light_mode": "Modo claro",
-		"dark_mode": "Modo escuro"
+		"dark_mode": "Modo escuro",
+		"system_mode": "Sistema"
 	},
 	"landing_home": {
 		"slogan": "Encurte, Compartilhe, Simplifique",
