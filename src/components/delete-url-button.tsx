@@ -21,8 +21,9 @@ export default function DeleteUrlButton({ id }: Props) {
 				credentials: "include",
 				method: "DELETE",
 			});
+
 			if (response.status != 200) {
-				toast(`Unable to delete URL "${id}"`);
+				toast(t("delete_url_error", { id }));
 				throw new Error(
 					`Unable to delete url ${id} - ${JSON.stringify(
 						{

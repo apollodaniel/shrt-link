@@ -262,6 +262,7 @@
 		},
 		"welcome_message": "Welcome back",
 		"delete_url_button": "Delete this url",
+		"delete_url_error": "Unable to delete URL \"{id}\"",
 		"fetch_analytics_error": "Unable to get dashboard analytics, try again later."
 	},
 	"dashboard_sidebar": {

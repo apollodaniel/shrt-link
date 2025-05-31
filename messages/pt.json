@@ -263,6 +263,7 @@
 		},
 		"welcome_message": "Bem-vindo de volta",
 		"delete_url_button": "Excluir esta URL",
+		"delete_url_error": "Não foi possível deletar a URL \"{id}\"",
 		"fetch_analytics_error": "Não foi possível obter as estatísticas do painel, tente novamente mais tarde."
 	},
 	"dashboard_sidebar": {
