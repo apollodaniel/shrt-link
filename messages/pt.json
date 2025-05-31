@@ -172,5 +172,71 @@
 		},
 		"submit_button": "Registrar",
 		"alternative_button": "Ou usar uma conta existente"
+	},
+	"charts": {
+		"defaults": {
+			"count_label": "Contagem",
+			"visitors_label": "Visitantes",
+			"total_visitors_label": "Total de visitantes"
+		},
+		"past-year": {
+			"title": "Distribuição Anual de Visitantes",
+			"description": "Representação visual da distribuição de visitantes ao longo do ano.",
+			"footerDescription": "Exibe o total de visitantes para o ano inteiro."
+		},
+		"past-six-months": {
+			"title": "Distribuição de Visitantes (Últimos 6 Meses)",
+			"description": "Mostra a distribuição de visitantes nos últimos seis meses.",
+			"footerDescription": "Exibe dados de visitantes dos últimos 6 meses."
+		},
+		"past-30-days": {
+			"title": "Contagem de Visitantes (Últimos 30 Dias)",
+			"description": "Exibe o total de visitantes nos últimos 30 dias."
+		},
+		"all-period": {
+			"title": "Total de Visitantes (Todo o Período)",
+			"description": "Exibe a contagem total de visitantes por data em todo o período."
+		},
+		"hour-distribution": {
+			"title": "Distribuição por Hora",
+			"description": "Veja os horários mais acessados do dia",
+			"footerDescription": "Mostrando a contagem de horas para todas as URLs."
+		},
+		"browser-distribution": {
+			"title": "Distribuição por Navegador",
+			"description": "Veja os navegadores mais populares entre os visitantes",
+			"footerDescription": "Mostrando a contagem de navegadores para todas as URLs.",
+			"checkbox-label": "Mostrar rótulo do navegador"
+		},
+		"device-distribution": {
+			"title": "Distribuição por Dispositivo",
+			"description": "Veja os dispositivos mais populares entre os visitantes",
+			"footerDescription": "Mostrando a contagem de dispositivos para todas as URLs.",
+			"checkbox-label": "Mostrar rótulo do dispositivo"
+		},
+		"country-distribution": {
+			"title": "Distribuição por País",
+			"description": "Veja os países mais populares entre os visitantes",
+			"footerDescription": "Mostrando a contagem de países para todas as URLs.",
+			"checkbox-label": "Mostrar rótulo do país"
+		}
+	},
+	"dashboard": {
+		"analytics": {
+			"title": "Estatísticas",
+			"total_clicks": "Total de cliques"
+		},
+		"analytics_update_message": "Este resumo é atualizado periodicamente. Alterações recentes podem levar algum tempo para aparecer.",
+		"recent_urls": {
+			"title": "URLs Recentes",
+			"fallback": "Não há URLs criadas recentemente."
+		},
+		"active_urls": {
+			"title": "URLs Ativas",
+			"fallback": "Nenhuma URL acessada nas últimas 24 horas."
+		},
+		"welcome_message": "Bem-vindo de volta",
+		"delete_url_button": "Excluir esta URL",
+		"fetch_analytics_error": "Não foi possível obter as estatísticas do painel, tente novamente mais tarde."
 	}
 }

@@ -17,13 +17,7 @@ import {
 	ChartTooltipContent,
 } from "@/components/ui/chart";
 import { cn } from "@/lib/utils";
-
-const chartConfig = {
-	count: {
-		label: "Count",
-		color: "var(--chart-1)",
-	},
-} satisfies ChartConfig;
+import { useTranslations } from "next-intl";
 
 type Props = {
 	title: string;
@@ -43,6 +37,14 @@ export function DateBarChart({
 	description,
 	footerDescription,
 }: Props) {
+	const t = useTranslations("charts.defaults");
+
+	const chartConfig = {
+		count: {
+			label: t("count_label"),
+			color: "var(--chart-1)",
+		},
+	} satisfies ChartConfig;
 	return (
 		<div className={cn("h-full w-full", className)}>
 			<Card className="h-full">
