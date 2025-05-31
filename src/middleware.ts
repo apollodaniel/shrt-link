@@ -139,9 +139,8 @@ export const config = {
 	// /api/v1/:path*
 	// "/dashboard/:path*"
 	matcher: [
-		// "/(.*)",
-		"/(pricing$|contact$|faq$|dashboard.*$)?",
-		"/((?!api.*$|.*\\.|[a-zA-Z0-9]{7}$).*)",
+		"/(pt|en)?/(pricing$|contact$|faq$|dashboard.*$)?",
+		"/(pt|en)?/((?!api|_next|static)[^\\.]+)?",
 		"/(.*)/api/v1/((?!ping$|auth/refresh$).*)",
 	],
 };
