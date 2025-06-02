@@ -18,30 +18,35 @@ import {
 } from "@/components/ui/chart";
 import { cn } from "@/lib/utils";
 import { DateChartData } from "@/lib/types/types";
-
-const chartConfig = {
-	count: {
-		label: "Visitors",
-	},
-	date: {
-		label: "Total visitors",
-		color: "var(--chart-1)",
-	},
-} satisfies ChartConfig;
+import { useTranslations } from "next-intl";
 
 type Props = {
 	title?: string;
 	description?: string;
+	locale?: string;
 	className?: string;
 	rawChartData?: DateChartData[];
 };
 
 export function DateInteractiveLineChart({
 	title = "Last month",
+	locale = "default",
 	className,
 	description = "Showing total visitors for the last month",
 	rawChartData = [],
 }: Props) {
+	const t = useTranslations("charts.defaults");
+
+	const chartConfig = {
+		count: {
+			label: t("visitors_label"),
+		},
+		date: {
+			label: t("total_visitors_label"),
+			color: "var(--chart-1)",
+		},
+	} satisfies ChartConfig;
+
 	const chartData = rawChartData.map((data) => {
 		return {
 			...data,
@@ -94,7 +99,7 @@ export function DateInteractiveLineChart({
 								minTickGap={32}
 								tickFormatter={(value) => {
 									const date = new Date(value);
-									return date.toLocaleDateString("en-US", {
+									return date.toLocaleDateString(locale, {
 										month: "short",
 										day: "numeric",
 									});
@@ -108,7 +113,7 @@ export function DateInteractiveLineChart({
 										labelFormatter={(value) => {
 											return new Date(
 												value,
-											).toLocaleDateString("en-US", {
+											).toLocaleDateString(locale, {
 												month: "short",
 												day: "numeric",
 												year: "numeric",

@@ -30,6 +30,7 @@ type Props = {
 	description?: string;
 	title?: string;
 	footerDescription?: string;
+	checkboxLabel?: string;
 	rawChartData?: CountByBrowser[];
 	forceInnerLabel?: boolean;
 	className?: string;
@@ -41,6 +42,7 @@ export function BrowserPieChart({
 	title = "Browser distribution",
 	description = "See the most popular browsers among the visitors",
 	footerDescription = "Showing browser count for all urls.",
+	checkboxLabel = "Show browser label",
 	forceInnerLabel = false,
 	rawChartData = [],
 	className,
@@ -124,7 +126,7 @@ export function BrowserPieChart({
 							}
 						/>
 						<label htmlFor="showBrowserLabel">
-							Show browser label
+							{checkboxLabel}
 						</label>
 					</div>
 				</CardFooter>

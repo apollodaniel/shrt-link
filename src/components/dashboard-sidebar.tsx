@@ -11,30 +11,14 @@ import {
 	SidebarMenuItem,
 } from "./ui/sidebar";
 import UserDropdownMenu from "./user-dropdown-menu";
-import { getUser } from "@/app/actions/dashboard/dashboard";
+import { getUser } from "@/app/[locale]/actions/dashboard/dashboard";
 import { User } from "@/lib/types/api";
 import AddUrlDialog from "./add-url-dialog";
 import { ModeToggle } from "./mode-toggle";
+import { getTranslations } from "next-intl/server";
+import SidebarLanguageChanger from "./sidebar-language-changer";
 
-const items = [
-	{
-		label: "Application",
-		items: [
-			{
-				title: "Home",
-				url: "/dashboard",
-				icon: Home,
-			},
-			{
-				title: "URL list",
-				url: "/dashboard/list",
-				icon: Link,
-			},
-		],
-	},
-];
-
-export default async function DashboardSidebar() {
+export default async function DashboardSidebar({ locale }: { locale: string }) {
 	let user: User | undefined;
 	try {
 		user = await getUser({
@@ -46,6 +30,26 @@ export default async function DashboardSidebar() {
 	} catch (err) {
 		console.log(err);
 	}
+	const miscT = await getTranslations("misc");
+	const t = await getTranslations("dashboard_sidebar");
+
+	const items = [
+		{
+			label: t("title"),
+			items: [
+				{
+					title: t("home"),
+					url: "/dashboard",
+					icon: Home,
+				},
+				{
+					title: t("url_list"),
+					url: "/dashboard/list",
+					icon: Link,
+				},
+			],
+		},
+	];
 
 	return (
 		<Sidebar collapsible="icon">
@@ -69,7 +73,7 @@ export default async function DashboardSidebar() {
 									<AddUrlDialog>
 										<SidebarMenuButton>
 											<CirclePlus />
-											<span>Add url </span>
+											<span>{t("add_url.label")}</span>
 										</SidebarMenuButton>
 									</AddUrlDialog>
 								</SidebarMenuItem>
@@ -82,15 +86,17 @@ export default async function DashboardSidebar() {
 				<SidebarFooter>
 					<SidebarMenu>
 						<SidebarMenuItem>
+							<SidebarLanguageChanger locale={locale} />
+
 							<ModeToggle className="mx-auto w-[var(--global-sidebar-width)] max-w-[90%]">
 								<SidebarMenuButton>
 									<Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
 									<Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
 									<span className="dark:hidden">
-										Light mode
+										{miscT("light_mode")}
 									</span>
 									<span className="not-dark:hidden">
-										Dark mode
+										{miscT("dark_mode")}
 									</span>
 								</SidebarMenuButton>
 							</ModeToggle>

@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { onSubmit, parseError } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -27,13 +28,15 @@ import z from "zod";
 
 export default function Login() {
 	const [obscurePass, setObscurePass] = useState(true);
+	const t = useTranslations("auth_login");
+	const autht = useTranslations("auth");
 
 	const formSchema = z.object({
-		email: z.string().email({
-			message: "Invalid email format",
+		email: z.string({ message: autht("required_message") }).email({
+			message: t("fields.email.error_message"),
 		}),
-		password: z.string().min(1, {
-			message: "Password is required",
+		password: z.string({ message: autht("required_message") }).min(1, {
+			message: t("fields.password.error_message"),
 		}),
 	});
 
@@ -76,7 +79,7 @@ export default function Login() {
 						<Card className="text-start">
 							<CardHeader>
 								<CardTitle className="text-2xl">
-									Login
+									{t("title")}
 								</CardTitle>
 							</CardHeader>
 							<CardContent className="space-y-2">
@@ -85,10 +88,14 @@ export default function Login() {
 									control={form.control}
 									render={({ field }) => (
 										<FormItem className="gap-1">
-											<FormLabel>Email</FormLabel>
+											<FormLabel>
+												{t("fields.email.label")}
+											</FormLabel>
 											<FormControl>
 												<Input
-													placeholder="Email"
+													placeholder={t(
+														"fields.email.label",
+													)}
 													{...field}
 												/>
 											</FormControl>
@@ -101,11 +108,15 @@ export default function Login() {
 									control={form.control}
 									render={({ field }) => (
 										<FormItem className="gap-1">
-											<FormLabel>Password</FormLabel>
+											<FormLabel>
+												{t("fields.password.label")}
+											</FormLabel>
 											<FormControl>
 												<div className="relative h-auto">
 													<Input
-														placeholder="Password"
+														placeholder={t(
+															"fields.password.label",
+														)}
 														className="relative"
 														type={
 															obscurePass
@@ -145,13 +156,13 @@ export default function Login() {
 							</CardContent>
 							<CardFooter className="flex flex-col gap-2">
 								<Button type="submit" className="w-full">
-									Login
+									{t("submit_button")}
 								</Button>
 								<Link
 									href="/register"
 									className="text-sm hover:underline"
 								>
-									Or register a new account
+									{t("alternative_button")}
 								</Link>
 							</CardFooter>
 						</Card>

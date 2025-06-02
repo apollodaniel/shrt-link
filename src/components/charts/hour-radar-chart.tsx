@@ -17,6 +17,7 @@ import {
 	ChartTooltipContent,
 } from "@/components/ui/chart";
 import { CountByTimeOfDay } from "@/lib/types/api";
+import { useTranslations } from "next-intl";
 
 type Props = {
 	description?: string;
@@ -25,19 +26,21 @@ type Props = {
 	rawChartData?: CountByTimeOfDay[];
 };
 
-const chartConfig = {
-	count: {
-		label: "Count",
-		color: "var(--chart-1)",
-	},
-} satisfies ChartConfig;
-
 export function HourRadarChart({
 	title = "Hour distribution",
 	description = "See the most popular hours among the visitors",
 	footerDescription = "Showing hour count for all urls.",
 	rawChartData = [],
 }: Props) {
+	const t = useTranslations("charts.defaults");
+
+	const chartConfig = {
+		count: {
+			label: t("count_label"),
+			color: "var(--chart-1)",
+		},
+	} satisfies ChartConfig;
+
 	const chartData: CountByTimeOfDay[] = Array.from(
 		{ length: 24 },
 		(_, i) => i,

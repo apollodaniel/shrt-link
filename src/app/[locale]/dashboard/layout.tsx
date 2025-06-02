@@ -2,11 +2,14 @@ import DashboardSidebar from "@/components/dashboard-sidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { ReactNode } from "react";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
 	children,
+	params,
 }: {
 	children: ReactNode[];
+	params: Promise<{ locale: string }>;
 }) {
+	const { locale } = await params;
 	return (
 		<div className="max-h-[100vh]">
 			<SidebarProvider
@@ -17,7 +20,7 @@ export default function DashboardLayout({
 				}}
 				defaultOpen={false}
 			>
-				<DashboardSidebar />
+				<DashboardSidebar locale={locale} />
 
 				<div className="w-full">
 					<div className="bg-background/50 fixed top-0 z-50 -mb-4 w-full p-3 backdrop-blur-lg">

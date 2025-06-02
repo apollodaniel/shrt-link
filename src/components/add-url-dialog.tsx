@@ -31,20 +31,23 @@ import {
 } from "./ui/form";
 import { useState } from "react";
 import { useSidebar } from "./ui/sidebar";
+import { useTranslations } from "next-intl";
 
 export default function AddUrlDialog({
 	children,
 }: {
 	children: React.ReactNode;
 }) {
+	const t = useTranslations("dashboard_sidebar.add_url.popup");
+	const authT = useTranslations("auth");
 	const formSchema = z.object({
 		originalUrl: z
-			.string()
-			.nonempty({ message: "URL cannot be empty" })
+			.string({ message: authT("required_message") })
+			.nonempty({ message: authT("required_message") })
 			.regex(
 				/^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/,
 				{
-					message: "Invalid URL format",
+					message: t("invalid_url_message"),
 				},
 			),
 	});
@@ -70,10 +73,8 @@ export default function AddUrlDialog({
 			<DialogTrigger asChild>{children}</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Add new URL</DialogTitle>
-					<DialogDescription>
-						Paste a valid link below to generate a shortened URL.
-					</DialogDescription>
+					<DialogTitle>{t("title")}</DialogTitle>
+					<DialogDescription>{t("description")}</DialogDescription>
 				</DialogHeader>
 
 				<Form {...form}>
@@ -123,7 +124,7 @@ export default function AddUrlDialog({
 							name="originalUrl"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Original url</FormLabel>
+									<FormLabel>{t("input_label")}</FormLabel>
 									<FormControl>
 										<Input
 											placeholder="https://example.etc"
@@ -136,7 +137,6 @@ export default function AddUrlDialog({
 							)}
 						/>
 						<DialogFooter className="mt-4">
-							<Button type="submit">Create</Button>
 							<DialogTrigger asChild>
 								<Button
 									onClick={() => {
@@ -144,9 +144,10 @@ export default function AddUrlDialog({
 										form.clearErrors();
 									}}
 								>
-									Cancel
+									{t("cancel")}
 								</Button>
 							</DialogTrigger>
+							<Button type="submit">{t("submit")}</Button>
 						</DialogFooter>
 					</form>
 				</Form>

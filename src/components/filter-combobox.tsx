@@ -14,21 +14,23 @@ import {
 import { Checkbox } from "./ui/checkbox";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 type Props = {
 	currentValue?: string;
 	setCurrentValue: (value: string) => void;
+	parseValue: (key: string) => string;
 	valueList: string[];
-	label: string;
 };
 
 export default function FilterCombobox({
-	label,
 	currentValue,
 	setCurrentValue,
 	valueList,
+	parseValue,
 }: Props) {
 	const [open, setOpen] = useState(false);
+	const t = useTranslations("misc.combobox");
 
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
@@ -39,18 +41,20 @@ export default function FilterCombobox({
 					aria-expanded={open}
 					className="w-full justify-between"
 				>
-					{currentValue ? currentValue : `Select ${label}...`}
+					{currentValue
+						? parseValue(currentValue)
+						: t("select_label")}
 					<ChevronsUpDown className="opacity-50" />
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent className="w-[275px] p-0">
 				<Command>
 					<CommandInput
-						placeholder={`Search ${label}...`}
+						placeholder={t("search_label")}
 						className="h-9"
 					/>
 					<CommandList>
-						<CommandEmpty>No {label} found.</CommandEmpty>
+						<CommandEmpty>{t("not_found")}</CommandEmpty>
 						<CommandGroup>
 							{valueList.map((value) => (
 								<CommandItem
@@ -61,7 +65,7 @@ export default function FilterCombobox({
 										setOpen(false);
 									}}
 								>
-									{value}
+									{parseValue(value)}
 									<Checkbox
 										className={cn(
 											"ml-auto",

@@ -3,9 +3,8 @@
 import { ShortenedUrl } from "@/lib/types/api";
 import { Input } from "@/components/ui/input";
 import UrlCard from "@/components/url-card";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import {
-	CalendarIcon,
 	Check,
 	RefreshCcw,
 	Search,
@@ -17,13 +16,7 @@ import {
 	Send,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "@/components/ui/popover";
-import { DateRange, SelectRangeEventHandler } from "react-day-picker";
+import { DateRange } from "react-day-picker";
 import {
 	cn,
 	getAppRoute,
@@ -33,161 +26,33 @@ import {
 import { SearchSettings } from "@/lib/types/types";
 import SearchSettingsButton from "@/components/search-settings";
 import UrlCardSkeleton from "@/components/url-card-skeleton";
+import {
+	deleteMultipleUrls,
+	filterByDate,
+	filterBySettings,
+	processSearch,
+} from "@/lib/utils/list";
 import { toast } from "sonner";
 import Link from "next/link";
-import { revalidateSummary } from "@/app/actions/dashboard/dashboard";
+import RangeCalendar from "@/components/range-calendar";
+import { useTranslations } from "next-intl";
 
 const defaultSettings: SearchSettings = {
 	isActive: false,
 	order: {
-		order: "ASC",
-		by: "Creation Date",
+		order: "asc",
+		by: "creation_date",
 	},
 };
 
-function processSearch(search: string, url: ShortenedUrl) {
-	return (
-		url.originalUrl.toLowerCase().includes(search.toLowerCase()) ||
-		url.metadata?.title?.toLowerCase().includes(search.toLowerCase())
-	);
-}
-
-function RangeCalendar({
-	range,
-	setRange,
+export default function DashboardList({
+	params,
 }: {
-	range?: DateRange;
-	setRange: SelectRangeEventHandler;
+	params: Promise<{ locale: string }>;
 }) {
-	return (
-		<Popover>
-			<PopoverTrigger asChild>
-				<Button
-					variant={"outline"}
-					className={cn(
-						"h-12 pl-3 text-left font-normal max-md:ms-auto",
-					)}
-				>
-					<span className="max-[400px]:hidden">
-						{range
-							? `${range.from?.toLocaleString("pt-BR", { dateStyle: "medium" })}${range.to ? " - " + range.to?.toLocaleString("pt-BR", { dateStyle: "medium" }) : ""}`
-							: "Pick a date range"}
-					</span>
-					<span className="hidden max-[400px]:inline">
-						{range
-							? `${range.from?.toLocaleString("pt-BR", { dateStyle: "short" })}${range.to ? " - " + range.to?.toLocaleString("pt-BR", { dateStyle: "short" }) : ""}`
-							: "Pick a date range"}
-					</span>
-					<CalendarIcon className="text-primary ml-auto h-4 w-4" />
-				</Button>
-			</PopoverTrigger>
-			<PopoverContent className="w-auto p-0" align="start">
-				<Calendar
-					mode="range"
-					selected={range}
-					onSelect={setRange}
-					disabled={(date) =>
-						date > new Date() || date < new Date("1900-01-01")
-					}
-					initialFocus
-				/>
-			</PopoverContent>
-		</Popover>
-	);
-}
+	const { locale } = use(params);
 
-function filterByDate(
-	urlList: ShortenedUrl[],
-	rangeDate?: DateRange,
-): ShortenedUrl[] {
-	const getDays = (date: Date) =>
-		Math.round(date.getTime() / 1000 / 60 / 60 / 24);
-	if (!rangeDate) return urlList;
-	return urlList.filter((url) => {
-		const creationDays = getDays(url.creationDate);
-		const fromDays = rangeDate.from ? getDays(rangeDate.from) : 0;
-		const toDays = rangeDate.to
-			? getDays(rangeDate.to)
-			: getDays(new Date(Date.now()));
-		const isBefore = creationDays <= toDays;
-		const isAfter = creationDays >= fromDays;
-		return isBefore && isAfter;
-	});
-}
-
-function filterBySettings(
-	urlList: ShortenedUrl[],
-	settings?: SearchSettings,
-): ShortenedUrl[] {
-	if (!settings) return urlList;
-
-	return (
-		urlList
-			// filter if is active
-			.filter((url) =>
-				settings.isActive
-					? url.statistics.find(
-							(s) =>
-								Date.now() - s.accessTime.getTime() <
-								24 * 60 * 60 * 1000,
-						)
-					: true,
-			)
-			// short by order settings
-			.sort((a, b) => {
-				if (settings.order?.by == "Creation Date") {
-					// url.creationDate.get
-					const bTime = b.creationDate.getTime();
-					const aTime = a.creationDate.getTime();
-
-					return settings.order.order == "DESC"
-						? bTime - aTime
-						: aTime - bTime;
-				} else {
-					return settings.order?.order == "DESC"
-						? b.id.localeCompare(a.id)
-						: a.id.localeCompare(b.id);
-				}
-			})
-	);
-}
-
-async function deleteMultipleUrls(
-	urlList: string[],
-): Promise<{ urlId: string; error: string }[]> {
-	const detailedRelatory: { urlId: string; error: string }[] = [];
-	for (const url of urlList) {
-		try {
-			const response = await fetch(getAppRoute(`api/v1/urls/${url}`), {
-				method: "DELETE",
-				credentials: "include",
-			});
-
-			if (response.status != 200)
-				throw new Error(
-					`Unable to delete url: ${JSON.stringify(
-						{
-							status: response.status,
-							body: response.body,
-						},
-						null,
-						2,
-					)}`,
-				);
-		} catch (err) {
-			console.log(err);
-			detailedRelatory.push({
-				urlId: url,
-				error: err instanceof Error ? err.message : "Unknown error",
-			});
-		}
-	}
-
-	revalidateSummary();
-	return detailedRelatory;
-}
-
-export default function DashboardList() {
+	const t = useTranslations("dashboard_list");
 	const [urlList, setUrlList] = useState<ShortenedUrl[] | undefined>();
 
 	const [search, setSearch] = useState("");
@@ -210,6 +75,7 @@ export default function DashboardList() {
 			const response = await fetch(getAppRoute("api/v1/urls/"), {
 				credentials: "include",
 			});
+
 			const text = await response.text();
 			if (response.status == 200) {
 				setUrlList(JSON.parse(text, jsonDateReviver));
@@ -219,7 +85,7 @@ export default function DashboardList() {
 		} catch (err) {
 			if (err instanceof Error) console.log(err.message);
 			else console.log(err);
-			toast("Unable to load url list, try again later.");
+			toast(t("fetch_list_error"));
 			if (oldList) setUrlList(oldList);
 		}
 	};
@@ -275,7 +141,10 @@ export default function DashboardList() {
 						selectedUrls.size == 0 ? "opacity-0" : "",
 					)}
 				>
-					{`Selected ${selectedUrls.size} of ${urlList.length}`}
+					{t("selected_title", {
+						size: selectedUrls.size,
+						length: urlList.length,
+					})}
 				</h2>
 			)}
 
@@ -284,7 +153,7 @@ export default function DashboardList() {
 					<Input
 						id="search"
 						className="relative h-full ps-10"
-						placeholder="Search"
+						placeholder={t("search_input_label")}
 						value={search}
 						onChange={(event) => setSearch(event.target.value)}
 					/>
@@ -318,7 +187,7 @@ export default function DashboardList() {
 									const urlList = result.map((r) => r.urlId);
 									toast.error(
 										<>
-											Unable to delete the following URLs:
+											{t("delete_url_error")}:
 											<br />
 											<ul>
 												{urlList.map((u) => (
@@ -385,6 +254,7 @@ export default function DashboardList() {
 							<RangeCalendar
 								range={dateRange}
 								setRange={setDateRange}
+								locale={locale}
 							/>
 						)}
 						<div className="flex flex-row items-center gap-1">
@@ -446,8 +316,7 @@ export default function DashboardList() {
 						search.length == 0 ? "hidden" : "",
 					)}
 				>
-					When searching the &quot;select all&quot; button is limited
-					to the search scope.
+					{t("search_selected_message")}
 				</small>
 
 				<small
@@ -456,7 +325,7 @@ export default function DashboardList() {
 						!searchSettings?.isActive ? "hidden" : "",
 					)}
 				>
-					Displaying only active
+					{t("only_active_message")}
 				</small>
 			</div>
 

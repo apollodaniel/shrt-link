@@ -7,19 +7,22 @@ import FilterCombobox from "./filter-combobox";
 import { useState } from "react";
 import { Label } from "./ui/label";
 import { Checkbox } from "./ui/checkbox";
+import { useTranslations } from "next-intl";
 
 type Props = {
 	searchSettings: Partial<SearchSettings>;
 	setSearchSettings: (settings: SearchSettings) => void;
 };
 
-const orderByList = ["Creation Date", "ID"];
-const orderList = ["ASC", "DESC"];
-
 export default function SearchSettingsButton({
 	searchSettings,
 	setSearchSettings,
 }: Props) {
+	const t = useTranslations("dashboard_list.settings");
+
+	const orderByList = ["creation_date", "id"];
+	const orderList = ["asc", "desc"];
+
 	const [currentOrderBy, setCurrentOrderBy] = useState(
 		searchSettings.order?.by || orderByList[0],
 	);
@@ -51,23 +54,23 @@ export default function SearchSettingsButton({
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent className="w-[300px] space-y-1">
-				<Label>Order by</Label>
+				<Label>{t("order_by_label")}</Label>
 				<FilterCombobox
 					currentValue={currentOrderBy}
-					label="order by"
 					valueList={orderByList}
 					setCurrentValue={(value) => setCurrentOrderBy(value)}
+					parseValue={(key) => t(`order_by.${key}`)}
 				/>
-				<Label className="mt-2">Order</Label>
+				<Label className="mt-2">{t("order_direction_label")}</Label>
 				<FilterCombobox
 					currentValue={currentOrder}
-					label="order"
 					valueList={orderList}
 					setCurrentValue={(value) => setCurrentOrder(value)}
+					parseValue={(key) => t(`order_direction.${key}`)}
 				/>
 				<div className="mt-2 flex w-full flex-row items-center justify-center gap-2">
 					<label htmlFor="showBrowserLabel">
-						Show only active URLs
+						{t("active_url_label")}
 					</label>
 					<Checkbox
 						checked={isActive}
@@ -89,7 +92,7 @@ export default function SearchSettingsButton({
 						setIsOpen(false);
 					}}
 				>
-					Save changes
+					{t("submit")}
 				</Button>
 			</PopoverContent>
 		</Popover>

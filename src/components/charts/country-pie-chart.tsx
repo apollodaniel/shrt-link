@@ -30,6 +30,7 @@ type Props = {
 	description?: string;
 	title?: string;
 	footerDescription?: string;
+	checkboxLabel?: string;
 	rawChartData?: CountByCountry[];
 	forceInnerLabel?: boolean;
 	className?: string;
@@ -41,6 +42,7 @@ export function CountryPieChart({
 	title = "Country distribution",
 	description = "See the most popular countriess among the visitors",
 	footerDescription = "Showing country count for all urls.",
+	checkboxLabel = "Show country label",
 	forceInnerLabel = false,
 	rawChartData = [],
 	className,
@@ -124,7 +126,7 @@ export function CountryPieChart({
 							}
 						/>
 						<label htmlFor="showCountryLabel">
-							Show country label
+							{checkboxLabel}
 						</label>
 					</div>
 				</CardFooter>

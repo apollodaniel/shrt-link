@@ -21,10 +21,13 @@ import { User } from "@/lib/types/api";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 export default function UserDropdownMenu({ user }: { user: User }) {
 	const router = useRouter();
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+	const t = useTranslations("dashboard_sidebar.account_dropdown_menu");
 
 	const logout = async () => {
 		try {
@@ -62,10 +65,10 @@ export default function UserDropdownMenu({ user }: { user: User }) {
 					className="mx-auto w-[var(--global-sidebar-width)] max-w-[90%]" // Ensures it matches sidebar width
 				>
 					<DropdownMenuItem>
-						<span>Account</span>
+						<span>{t("account")}</span>
 					</DropdownMenuItem>
 					<DropdownMenuItem onSelect={() => setIsDialogOpen(true)}>
-						Logout
+						{t("logout")}
 					</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>
@@ -75,20 +78,21 @@ export default function UserDropdownMenu({ user }: { user: User }) {
 			>
 				<DialogContent>
 					<DialogHeader>
-						<DialogTitle>Logout</DialogTitle>
+						<DialogTitle>{t("popup.title")}</DialogTitle>
 						<DialogDescription>
-							Are you sure you want to logout?
+							{t("popup.description")}
 						</DialogDescription>
 					</DialogHeader>
 					<DialogFooter>
-						<Button variant="destructive" onClick={() => logout()}>
-							Logout
-						</Button>
 						<Button
 							variant="outline"
 							onClick={() => setIsDialogOpen(false)}
 						>
-							Cancel
+							{t("popup.cancel")}
+						</Button>
+
+						<Button variant="destructive" onClick={() => logout()}>
+							{t("popup.submit")}
 						</Button>
 					</DialogFooter>
 				</DialogContent>

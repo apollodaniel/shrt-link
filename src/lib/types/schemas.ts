@@ -1,47 +1,76 @@
+import { getTranslations } from "next-intl/server";
 import z from "zod";
 
-export const REGISTER_FORM_SCHEMA = z
-	.object({
-		firstName: z
-			.string()
-			.regex(/^[A-Z][a-z]+$/, {
-				message: "First name must be capitalized and contain no space",
-			})
-			.min(2, {
-				message: "First name must have at least two letters",
+export type RegisterFormType = {
+	email: string;
+	firstName: string;
+	lastName: string;
+	password: string;
+	confirmPassword: string;
+};
+
+const getField = (error: string) => `auth_register.fields.${error}`;
+
+export const getRegisterFormSchema = (
+	t: Awaited<ReturnType<typeof getTranslations>>,
+) =>
+	z
+		.object({
+			firstName: z
+				.string({
+					message: t("auth.required_message"),
+				})
+				.regex(/^[A-Z][a-z]+$/, {
+					message: t(getField("first_name.error_messages.regex")),
+				})
+				.min(2, {
+					message: t(getField("first_name.error_messages.min")),
+				}),
+			lastName: z
+				.string({
+					message: t("auth.required_message"),
+				})
+				.regex(/^[A-Z][a-z]+$/, {
+					message: t(getField("last_name.error_messages.regex")),
+				})
+				.min(2, {
+					message: t(getField("last_name.error_messages.min")),
+				}),
+			email: z
+				.string({
+					message: t("auth.required_message"),
+				})
+				.email({
+					message: t(getField("email.error_message")),
+				}),
+			password: z
+				.string({
+					message: t("auth.required_message"),
+				})
+				.min(8, {
+					message: t(getField("password.error_messages.min")),
+				})
+				.regex(/[0-9]/, {
+					message: t(getField("password.error_messages.digits")),
+				})
+				.regex(/[a-z]/, {
+					message: t(
+						getField("password.error_messages.lowercase_char"),
+					),
+				})
+				.regex(/[A-Z]/, {
+					message: t(
+						getField("password.error_messages.uppercase_char"),
+					),
+				})
+				.regex(/[!@#$%^&*()]/, {
+					message: t(getField("password.error_messages.symbols")),
+				}),
+			confirmPassword: z.string({
+				message: t("auth.required_message"),
 			}),
-		lastName: z
-			.string()
-			.regex(/^[A-Z][a-z]+$/, {
-				message: "Last name must be capitalized and contain no space",
-			})
-			.min(2, {
-				message: "Last name must have at least two letters",
-			}),
-		email: z.string().email({
-			message: "Invalid email",
-		}),
-		password: z
-			.string()
-			.min(8, {
-				message: "Password must be at least 8 char long",
-			})
-			.regex(/[0-9]/, {
-				message: "Password must have digits",
-			})
-			.regex(/[a-z]/, {
-				message: "Password must have lowercase letters",
-			})
-			.regex(/[A-Z]/, {
-				message: "Password must have uppercase letters",
-			})
-			.regex(/[!@#$%^&*()]/, {
-				message:
-					"Password must contain at least one of the following symbols: !@#$%^&*()",
-			}),
-		confirmPassword: z.string(),
-	})
-	.refine((data) => data.password === data.confirmPassword, {
-		message: "Confirm password must match password",
-		path: ["confirmPassword"],
-	});
+		})
+		.refine((data) => data.password === data.confirmPassword, {
+			message: t(getField("confirm_password.error_message")),
+			path: ["confirmPassword"],
+		});

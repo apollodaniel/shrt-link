@@ -30,6 +30,7 @@ type Props = {
 	description?: string;
 	title?: string;
 	footerDescription?: string;
+	checkboxLabel?: string;
 	rawChartData?: CountByDevice[];
 	className?: string;
 	forceInnerLabel?: boolean;
@@ -41,6 +42,7 @@ export function DevicePieChart({
 	title = "Device distribution",
 	description = "See the most popular devices among the visitors",
 	footerDescription = "Showing device count for all urls.",
+	checkboxLabel = "Show device label",
 	forceInnerLabel = false,
 	rawChartData = [],
 	className,
@@ -123,9 +125,7 @@ export function DevicePieChart({
 								setShowInnerLabel(value ? true : false)
 							}
 						/>
-						<label htmlFor="showDeviceLabel">
-							Show device label
-						</label>
+						<label htmlFor="showDeviceLabel">{checkboxLabel}</label>
 					</div>
 				</CardFooter>
 			</Card>

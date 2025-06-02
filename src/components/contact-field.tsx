@@ -5,6 +5,7 @@ import { CardContent, CardFooter } from "./ui/card";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
+import { useTranslations } from "next-intl";
 
 type Props = {
 	icons: ReactNode[];
@@ -13,11 +14,12 @@ type Props = {
 export default function ContactMessage({ icons }: Props) {
 	const [isInvalidMessage, setIsInvalidMessage] = useState(false);
 	const [mailBody, setMailBody] = useState("");
+	const t = useTranslations("landing_contact.field");
 
 	return (
 		<>
 			<CardContent className="space-y-1">
-				<Label htmlFor="message">Message</Label>
+				<Label htmlFor="message">{t("label")}</Label>
 				<Textarea
 					id="message"
 					onChange={(e) => {
@@ -28,7 +30,7 @@ export default function ContactMessage({ icons }: Props) {
 				/>
 				{isInvalidMessage && (
 					<p className="text-destructive text-sm">
-						Write something before sending
+						{t("error_message")}
 					</p>
 				)}
 			</CardContent>
@@ -48,7 +50,7 @@ export default function ContactMessage({ icons }: Props) {
 						}
 					}}
 				>
-					Send
+					{t("submit_button")}
 				</Button>
 				{icons}
 			</CardFooter>

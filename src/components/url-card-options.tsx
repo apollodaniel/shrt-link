@@ -14,6 +14,7 @@ import Link from "next/link";
 import { getAppRoute } from "@/lib/utils";
 import { useState } from "react";
 import ShareUrlDialog from "./share-url-dialog";
+import { useTranslations } from "next-intl";
 
 type Props = {
 	url: ShortenedUrl;
@@ -22,6 +23,7 @@ type Props = {
 
 export default function UrlCardOptions({ url, className }: Props) {
 	const [isShareUrlOpen, setIsShareUrlOpen] = useState(false);
+	const t = useTranslations("misc.url_card.card_options");
 
 	const copyToClipboard = async () => {
 		await navigator.clipboard.writeText(getAppRoute(url.id));
@@ -36,15 +38,15 @@ export default function UrlCardOptions({ url, className }: Props) {
 					</Button>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent>
-					<DropdownMenuLabel>Options</DropdownMenuLabel>
+					<DropdownMenuLabel>{t("title")}</DropdownMenuLabel>
 					<Link href={getAppRoute(`dashboard/${url.id}`)} passHref>
-						<DropdownMenuItem>Edit</DropdownMenuItem>
+						<DropdownMenuItem>{t("edit")}</DropdownMenuItem>
 					</Link>
 					<DropdownMenuItem onClick={copyToClipboard}>
-						Copy
+						{t("copy")}
 					</DropdownMenuItem>
 					<DropdownMenuItem onClick={() => setIsShareUrlOpen(true)}>
-						Share url
+						{t("share_url")}
 					</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>

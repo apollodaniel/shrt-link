@@ -75,6 +75,7 @@ export default function UrlCard({
 						<Link
 							href={`/${url.id}`}
 							className="group m-0 mt-3 max-h-full w-auto max-w-[50vw] truncate p-0 hover:underline"
+							prefetch={false}
 						>
 							{getFullShortenedUrl(url.id)}
 						</Link>
