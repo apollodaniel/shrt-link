@@ -9,9 +9,8 @@ RUN bun install --frozen-lockfile
 # Stage 2: Build the application
 FROM base AS builder
 
-# change to your actual env variables
-ENV API_URL "http://localhost:8080"
-ENV NEXT_PUBLIC_APP_URL "http://localhost:3000"
+ENV API_URL="http://backend:8095"
+ENV NEXT_PUBLIC_APP_URL="https://shrtl.apollodaniel.stream"
 
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
@@ -25,10 +24,8 @@ FROM base AS runner
 
 WORKDIR /app
 ENV NODE_ENV=production
-
-# change to your actual env variables
-ENV API_URL "http://localhost:8080"
-ENV NEXT_PUBLIC_APP_URL "http://localhost:3000"
+ENV API_URL="http://backend:8095"
+ENV NEXT_PUBLIC_APP_URL="https://shrtl.apollodaniel.stream"
 
 # COPY --from=builder /app /app
 COPY --from=builder /app/public ./public
