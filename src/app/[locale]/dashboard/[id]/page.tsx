@@ -58,6 +58,7 @@ export default function UrlDashboard({
 						getAppRoute(dashboardUrlInfo?.dashboardSummary!.url.id)!
 					}
 					className="mx-1 my-0 max-w-full text-start text-4xl font-bold break-words hover:underline max-md:text-3xl max-sm:text-xl"
+					prefetch={false}
 				>
 					{getFullShortenedUrl(
 						dashboardUrlInfo?.dashboardSummary!.url.id,
