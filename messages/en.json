@@ -1,0 +1,319 @@
+{
+	"misc": {
+		"light_mode": "Light mode",
+		"dark_mode": "Dark mode",
+		"system_mode": "System",
+		"combobox": {
+			"search_label": "Search",
+			"select_label": "Select",
+			"not_found": "No results found"
+		},
+		"url_card": {
+			"share_button_label": "Share URL",
+			"card_options": {
+				"title": "Options",
+				"edit": "Edit",
+				"copy": "Copy",
+				"share_url": "Share URL"
+			},
+			"share_url_dialog": {
+				"title": "Share URL",
+				"description": "Share this URL with others via copy or social media",
+				"input_label": "URL",
+				"share_label": "Share via",
+				"copy_label": "Copy",
+				"instagram_label": "Share on instagram",
+				"facebook_label": "Share on facebook",
+				"x_label": "Share on X",
+				"mail_label": "Share via Email"
+			}
+		}
+	},
+	"landing_home": {
+		"slogan": "Shorten, Share, Simplify",
+		"description": "Transform long, clunky URLs into <b>compact</b>, <b>shareable links in seconds</b>",
+		"tagline": "Free, Fast, and Reliable",
+		"cta": "Get started Free"
+	},
+	"navbar": {
+		"links": {
+			"home": "Home",
+			"pricing": "Pricing",
+			"contact": "Contact",
+			"faq": "FAQ"
+		},
+		"buttons": {
+			"register": "Register now",
+			"login": "Sign in",
+			"dashboard": "Dashboard"
+		}
+	},
+	"footer": {
+		"resources": {
+			"label": "Resources",
+			"items": {
+				"help": "Help",
+				"sales": "Sales",
+				"advertise": "Advertise",
+				"privacy": "Privacy"
+			}
+		},
+		"product": {
+			"label": "Product",
+			"items": {
+				"overview": "Overview",
+				"pricing": "Pricing",
+				"features": "Features"
+			}
+		},
+		"company": {
+			"label": "Company",
+			"items": {
+				"about": "About",
+				"team": "Team",
+				"blog": "Blog"
+			}
+		},
+		"github_icon_alt": "clickable github icon",
+		"linkedin_icon_alt": "clickable linkedin icon",
+		"gmail_icon_alt": "clickable gmail icon",
+		"slogan": "Crafting high-performance full-stack websites that drive real business results.",
+		"copyright": "©2025 Apollo Daniel. All rights reserved.",
+		"terms": "Terms and Conditions",
+		"privacy": "Privacy Policy"
+	},
+	"landing_pricing": {
+		"main_card": {
+			"badge": "Most popular",
+			"title": "Free",
+			"subtitle": "Forever Free",
+			"price": "Free",
+			"features": [
+				"Unlimited URL shortening",
+				"URL Performance Analytics"
+			],
+			"cta": "Sign up"
+		}
+	},
+	"landing_contact": {
+		"title": "Contact",
+		"field": {
+			"label": "Message",
+			"error_message": "Write something before sending",
+			"submit_button": "Send"
+		}
+	},
+	"landing_faq": {
+		"title": "Frequently asked questions",
+		"description": "We've compiled the most important information to help you get the most out of your experience. Can't find what you're looking for? Contact us.",
+		"questions": {
+			"item_1": {
+				"question": "Is the service secure?",
+				"answer": "While we don't scan for malware, all links are generated without storing sensitive user data. Please use the service responsibly."
+			},
+			"item_2": {
+				"question": "How fast are links created?",
+				"answer": "Links are generated instantly. Note that you'll need an account to use the service."
+			},
+			"item_3": {
+				"question": "Do links expire?",
+				"answer": "Yes. In this test deployment, links expire after 5 minutes to prevent storing sensitive data and maintain a clean, optimized testing environment for all users."
+			},
+			"item_4": {
+				"question": "What data is collected when a link is accessed?",
+				"answer": "For each visit, we collect the IP address and user agent. From this information, we determine the browser, device type, and approximate location (including country, region, city, and coordinates). During testing, for legal and security reasons, all requests are recorded with the server's IP address instead of the user&apos;s actual IP. This data is associated with the specific shortened URL and includes the access timestamp."
+			},
+			"item_5": {
+				"question": "Is the service really free?",
+				"answer": "Yes. The service is completely free—there are no subscriptions or hidden charges."
+			},
+			"item_6": {
+				"question": "How long does an account last?",
+				"answer": {
+					"description": "These rules apply only to this test website's trial mode. Accounts expire under these conditions:",
+					"conditions": [
+						"Inactive accounts (with no URLs or clicks) expire after 10 minutes",
+						"Active accounts without clicks expire after 15 minutes",
+						"Accounts with active clicks remain active until 5 minutes pass without new clicks (but never exceed the 15-minute maximum for active accounts)"
+					]
+				}
+			}
+		}
+	},
+	"auth": {
+		"required_message": "Field is required",
+		"invalid_string": "Input must be a text"
+	},
+	"auth_login": {
+		"title": "Login",
+		"fields": {
+			"email": {
+				"label": "Email",
+				"error_message": "Invalid email format"
+			},
+			"password": {
+				"label": "Password",
+				"error_message": "Password is required"
+			}
+		},
+		"submit_button": "Login",
+		"alternative_button": "Or register a new account"
+	},
+	"auth_register": {
+		"title": "Register",
+		"fields": {
+			"first_name": {
+				"label": "First name",
+				"error_messages": {
+					"regex": "First name must be capitalized and contain no space",
+					"min": "First name must have at least two letters"
+				}
+			},
+			"last_name": {
+				"label": "Last name",
+				"error_messages": {
+					"regex": "Last name must be capitalized and contain no space",
+					"min": "Last name must have at least two letters"
+				}
+			},
+			"email": {
+				"label": "Email",
+				"error_message": "Invalid email"
+			},
+			"password": {
+				"label": "Password",
+				"error_messages": {
+					"min": "Password must be at least 8 char long",
+					"digits": "Password must have digits",
+					"lowercase_char": "Password must have lowercase letters",
+					"uppercase_char": "Password must have uppercase letters",
+					"symbols": "Password must contain at least one of the following symbols: !@#$%^&*()"
+				}
+			},
+			"confirm_password": {
+				"label": "Confirm password",
+				"error_message": "Confirm password must match password"
+			}
+		},
+		"submit_button": "Register",
+		"alternative_button": "Or use a existing account"
+	},
+	"charts": {
+		"defaults": {
+			"count_label": "Count",
+			"visitors_label": "Visitors",
+			"total_visitors_label": "Total visitors"
+		},
+		"past-year": {
+			"title": "Yearly Visitor Distribution",
+			"description": "Visual representation of visitor distribution throughout the year.",
+			"footerDescription": "Displays total visitors for the entire year."
+		},
+		"past-six-months": {
+			"title": "Visitor Distribution (Last 6 Months)",
+			"description": "Shows the distribution of visitors over the past six months.",
+			"footerDescription": "Displays visitor data for the last 6 months."
+		},
+		"past-30-days": {
+			"title": "Visitor Count (Last 30 Days)",
+			"description": "Displays total visitors for the past 30 days."
+		},
+		"all-period": {
+			"title": "Total Visitors (All Time)",
+			"description": "Displays total visitor count by date over the entire period."
+		},
+		"hour-distribution": {
+			"title": "Hour distribution",
+			"description": "See the most accessed hours of the day",
+			"footerDescription": "Showing hour count for all urls."
+		},
+		"browser-distribution": {
+			"title": "Browser distribution",
+			"description": "See the most popular browsers among the visitors",
+			"footerDescription": "Showing browser count for all urls.",
+			"checkbox-label": "Show browser label"
+		},
+		"device-distribution": {
+			"title": "Device distribution",
+			"description": "See the most popular devices among the visitors",
+			"footerDescription": "Showing device count for all urls.",
+			"checkbox-label": "Show device label"
+		},
+		"country-distribution": {
+			"title": "Country distribution",
+			"description": "See the most popular countrys among the visitors",
+			"footerDescription": "Showing country count for all urls.",
+			"checkbox-label": "Show country label"
+		}
+	},
+	"dashboard": {
+		"analytics": {
+			"title": "Analytics",
+			"total_clicks": "Total clicks"
+		},
+		"analytics_update_message": "This summary is periodically updated. Recent changes may take some time to appear.",
+		"recent_urls": {
+			"title": "Recent URLs",
+			"fallback": "There are no recently created URLs."
+		},
+		"active_urls": {
+			"title": "Active URLs",
+			"fallback": "There's no URL acessed within 24 hours."
+		},
+		"welcome_message": "Welcome back",
+		"delete_url_button": "Delete this url",
+		"delete_url_error": "Unable to delete URL \"{id}\"",
+		"fetch_analytics_error": "Unable to get dashboard analytics, try again later."
+	},
+	"dashboard_sidebar": {
+		"title": "Application",
+		"home": "Home",
+		"url_list": "URL list",
+		"add_url": {
+			"label": "Add URL",
+			"popup": {
+				"title": "Add new URL",
+				"description": "Paste a valid link below to generate a shortened URL.",
+				"input_label": "Original URL",
+				"submit": "Create",
+				"cancel": "Cancel",
+				"invalid_url_message": "Invalid URL format"
+			}
+		},
+		"account_dropdown_menu": {
+			"account": "Account",
+			"logout": "Logout",
+			"popup": {
+				"title": "Logout",
+				"description": "Are you sure you want to logout?",
+				"submit": "Logout",
+				"cancel": "Cancel"
+			}
+		}
+	},
+	"dashboard_list": {
+		"fetch_list_error": "Unable to load list, try again later",
+		"delete_url_error": "Unable to delete the following URLs",
+		"search_selected_message": "When searching the \"select all\" button is limited to the search scope.",
+		"only_active_message": "Displaying only active",
+		"selected_title": "Selected {size} of {length}",
+		"range_calendar": {
+			"pick_date_range": "Pick a date range"
+		},
+		"settings": {
+			"order_by": {
+				"creation_date": "Creation Date",
+				"id": "ID"
+			},
+			"order_direction": {
+				"asc": "Ascending",
+				"desc": "Descending"
+			},
+			"active_url_label": "Show only active URLs",
+			"order_by_label": "Order by",
+			"order_direction_label": "Order",
+			"submit": "Save changes"
+		},
+		"search_input_label": "Search"
+	}
+}

@@ -1,0 +1,320 @@
+{
+	"misc": {
+		"light_mode": "Modo claro",
+		"dark_mode": "Modo escuro",
+		"system_mode": "Sistema",
+		"combobox": {
+			"search_label": "Pesquisar",
+			"select_label": "Selecionar",
+			"not_found": "Nenhum resultado encontrado"
+		},
+		"url_card": {
+			"share_button_label": "Compartilhar URL",
+			"card_options": {
+				"title": "Mais opções",
+				"edit": "Editar",
+				"copy": "Copiar",
+				"share_url": "Compartilhar URL"
+			},
+			"share_url_dialog": {
+				"title": "Compartilhar URL",
+				"description": "Compartilhe essa URL copiando ou via rede social.",
+				"input_label": "URL",
+				"share_label": "Compartilhar via",
+				"copy_label": "Copiar",
+				"instagram_label": "Compartilhar no instagram",
+				"facebook_label": "Compartilhar no facebook",
+				"x_label": "Compartilhar no X",
+				"mail_label": "Compartilhar via Email"
+			}
+		}
+	},
+	"landing_home": {
+		"slogan": "Encurte, Compartilhe, Simplifique",
+		"description": "Transforme URLs longas e complicadas em <b>links compactos</b> e <b>compartilháveis em segundos</b>",
+		"tagline": "Gratuito, Rápido e Confiável",
+		"cta": "Comece Grátis"
+	},
+	"navbar": {
+		"links": {
+			"home": "Início",
+			"pricing": "Preços",
+			"contact": "Contato",
+			"faq": "Perguntas Frequentes"
+		},
+		"buttons": {
+			"register": "Registrar agora",
+			"login": "Entrar",
+			"dashboard": "Painel"
+		}
+	},
+	"footer": {
+		"resources": {
+			"label": "Recursos",
+			"items": {
+				"help": "Ajuda",
+				"sales": "Vendas",
+				"advertise": "Anunciar",
+				"privacy": "Privacidade"
+			}
+		},
+		"product": {
+			"label": "Produto",
+			"items": {
+				"overview": "Visão Geral",
+				"pricing": "Preços",
+				"features": "Funcionalidades"
+			}
+		},
+		"company": {
+			"label": "Empresa",
+			"items": {
+				"about": "Sobre",
+				"team": "Equipe",
+				"blog": "Blog"
+			}
+		},
+		"github_icon_alt": "Ícone clicável do GitHub",
+		"linkedin_icon_alt": "Ícone clicável do LinkedIn",
+		"gmail_icon_alt": "Ícone clicável do Gmail",
+		"slogan": "Criando sites full-stack de alto desempenho que geram resultados reais para os negócios.",
+		"copyright": "©2025 Apollo Daniel. Todos os direitos reservados.",
+		"terms": "Termos e Condições",
+		"privacy": "Política de Privacidade"
+	},
+	"landing_pricing": {
+		"main_card": {
+			"badge": "Mais popular",
+			"title": "Grátis",
+			"subtitle": "Grátis para sempre",
+			"price": "Grátis",
+			"features": [
+				"Encurtamento de URL ilimitado",
+				"Análise de desempenho de URL"
+			],
+			"cta": "Registre-se"
+		}
+	},
+	"landing_contact": {
+		"title": "Contato",
+		"field": {
+			"label": "Mensagem",
+			"error_message": "Escreva algo antes de enviar",
+
+			"submit_button": "Enviar"
+		}
+	},
+	"landing_faq": {
+		"title": "Perguntas frequentes",
+		"description": "Compilamos as informações mais importantes para ajudá-lo a aproveitar ao máximo sua experiência. Não encontrou o que procurava? Entre em contato conosco.",
+		"questions": {
+			"item_1": {
+				"question": "O serviço é seguro?",
+				"answer": "Embora não façamos varredura por malware, todos os links são gerados sem armazenar dados sensíveis do usuário. Por favor, use o serviço de forma responsável."
+			},
+			"item_2": {
+				"question": "Com que rapidez os links são criados?",
+				"answer": "Os links são gerados instantaneamente. Note que você precisará de uma conta para usar o serviço."
+			},
+			"item_3": {
+				"question": "Os links expiram?",
+				"answer": "Sim. Nesta implantação de teste, os links expiram após 5 minutos para evitar o armazenamento de dados sensíveis e manter um ambiente de teste limpo e otimizado para todos os usuários."
+			},
+			"item_4": {
+				"question": "Quais dados são coletados quando um link é acessado?",
+				"answer": "Para cada visita, coletamos o endereço IP e o agente do usuário. A partir dessas informações, determinamos o navegador, o tipo de dispositivo e a localização aproximada (incluindo país, região, cidade e coordenadas). Durante os testes, por razões legais e de segurança, todas as requisições são registradas com o endereço IP do servidor em vez do IP real do usuário. Esses dados são associados à URL encurtada específica e incluem o carimbo de data/hora do acesso."
+			},
+			"item_5": {
+				"question": "O serviço é realmente gratuito?",
+				"answer": "Sim. O serviço é completamente gratuito — não há assinaturas ou custos ocultos."
+			},
+			"item_6": {
+				"question": "Quanto tempo dura uma conta?",
+				"answer": {
+					"description": "Essas regras se aplicam apenas ao modo de teste deste site. As contas expiram sob estas condições:",
+					"conditions": [
+						"Contas inativas (sem URLs ou cliques) expiram após 10 minutos",
+						"Contas ativas sem cliques expiram após 15 minutos",
+						"Contas com cliques ativos permanecem ativas até que passem 5 minutos sem novos cliques (mas nunca excedem o máximo de 15 minutos para contas ativas)"
+					]
+				}
+			}
+		}
+	},
+	"auth": {
+		"required_message": "O campo é obrigatório",
+		"invalid_string": "A entrada deve ser um texto"
+	},
+	"auth_login": {
+		"title": "Entrar",
+		"fields": {
+			"email": {
+				"label": "E-mail",
+				"error_message": "Formato de e-mail inválido"
+			},
+			"password": {
+				"label": "Senha",
+				"error_message": "A senha é obrigatória"
+			}
+		},
+		"submit_button": "Entrar",
+		"alternative_button": "Ou registre uma nova conta"
+	},
+	"auth_register": {
+		"title": "Registrar",
+		"fields": {
+			"first_name": {
+				"label": "Nome",
+				"error_messages": {
+					"regex": "O nome deve começar com letra maiúscula e não conter espaços",
+					"min": "O nome deve ter pelo menos duas letras"
+				}
+			},
+			"last_name": {
+				"label": "Sobrenome",
+				"error_messages": {
+					"regex": "O sobrenome deve começar com letra maiúscula e não conter espaços",
+					"min": "O sobrenome deve ter pelo menos duas letras"
+				}
+			},
+			"email": {
+				"label": "E-mail",
+				"error_message": "E-mail inválido"
+			},
+			"password": {
+				"label": "Senha",
+				"error_messages": {
+					"min": "A senha deve ter pelo menos 8 caracteres",
+					"digits": "A senha deve conter dígitos",
+					"lowercase_char": "A senha deve conter letras minúsculas",
+					"uppercase_char": "A senha deve conter letras maiúsculas",
+					"symbols": "A senha deve conter pelo menos um dos seguintes símbolos: !@#$%^&*()"
+				}
+			},
+			"confirm_password": {
+				"label": "Confirmar senha",
+				"error_message": "A confirmação de senha deve corresponder à senha"
+			}
+		},
+		"submit_button": "Registrar",
+		"alternative_button": "Ou usar uma conta existente"
+	},
+	"charts": {
+		"defaults": {
+			"count_label": "Contagem",
+			"visitors_label": "Visitantes",
+			"total_visitors_label": "Total de visitantes"
+		},
+		"past-year": {
+			"title": "Distribuição Anual de Visitantes",
+			"description": "Representação visual da distribuição de visitantes ao longo do ano.",
+			"footerDescription": "Exibe o total de visitantes para o ano inteiro."
+		},
+		"past-six-months": {
+			"title": "Distribuição de Visitantes (Últimos 6 Meses)",
+			"description": "Mostra a distribuição de visitantes nos últimos seis meses.",
+			"footerDescription": "Exibe dados de visitantes dos últimos 6 meses."
+		},
+		"past-30-days": {
+			"title": "Contagem de Visitantes (Últimos 30 Dias)",
+			"description": "Exibe o total de visitantes nos últimos 30 dias."
+		},
+		"all-period": {
+			"title": "Total de Visitantes (Todo o Período)",
+			"description": "Exibe a contagem total de visitantes por data em todo o período."
+		},
+		"hour-distribution": {
+			"title": "Distribuição por Hora",
+			"description": "Veja os horários mais acessados do dia",
+			"footerDescription": "Mostrando a contagem de horas para todas as URLs."
+		},
+		"browser-distribution": {
+			"title": "Distribuição por Navegador",
+			"description": "Veja os navegadores mais populares entre os visitantes",
+			"footerDescription": "Mostrando a contagem de navegadores para todas as URLs.",
+			"checkbox-label": "Mostrar rótulo do navegador"
+		},
+		"device-distribution": {
+			"title": "Distribuição por Dispositivo",
+			"description": "Veja os dispositivos mais populares entre os visitantes",
+			"footerDescription": "Mostrando a contagem de dispositivos para todas as URLs.",
+			"checkbox-label": "Mostrar rótulo do dispositivo"
+		},
+		"country-distribution": {
+			"title": "Distribuição por País",
+			"description": "Veja os países mais populares entre os visitantes",
+			"footerDescription": "Mostrando a contagem de países para todas as URLs.",
+			"checkbox-label": "Mostrar rótulo do país"
+		}
+	},
+	"dashboard": {
+		"analytics": {
+			"title": "Estatísticas",
+			"total_clicks": "Total de cliques"
+		},
+		"analytics_update_message": "Este resumo é atualizado periodicamente. Alterações recentes podem levar algum tempo para aparecer.",
+		"recent_urls": {
+			"title": "URLs Recentes",
+			"fallback": "Não há URLs criadas recentemente."
+		},
+		"active_urls": {
+			"title": "URLs Ativas",
+			"fallback": "Nenhuma URL acessada nas últimas 24 horas."
+		},
+		"welcome_message": "Bem-vindo de volta",
+		"delete_url_button": "Excluir esta URL",
+		"delete_url_error": "Não foi possível deletar a URL \"{id}\"",
+		"fetch_analytics_error": "Não foi possível obter as estatísticas do painel, tente novamente mais tarde."
+	},
+	"dashboard_sidebar": {
+		"title": "Painel",
+		"home": "Início",
+		"url_list": "Lista de URLs",
+		"add_url": {
+			"label": "Adicionar URL",
+			"popup": {
+				"title": "Adicionar nova URL",
+				"description": "Cole um link válido abaixo para gerar uma URL encurtada.",
+				"input_label": "URL original",
+				"submit": "Criar",
+				"cancel": "Cancelar",
+				"invalid_url_message": "Formato de URL inválido"
+			}
+		},
+		"account_dropdown_menu": {
+			"account": "Conta",
+			"logout": "Sair",
+			"popup": {
+				"title": "Sair",
+				"description": "Tem certeza de que deseja sair?",
+				"submit": "Sair",
+				"cancel": "Cancelar"
+			}
+		}
+	},
+	"dashboard_list": {
+		"fetch_list_error": "Erro ao carregar lista, tente novamente",
+		"delete_url_error": "Não foi possível excluir as seguintes URLs",
+		"search_selected_message": "Ao pesquisar, o botão \"selecionar tudo\" é limitado ao escopo da pesquisa.",
+		"only_active_message": "Exibindo apenas ativas",
+		"selected_title": "Selecionado {size} de {length}",
+		"range_calendar": {
+			"pick_date_range": "Selecione intervalo de datas"
+		},
+		"settings": {
+			"order_by": {
+				"creation_date": "Data de criação",
+				"id": "ID"
+			},
+			"order_direction": {
+				"asc": "Crescente",
+				"desc": "Decrescente"
+			},
+			"active_url_label": "Mostrar apenas URLs ativas",
+			"order_by_label": "Ordenar por",
+			"order_direction_label": "Ordem",
+			"submit": "Salvar alterações"
+		},
+		"search_input_label": "Pesquisar"
+	}
+}
